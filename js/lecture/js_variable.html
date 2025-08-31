@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="icon" href="../_assets/img/icon.png">
+	<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+	<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+	<link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+
+
+	<title>JS-Variable</title>
+</head>
+
+<body id="page-top" onload='prettyPrint()'>
+	<!-- Navigation -->
+	<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+	</a>
+	<nav id="sidebar-wrapper"></nav>
+	<!-- Header -->
+	<header class="masthead d-flex">
+		<div class="container text-center my-auto">
+			<h1 class="mb-1">JavaScript</h1>
+			<h3 class="mb-5">
+				資料倉庫（變數）
+			</h3>
+			<p>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#feature'>使用特性</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#statement'>基礎語法</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app'>應用方式</a>
+			</p>
+			<a class="btn btn-primary btn-xl js-scroll-trigger" href="#feature">Start</a>
+		</div>
+		<div class="overlay"></div>
+	</header>
+	<!-- About -->
+	<section class="content-section bg-light" id="feature">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">使用特性</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;放資料的地方
+					</p>
+					<p>
+						忍者學院的學員寫程式紀錄每天練習忍術的次數。每一段時間，他們會把全部的次數加起來跟師父說。
+						如果次數很多，師父會很高興，小忍者就有機會得到師父的獎賞。
+					</p>
+					<p class="mb-5">當小忍者要跟電腦要一個小空間來放數字時，這時候就要使用術語『var』來跟電腦索取。</p>
+					<ul>
+						<li class="mb-3">跟電腦拿倉庫放數字的小忍者</li>
+						<iframe class="mb-5" width="560" height="315" src="https://www.youtube.com/embed/Ae_MfSkVYcU?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+					</ul>
+
+					<br><br><br>
+					<a class="btn btn-dark js-scroll-trigger" href="#app">next</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content-section bg-light2" id="statement">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">基礎語法</h3>
+
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;要一個倉庫，把資料記下來
+					</p>
+					<ul>
+						<li class="mb-2">用 <span class="font-weight-bold text-danger">var</span> 開頭，
+							並且自己給一個 <span class="font-weight-bold text-danger">名稱</span>（如：data、data01、abc）<br>未來要拿資料才知道怎麼跟電腦說</li>
+						<pre class="prettyprint lang-js">
+    var data ;
+    var data01;
+    var ddd ;
+</pre>
+					</ul>
+					<ul>
+						<li class="mb-2">用 <span class="font-weight-bold text-danger">&nbsp;&nbsp;=&nbsp;&nbsp;</span>
+							把右邊的東西放進左邊的倉庫</li>
+						<pre class="prettyprint lang-js">
+// 放數字
+data = 17 ;
+data01 = 1700 ;
+
+// 放文字，文字要加兩撇包起來
+abc = 'ABCㄅㄆㄇ';	</pre>
+					</ul>
+					<ul>
+						<li class="mb-2">合在一起寫也可以</li>
+						<pre class="prettyprint lang-js">
+var price = 777 ;
+var weather = '好天氣' ;
+</pre>
+					</ul>
+					<ul>
+						<li class="mb-2">重複放，會發生什麼事？<span class="font-weight-bold text-danger"> 之前的就被覆蓋了！！</span></li>
+						<pre class="prettyprint lang-js">
+var x ;
+x=1;
+x=2;
+x=3;
+// x 最後就是 3</pre>
+					</ul>
+					<ul>
+						<li class="mb-2">可以把一個倉庫放到另一個倉庫嗎？<span class="font-weight-bold text-danger"> 可以 </span></li>
+						<pre class="prettyprint lang-js">
+var a1 = 50 ;
+var a2 ;
+var a3 ;
+a2 = a1 ;
+a3 = a1 ;
+// a1 , a2 , a3 都是 50</pre>
+					</ul>
+
+					<br><br>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;取出資料
+					</p>
+					<ul>
+						<li class="mb-2">可以使用 console.log(
+							<span class="font-weight-bold text-danger"> xxx </span>) 檢視倉庫資料內容
+						</li>
+						<li class="mb-2">用『名稱』拿出來用。如：相加起來再放到另一個倉庫。
+
+						</li>
+
+						<pre class="prettyprint lang-js">
+var a = 5 ;
+var b = 10 ;
+var c = a+b ;
+var text = '計算結果' ;
+console.log(a) ;
+console.log(b) ;
+cossole.log(text) ;
+console.log(c) ;
+</pre>
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content-section bg-light" id="app">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">應用方式</h3>
+
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;進行倉庫資料的計算
+					</p>
+					<ul>
+						<li class="mb-2">數字資料
+							<span class="font-weight-bold text-success">&nbsp;&nbsp;&nbsp;加 +&nbsp;&nbsp;&nbsp; 減-&nbsp;&nbsp;&nbsp; 乘 *&nbsp;&nbsp;&nbsp; 除 /</span>
+						</li>
+						<pre class="prettyprint lang-js">
+var a = 9 ;
+var b = 3 ;
+var x1 = a + b ;
+var x2 = a - b ;
+var x3 = a * b ;
+var x4 = a / b ;
+</pre>
+
+						<li class="mb-2">文字資料
+							<span class="font-weight-bold text-success">&nbsp;&nbsp;&nbsp;連起來 +&nbsp;&nbsp;&nbsp; </span>
+
+						</li>
+						<pre class="prettyprint lang-js">
+var t1 = '今天' ;
+var t2 = '昨天' ;
+var s1 = '晴天' ;
+var s2 = '陰天' ;
+console.log(  t1 + '天氣是' + s1 ) ;
+console.log(  t2 + '天氣是' + s1 ) ;</pre>
+
+						<pre class="prettyprint lang-js">
+// 和數字一起連結的例子
+var a = 15 ;
+var b = 7  ;
+var m = a*b ;
+console.log(  '每天零用錢' + a + '元，存了' + b + '天，總共存了' + m + '元' ) ;</pre>
+					</ul>
+
+					<br><br>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;東西加進來
+					</p>
+					<ul>
+						<li class="mb-2">數字資料：只用一個倉庫，把數字一直累積進倉庫。（加完再放回原來倉庫）
+						</li>
+						<pre class="prettyprint lang-js">
+var a = 0 ;
+a = a + 1 ;
+a = a + 2 ;
+a = a + 3 ;
+console.log('最後的 a 是 ' + a) ;</pre>
+							<span class="text-danger" style="margin-left:24px;">無效的例子</span>
+						<pre class="prettyprint lang-js">
+var a = 0 ;
+a + 1 ;
+a + 2 ;
+a + 3 ;
+console.log('最後的 a 是 ' + a) ;</pre>
+						<li class="mb-2">文字資料：只用一個倉庫，把文字一直串起來
+						</li>
+						<pre class="prettyprint lang-js">
+var t1 = '今天' ;
+t1 = t1 + '天氣' ;
+t1 = t1 + '非常好' ;
+console.log(  t1  ) ;</pre>
+						<span class="text-danger" style="margin-left:24px;">無效的例子</span>
+						<pre class="prettyprint lang-js">
+var t1 = '今天' ;
+t1 + '天氣' ;
+t1 + '非常好' ;
+console.log(  t1  ) ;</pre>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content-section bg-light2" id="statement">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">小試身手</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;<a href="https://www.code-seed.click/lecture/js/Javascript_Playground/" target="_blank">練習網頁</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Footer -->
+	<footer class="footer text-center" id="footer">
+
+	</footer>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+	<!-- Bootstrap core JavaScript -->
+	<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Plugin JavaScript -->
+	<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Custom scripts for this template -->
+	<script src="../_assets/js/stylish-portfolio.js"></script>
+	<script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+</body>
+
+</html>

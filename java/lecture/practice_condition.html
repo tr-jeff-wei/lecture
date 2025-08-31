@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <link rel="icon" href="../_assets/img/icon.png" />
+    <link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" />
+    <link href="../_assets/css/stylish-portfolio.css" rel="stylesheet" />
+    <link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css" />
+    <style>
+        .rt{
+            color: orangered;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.8.1/ace.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script src="util_07.js"></script>
+
+    <script>
+
+
+        function check_ans(elt) {
+
+            let t = elt.parentElement.parentElement.parentElement.parentElement.children[0].textContent;
+            // var textarea = document.getElementById('text');
+            console.log(t);
+            let re_content = /if\((.*)\){/;
+            let content = t.match(re_content)[1].trim();
+            console.log(content);
+            let ans = elt.dataset.qans.trim();
+            console.log(ans);
+
+            let evlcode = `let aarr=[];for(x=1;x<=25;x++){if(${content})aarr.push(x)};aarr;`;
+            let evlres = eval(evlcode);
+            evlres.sort() ;
+            console.log(evlres);
+
+            let correct = false;
+
+            if (ans == JSON.stringify(evlres)) {
+                correct = true;
+            }
+
+
+
+            if (correct) {
+                elt.setAttribute('class', 'btn btn-success');
+                elt.textContent = ' ✔️ ';
+                elt.disabled = true;
+            } else {
+                elt.setAttribute('class', 'btn btn-danger');
+                elt.textContent = ' ❌ ';
+            }
+        }
+
+        function genTags( arr , min , max ){
+            result = "" ;
+            for( let i=min ; i<=max ; i++){
+                if( arr.includes(i)){
+                    result+=`_<span class="rt">${i}</span>`;
+                }else{
+                    result+=`_${i}`;
+                }
+            }
+            return result ;
+        }
+
+        // type 1
+        function gt_lt(min , max,d) {
+            let r = min+3+ranInt(max-min-5) ;
+            let rarr = [] ;
+            if(d%2==0){
+                max = r ;
+            }else{
+                min = r ;
+            }
+            for( let i=min ; i<= max ; i++){
+                rarr.push( i ) ;
+            }
+            return rarr ;
+        }
+
+        // type 2 : ?<a<?   a<? || a>?
+        function in_out(min , max,d) {
+            let r1 = min+2+ranInt(10) ;
+            let r2 = max-2-ranInt(10) ;
+            let rarr = [] ;
+            if(d%2==0){
+                for( let i=r1 ; i<= r2 ; i++){
+                    rarr.push( i ) ;
+                }
+            }else{
+                for( let i=min ; i<= max ; i++){
+                    if( i>=r1 && i<=r2){
+                        continue ;
+                    }
+                    rarr.push( i ) ;
+                }
+            }
+            
+            return rarr ;
+        }
+
+        // type 3 : module
+        function mod_n(min , max) {
+            let arr = [] ;
+            let r = 2+ranInt(5) ;
+            for( let i=min ; i<=max ; i++){
+                if( i%r==0)
+                arr.push(i) ;
+            }
+            return arr ;            
+        }
+
+        // type 4 : single comp
+        function single_comp(min , max , d) {
+            let r = min+3+ranInt(max-min-5) ;
+            let rarr = [] ;
+           
+            if(d%2==0){
+                rarr.push( r ) ;
+            }else{
+                for( let i=min ; i<= max ; i++){
+                    if(i!=r){
+                        rarr.push( i ) ;
+                    }
+                }
+            }
+            return rarr ;
+        }
+
+
+        function cond_digit_1(did) {
+
+
+
+            let rootElt = document.getElementById(did);
+            for (let n = 0; n < 15; n++) {
+                let item_id = did + '_' + n;
+
+                let ulElt0 = document.createElement('ul');
+
+           
+                let ans_arr ;
+                
+                if( n<4){
+                    ans_arr = gt_lt(1,25,n) ;
+                }else if(n<8){
+                    ans_arr = in_out(1,25,n) ;
+                }else if(n<11){
+                    ans_arr = mod_n(1,25) ;
+                }else{
+                    ans_arr= single_comp(1,25,n);
+                }
+
+                ans_arr.sort();
+                
+                let tags =  genTags(ans_arr,1,25) ;
+
+                ulElt0.innerHTML=`<li class="mb-2"><span class="font-weight-bold text-primary" style="margin-right:15px;">寫下找出紅色數字的條件</span>${tags}</li>`;
+                rootElt.appendChild(ulElt0);
+
+                let ulElt = document.createElement('ul');
+                let codeElt = document.createElement('div');
+                ulElt.appendChild(codeElt);
+                codeElt.setAttribute('id', item_id);
+                let es = codeElt.style;
+                es.fontSize = '24px';
+                es.height = "260px";
+                es.width = '95%';
+                es.padding = '1em';
+                
+                
+                rootElt.appendChild(ulElt);
+
+
+                let code = `\nfor( int x=1 ; x<=25 ; x++ ){\n
+    if(  ?  ){
+        System.out.println( x );
+    }
+
+}`;
+
+                let editor = ace.edit(item_id);
+                editor.setTheme("ace/theme/twilight");
+                editor.session.setMode("ace/mode/java");
+                editor.setValue(code, -1);
+                editor.resize();
+
+                let btnElt = document.createElement('div');
+                btnElt.innerHTML = `<div><div><button class="btn btn-info" type="button" data-qfunc="cond_digit_1" data-qans='${JSON.stringify(ans_arr)}' onclick="check_ans(this);">CHECK</button></div></div>`
+                ulElt.appendChild(btnElt);
+            }
+
+
+
+        }
+
+    </script>
+
+    <title>Java 語法複習 - 條件式 Condition</title>
+</head>
+
+<body id="page-top" onload="prettyPrint()">
+    <!-- Navigation -->
+    <a class="menu-toggle rounded" href="#">
+        <i class="fa fa-bars"></i>
+    </a>
+    <nav id="sidebar-wrapper"></nav>
+    <!-- Header -->
+    <header class="masthead d-flex">
+        <div class="container text-center my-auto">
+            <h1 class="mb-1">Java 語法複習</h1>
+            <h3 class="mb-5">條件式 Condition</h3>
+            <p>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#info">語法提示</a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#cmp_digit">演練 - 數值比較</a>
+            </p>
+        </div>
+        <div class="overlay"></div>
+    </header>
+    <section style="background-color: slategrey; padding: 25px" id="info">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">
+                        語法提示
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul>
+                        <li class="mb-2">
+                            <span class="font-weight-bold text-primary" style="margin-right:15px;">數值比較</span>單一比較                           
+                        </li>
+                        <pre class="prettyprint lang-java">
+int a = ? ;
+int b = ? ;
+
+// == 等於
+if( a==b ){
+
+}
+
+// != 不等於
+if( a!=b ){
+
+}
+
+// >  大於
+if( a>b ){
+
+}
+
+// >= 大於等於
+if( a>=b ){
+
+}
+
+// <  小於
+if( a< b ){
+
+}
+
+// <=  小於等於
+if( a<=b ){
+
+}
+</pre>
+<li class="mb-2">
+    <span class="font-weight-bold text-primary" style="margin-right:15px;">數值比較</span>組合                           
+</li>
+<pre class="prettyprint lang-java">
+int a = ? ;
+int b = ? ;
+
+// ----> && 且
+if( a>5 && a<10 ){ 
+    // 5 < a < 10
+}
+if( a%2==0 && a>20){
+    // a 是大於 20 的偶數
+}
+if( a>0 && b>0 ){
+    // a , b 都要 >0
+}
+
+// ----> || 或
+if( a<5 || a>25 ){
+    // a<5 或 a>25 
+}
+
+</pre>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section style="background-color: slategrey; padding: 25px" id="cmp_digit">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">演練 - 數值比較</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto" id="q_01">
+                    <ul>
+                        <script>
+                            (function () {
+                                cond_digit_1("q_01");
+                            })();                           
+                        </script>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer text-center" id="footer"></footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Bootstrap core JavaScript -->
+    <script src="../_assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="../_assets/js/stylish-portfolio.js"></script>
+    <script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="icon" href="../_assets/img/icon.png">
+	<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+	<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+	<link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+
+<style>
+	 img{
+		 margin: 20px;
+	 }
+</style>
+
+	<title>雙子對抗賽（函式應用）</title>
+</head>
+
+<body id="page-top" onload='prettyPrint()'>
+	<!-- Navigation -->
+	<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+	</a>
+	<nav id="sidebar-wrapper"></nav>
+	<!-- Header -->
+	<header class="masthead d-flex">
+		<div class="container text-center my-auto">
+			<h1 class="mb-1">JavaScript</h1>
+			<h3 class="mb-5">
+					雙子對抗賽（函式應用）
+			</h3>
+			<p>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app_demo'>情境說明</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#elt'>操作說明</a>
+			</p>
+
+		</div>
+		<div class="overlay"></div>
+	</header>
+	<!-- About -->
+	<section class="content-section bg-light" id="app_demo">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">雙子對抗賽</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 競賽方法
+					</p>
+					<ol>
+						<li>競賽雙方選定主角： p1 <img width='60px' src="http://code-seed.click/lecture/js/Javascript_Playground2/p1.png">p2 <img width='60px' src="http://code-seed.click/lecture/js/Javascript_Playground2/p2.png"></li>
+						<li>每回合進行一個指令動作（移動、攻擊、防禦）</li>
+						<li>優先擊敗對手，或是在比賽結束時，具備最高 hp 獲勝</li>
+					</ol>
+					<ul>
+						<li>〔進階玩法〕每人可以自己設計 3 個函式工具，進行動作組合。<br>每個函式工具內不可以超過 3 組動作。</li>
+						<br>
+						<p>
+							<iframe frameBorder="0" width="550px" height="550px" src="http://code-seed.click/lecture/js/Javascript_Playground2/FunctionGame.html"></iframe>
+						</p>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="content-section bg-light2" id="elt">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">操作說明</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;步驟
+						<ul>
+							<li>前往遊戲頁面：<a target='_blank' href="http://code-seed.click/lecture/js/Javascript_Playground2/FunctionGame.html">
+								http://code-seed.click/lecture/js/Javascript_Playground2/FunctionGame.html</a></li>
+							<li>開啟頁面 console ，兩位玩家輪流輸入如下語法進行比賽</li>
+						</ul>
+					</p>				
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;操作函式
+					</p>
+
+					<ul class="mb-5">						
+<pre class="prettyprint lang-js">
+// --- 設定由誰進行動作 --- 
+setPlayer('p1')	;   // p1  or p2
+
+// --- 移動 （不可以超過 5 步）--- 方位：U（上）D（下）L（左）R（右）
+move( 'U' , 2 ) ;
+move( 'D' , 5 ) ;
+move( 'L' , 3 ) ;
+move( 'R' , 5 ) ;
+
+// --- 攻擊 （數字為攻擊距離，不可以超過 10 ）--- 方位：U（上）D（下）L（左）R（右）
+// --- 攻擊越多，會耗損越多體力
+fire( 'U' , 2 ) ;
+fire( 'D' , 5 ) ;
+fire( 'L' , 3 ) ;
+fire( 'R' , 5 ) ;
+
+// --- 防禦 （數字為可以抵擋子彈次數，最多 10）
+defense( 5 ) ;
+
+</pre>					</ul>
+
+					
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;程式範例
+					</p>
+					<ul class="mb-5">
+						<li>玩家 1 要往右走 3 步</li>
+<pre class="prettyprint lang-js">
+setPlayer('p1')	; 
+move( 'R' , 3 ) ;
+</pre>
+				
+					<li>玩家 2 向下方攻擊 7 格的距離</li>
+<pre class="prettyprint lang-js">
+setPlayer('p2')	;
+fire( 'D' , 7 ) ;
+</pre>
+
+										<li>利用函式，設計複雜的動作 ➩ 同時上下左右攻擊</li>
+<pre class="prettyprint lang-js">
+// 設計函式工具
+function fire_all(){
+	fire( 'U' , 5 ) ;
+	fire( 'D' , 5 ) ;
+	fire( 'L' , 5 ) ;
+	fire( 'R' , 5 ) ;
+}
+
+// 使用函式工具
+fire_all() ;
+</pre>
+
+<li>利用函式，設計複雜的動作 ➩ 往右下方，向走樓梯一樣移動</li>
+<pre class="prettyprint lang-js">
+// 設計函式工具
+function super_move(){
+	move( 'R' , 3 ) ;
+	move( 'D' , 3 ) ;
+	move( 'R' , 3 ) ;
+}
+
+// 使用函式工具
+super_move() ;
+</pre>
+				
+				
+				</ul>
+					
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+
+	<!-- Footer -->
+	<footer class="footer text-center" id="footer">
+
+	</footer>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+	<!-- Bootstrap core JavaScript -->
+	<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Plugin JavaScript -->
+	<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Custom scripts for this template -->
+	<script src="../_assets/js/stylish-portfolio.js"></script>
+	<script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+</body>
+
+</html>

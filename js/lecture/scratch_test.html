@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="icon" href="../_assets/img/icon.png">
+	<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+	<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+	<link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" type="text/css">
+
+
+	<title>Scratch 大挑戰</title>
+</head>
+
+<body id="page-top" onload='prettyPrint()'>
+	<!-- Navigation -->
+	<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+	</a>
+	<nav id="sidebar-wrapper"></nav>
+	<!-- Header -->
+	<header class="masthead d-flex">
+		<div class="container text-center my-auto">
+			<h1 class="mb-1">Scratch 大挑戰</h1>
+			<h3 class="mb-5">
+				基礎能力測驗
+			</h3>
+			<p>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#list'>能力清單</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#feature'>使用特性</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#statement'>基礎語法</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app'>小試身手</a>
+			</p>
+			<a class="btn btn-primary btn-xl js-scroll-trigger" href="#feature">Start</a>
+		</div>
+		<div class="overlay"></div>
+	</header>
+	<!-- List -->
+	<section class="content-section bg-light2" id="list">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 mx-auto">
+					<h3 class="mb-5">能力清單</h3>
+					<ul>
+						<li>類別：
+							<span class="badge-pill badge-info" onclick="set_tag('測驗')">測驗</span>
+							<span class="badge-pill badge-info" onclick="set_tag('參考')">參考</span>
+							<span class="badge-pill badge-info" onclick="set_tag('資源')">資源</span>
+						</li>
+					</ul>
+					
+					<table id="data_table" class="display" style="width:100%">
+						<thead>
+							<tr>
+								<th>名稱</th>
+								<th>縮圖</th>
+								<th>標籤</th>
+								<th>類別</th>
+								<th>Note</th>
+								<th>Note2</th>
+							</tr>
+						</thead>
+						<tbody>
+
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>名稱</th>
+								<th>縮圖</th>
+								<th>標籤</th>
+								<th>類別</th>
+								<th>Note</th>
+								<th>Note2</th>
+							</tr>
+						</tfoot>
+					</table>
+
+					<br><br><br>
+					<a class="btn btn-dark js-scroll-trigger" href="#app">next</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<section class="content-section bg-light" id="app">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">小試身手</h3>
+					<p class="lead mb-3">
+					</p>
+					<p class="lead mb-3">
+					</p>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer class="footer text-center" id="footer">
+
+	</footer>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+	<!-- Bootstrap core JavaScript -->
+	<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Plugin JavaScript -->
+	<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Custom scripts for this template -->
+	<script src="../_assets/js/stylish-portfolio.js"></script>
+	<script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+	<script>
+
+		var dObj = [
+			{
+				"id": "656095827",
+				"title": "炸彈超人",
+				"tags": "行列排隊,分身,地圖生成", "cat": "參考", "note": "", "note2": ""
+			},
+			{
+				"id": "823439879",
+				"title": "練習_造型改變_阿喵 PK 噴火龍",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "823439478",
+				"title": "練習_我的食物呀~ ",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "815089738",
+				"title": "追趕任務",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "746233993",
+				"title": "教學：動作操作控制",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "733837689",
+				"title": "超級市場_判斷式練習",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "917241124",
+				"title": "地道探索 - 基礎位移應用",
+				"tags": "移動", "cat": "參考", "note": "使用上下左右操控主角。前往目的地［旗子］。地道中的物品會有驚喜的功能", "note2": ""
+			},
+			{
+				"id": "731407223",
+				"title": "水晶收藏家",
+				"tags": "移動", "cat": "測驗", "note": "請在角色［喵仔］的程式中運用移動的相關積木，幫主角在時間內蒐集到全部的水晶，完成任務。要小心在移動過程中不可碰觸到陷阱。", "note2": ""
+			},
+			{
+				"id": "726992282",
+				"title": "教學：判斷式",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "27642432",
+				"title": "教學：條件練習",
+				"tags": "條件", "cat": "測驗", "note": "使用判斷條件，讓產生不同的分數時，小黑球可以有不同的表情", "note2": ""
+			},
+			{
+				"id": "718820012",
+				"title": "骷髏頭與殭屍造型",
+				"tags": "造型", "cat": "資源", "note": "", "note2": ""
+			},
+			{
+				"id": "721958816",
+				"title": "打沙包-demo",
+				"tags": "造型", "cat": "參考", "note": "使用 QWE 控制手部動作、使用 IOP 控制腳步動作、擊打人形沙包黃色區段得分", "note2": ""
+			},
+			{
+				"id": "720259588",
+				"title": "座標 2",
+				"tags": "座標", "cat": "測驗", "note": "", "note2": ""
+			},
+			{
+				"id": "718804916",
+				"title": "座標_條件",
+				"tags": "座標", "cat": "測驗", "note": "依照判斷條件移動狗狗前往正確的區域", "note2": ""
+			},
+			{
+				"id": "717389744",
+				"title": "條件式練習：Condition Test",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "717027089",
+				"title": "座標",
+				"tags": "座標", "cat": "測驗", "note": "透過 x y 的控制幫貓咪找到球", "note2": ""
+			},
+			{
+				"id": "712856487",
+				"title": "水族世界 - 方向移動 2 : 滑行",
+				"tags": "移動", "cat": "測驗", "note": "", "note2": ""
+			},
+			{
+				"id": "712049191",
+				"title": "蟲蟲危機 - 路線規劃",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "709384889",
+				"title": "水族世界 - 方向移動",
+				"tags": "移動", "cat": "測驗", "note": "", "note2": ""
+			},
+			{
+				"id": "880380994",
+				"title": "電網",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "880380865",
+				"title": "佔地盤",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "880375399",
+				"title": "捕蟲網",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "880126300",
+				"title": "小畫板",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "878127791",
+				"title": "黃貓騎士 - 武器跟隨",
+				"tags": "動作,跟隨,造型", "cat": "參考", "note": "實作物件跟隨角色的效果", "note2": ""
+			},
+			{
+				"id": "877836755",
+				"title": "海底世界-捕魚大賽",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "813776307",
+				"title": "螞蟻雄兵",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "723842367",
+				"title": "射擊遊戲 - 中央堡壘",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "209196331",
+				"title": "抽籤小舖-Dora",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "209196267",
+				"title": "你來當老闆-Dora",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "209195844",
+				"title": "9x9 乘法練習題",
+				"tags": "隨機取數,字串組合,問答,變數,計時器", "cat": "參考", "note": "30 秒練習 99 乘法的小程式", "note2": ""
+			},
+			{
+				"id": "901674359",
+				"title": "浮冰大冒險",
+				"tags": "行列排隊,分身,隨機取數,雲端變數", "cat": "參考", "note": "使用滑鼠移動企鵝前往有水晶的冰上蒐集水晶。要注意企鵝腳下的冰塊，當冰塊開始碎裂時，要儘快移動到安全相鄰的冰塊上。", "note2": ""
+			},
+			{
+				"id": "723851627",
+				"title": "翻牌記憶",
+				"tags": "行列排隊,分身,清單,隨機取數,私有變數", "cat": "參考", "note": "選中任兩張相同形狀卡片，即可消除消除所有卡片獲勝", "note2": ""
+			},
+			{
+				"id": "834572850",
+				"title": "POKER Game 洗牌與發牌",
+				"tags": "清單,隨機取數,分身", "cat": "參考", "note": "The Process of Demonstrating the Shuffling and Dealing of Playing Cards in a Card Game.展示撲克牌遊戲洗牌與發牌的過程。", "note2": ""
+			},
+			{
+				"id": "876754275",
+				"title": "筆刷 Brush",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "834012044",
+				"title": "使用變數選擇角色",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "872358931",
+				"title": "背景_閃耀光條",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "869124235",
+				"title": "Popcorn effects 爆米花特效",
+				"tags": "分身,模擬,雪花", "cat": "參考", "note": "爆米花特效", "note2": ""
+			},
+			{
+				"id": "861055502",
+				"title": "太空船飄移",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "861034624",
+				"title": "砲彈路徑",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "854459487",
+				"title": "說說話～",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "817553226",
+				"title": "Space Explorer",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "819438187",
+				"title": "Dancing Squidward",
+				"tags": "造型,動畫,音樂", "cat": "參考", "note": "影格動畫控制", "note2": ""
+			},
+			{
+				"id": "846065388",
+				"title": "2D Game 造型",
+				"tags": "", "cat": "資源", "note": "2D 物件素材", "note2": ""
+			},
+			{
+				"id": "846063687",
+				"title": "迷霧迷宮",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "843393916",
+				"title": "投球",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "841159892",
+				"title": "簡易砲台_練習",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "839657897",
+				"title": "雲端變數測試",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "839626716",
+				"title": "炸裂的門",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "837498851",
+				"title": "簡易砲台_教學",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "837493789",
+				"title": "簡易砲台",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "800477873",
+				"title": "跳跳彈",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "834621049",
+				"title": "迴圈 Loop : for while ",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "820159404",
+				"title": "Words Puzzle",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "554692802",
+				"title": "TEMPLATE | Scrolling Parallax",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "829813686",
+				"title": "空間視差效果 Parallax",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "825876297",
+				"title": "落下與破碎 Fall and crash",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "823364129",
+				"title": "阿喵 PK 噴火龍",
+				"tags": "造型,按鍵控制,移動", "cat": "參考", "note": "使用 [ 上下鍵 ] 控制主角，[ 空白鍵 ] 揮擊拳頭，在時間內打擊火龍，擊中一次算一分", "note2": ""
+			},
+			{
+				"id": "823439478",
+				"title": "練習_我的食物呀~ ",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "823368849",
+				"title": "我的食物呀~",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "704181796",
+				"title": "說故事",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "808339353",
+				"title": "Jumping Cat",
+				"tags": "跳躍,模擬", "cat": "參考", "note": "跳跳貓。[ 空白鍵 ] 跳躍。要閃避所有的樹，吃到蘋果可以加愛心。", "note2": ""
+			},
+			{
+				"id": "816100603",
+				"title": "Confetti 雪花片",
+				"tags": "分身,模擬,雪花", "cat": "參考", "note": "Confetti 雪花落下效果", "note2": ""
+			},
+			{
+				"id": "815089738",
+				"title": "追趕任務",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "814244815",
+				"title": "弓箭",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "798843054",
+				"title": "mario art : )",
+				"tags": "造型", "cat": "資源", "note": "Mario 相關角色造型", "note2": ""
+			},
+			{
+				"id": "802699828",
+				"title": "Flappy Bird Demo",
+				"tags": "跳躍", "cat": "參考", "note": "跳跳鳥，跳躍動作控制", "note2": ""
+			},
+			{
+				"id": "785014507",
+				"title": "跳躍+移動模型",
+				"tags": "移動,跳躍", "cat": "參考", "note": "使用上（跳躍）+左右（平移）操控企鵝", "note2": ""
+			},
+			{
+				"id": "785018671",
+				"title": "移動方法比較（即停、滑行）",
+				"tags": "移動", "cat": "參考", "note": "按下左/右鍵，比較 3 個角色的移動", "note2": ""
+			},
+			{
+				"id": "782328232",
+				"title": "超級運動會",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "781118732",
+				"title": "爆炸效果 explosion effects",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "723553246",
+				"title": "眼力大挑戰",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "656094932",
+				"title": "大怒神電梯",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "767928028",
+				"title": "超級點字機",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "780227310",
+				"title": "Christmas Night",
+				"tags": "分身,雪花,模擬", "cat": "參考", "note": "飄著雪花的聖誕夜", "note2": ""
+			},
+			{
+				"id": "779406515",
+				"title": "秘密救援",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "779472650",
+				"title": "迷霧迷宮",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "773798841",
+				"title": "動畫：Rose carpet 玫瑰地毯",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "771697357",
+				"title": "Demo : Hp Bar ( 分身）",
+				"tags": "分身,變數", "cat": "參考", "note": "運用 [ 分身 ] 製作的血條滑動 HP 可以改變血條長度", "note2": ""
+			},
+			{
+				"id": "767928468",
+				"title": "魔幻水晶球",
+				"tags": "分身,巢狀迴圈,行列排隊", "cat": "參考", "note": "幫魔法師尋找一樣色彩的水晶球，點擊後收藏", "note2": ""
+			},
+			{
+				"id": "757513605",
+				"title": "氣球神槍手",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "764608203",
+				"title": "血量條 Hp Bar",
+				"tags": "畫筆,變數,條件", "cat": "參考", "note": "可以隨著變數更新的血量條，同時也會隨著血量不同而變色", "note2": ""
+			},
+			{
+				"id": "761324352",
+				"title": "材料箱",
+				"tags": "", "cat": "資源", "note": "", "note2": ""
+			},
+			{
+				"id": "686856029",
+				"title": "終極密碼戰",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "760846004",
+				"title": "造字/打字機",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "756958249",
+				"title": "數字顯示器",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "756192686",
+				"title": "視訊控制：翻牆的小猴",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "753379677",
+				"title": "猜字遊戲",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "743076437",
+				"title": "走橢圓",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "733478532",
+				"title": "翻牌記憶",
+				"tags": "行列排隊,分身,清單,隨機取數,私有變數", "cat": "參考", "note": "選中任兩張相同形狀卡片，即可消除消除所有卡片獲勝", "note2": ""
+			},
+			{
+				"id": "728640566",
+				"title": "分身幻影",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "728014728",
+				"title": "簡單跳",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "726327810",
+				"title": "發射砲彈",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "11164381",
+				"title": "Target Square",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "11275693",
+				"title": "自建積木_連續開火：障礙射擊",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "723559394",
+				"title": "自定義積木_交換座位",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "717909796",
+				"title": "SpotLight",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "718267199",
+				"title": "密碼卡",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "438511952",
+				"title": "練習-裝甲車訓練班2",
+				"tags": "程式序列", "cat": "測驗", "note": "練習將戰車開到堡壘內的目標區。移動的過程中，戰車若碰到堡壘，戰車會爆炸喔。", "note2": ""
+			},
+			{
+				"id": "58950538",
+				"title": "教學：跳躍與滑行",
+				"tags": "跳躍,模擬", "cat": "參考", "note": "運用上下左右鍵控制貓咪移動", "note2": ""
+			},
+			{
+				"id": "57741438",
+				"title": "教學：Bouncing Ball",
+				"tags": "拋體運動", "cat": "參考", "note": "", "note2": ""
+			},
+			{
+				"id": "56546462",
+				"title": "教學：裝甲車訓練班",
+				"tags": "程式序列", "cat": "測驗", "note": "練習將戰車開到堡壘內的目標區。移動的過程中，戰車若碰到堡壘，戰車會爆炸喔。", "note2": ""
+			},
+			{
+				"id": "11980985",
+				"title": "Scratch Fun",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "55829874",
+				"title": "教學：移動控制",
+				"tags": "移動", "cat": "參考", "note": "Use the arrow key to control the running ball 鍵盤移動控制", "note2": ""
+			},
+			{
+				"id": "12934923",
+				"title": "教學：偵測與控制",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "12934870",
+				"title": "教學：事件介紹",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "12933474",
+				"title": "教學：動作介紹",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "12934778",
+				"title": "教學：聲音介紹",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "12934184",
+				"title": "教學：外觀介紹",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "14360440",
+				"title": "教學：神射手任務（準備）",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "16081341",
+				"title": "解答：一隻蝙蝠掉下來後，其他繼續飛",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "23861466",
+				"title": "教學：頁面導覽（準備）",
+				"tags": "場景切換", "cat": "測驗", "note": "", "note2": ""
+			},
+			{
+				"id": "23862698",
+				"title": "教學：頁面導覽（範例）",
+				"tags": "場景切換", "cat": "參考", "note": "", "note2": ""
+			},
+			{
+				"id": "23880011",
+				"title": "教學：互動事件-你嚇到我囉！",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "23874173",
+				"title": "教學：走個不停的教授",
+				"tags": "循環,重複", "cat": "參考", "note": "", "note2": ""
+			},
+			{
+				"id": "14360508",
+				"title": "教學：神射手任務（完成）",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "27633926",
+				"title": "教學：運用條件控制輪子的轉動",
+				"tags": "轉動,條件,變數", "cat": "參考", "note": "", "note2": ""
+			},
+			{
+				"id": "30370434",
+				"title": "教學：Rotate Arm",
+				"tags": "模擬,轉動,機械", "cat": "參考", "note": "", "note2": ""
+			},
+			{
+				"id": "33347052",
+				"title": "Protect Castle",
+				"tags": "射擊,分身", "cat": "參考", "note": "", "note2": ""
+			},
+			{
+				"id": "32259534",
+				"title": "Pick Coins",
+				"tags": "分身,計時", "cat": "參考", "note": "在最短的時間內，點擊收藏最多金幣", "note2": ""
+			},
+			{
+				"id": "39580308",
+				"title": "教學：The Map - Where am i ?",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "53202954",
+				"title": "教學練習 - 捕獵",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "827448292",
+				"title": "練習 - 移動控制 XY",
+				"tags": "移動", "cat": "測驗", "note": "碰觸積木控制飛船抵達地球", "note2": ""
+			},
+			{
+				"id": "823439879",
+				"title": "練習_造型改變_阿喵 PK 噴火龍",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "823439478",
+				"title": "練習_我的食物呀~ ",
+				"tags": "", "cat": "", "note": "", "note2": ""
+			},
+			{
+				"id": "823378008",
+				"title": "練習 - 移動控制",
+				"tags": "移動", "cat": "測驗", "note": "碰觸積木控制飛船抵達地球", "note2": ""
+			},
+			{
+				"id": "753390260",
+				"title": "Enter the password 輸入密碼",
+				"tags": "清單,輸入", "cat": "測驗,參考", "note": "[ 練習專案 ]試著應用清單的功能，檢查貓咪依序輸入的密碼是否正確", "note2": ""
+			},
+			{
+				"id": "69530704",
+				"title": " FZ-B4：功能積木：事件：廣播（測驗）",
+				"tags": "廣播",
+				"cat": "測驗", "note": "依照此專案的劇本，分析出廣播關聯圖。再依照廣播關聯圖，重新製作專案。", "note2": ""
+			},
+			{
+				"id": "69526404",
+				"title": " FZ-B4：功能積木：事件：廣播",
+				"tags": "廣播",
+				"cat": "測驗,參考", "note": "依照此專案的劇本，分析出廣播關聯圖。再依照廣播關聯圖，重新製作專案。", "note2": ""
+			},
+			{
+				"id": "69103362",
+				"title": "FZ-A22：功能積木：外觀：大小切換",
+				"tags": "外觀", "cat": "測驗", "note": "運用大小控制的積木，將兩隻小恐龍縮小放入兩個小山洞中。", "note2": ""
+			},
+			{
+				"id": "69520790",
+				"title": "FZ-A15：繪製工具：上色",
+				"tags": "繪圖", "cat": "測驗", "note": "將灰色的容器塗上與彩色容器一樣的色彩。1. 在邊框與內容進行不同的上色。2. 運用兩種色彩進行漸層上色。", "note2": ""
+			},
+			{
+				"id": "69150776",
+				"title": "FZ-A24：功能積木：外觀：背景切換",
+				"tags": "條件,背景", "cat": "測驗", "note": "小恐龍碰到點亮的燈泡，將城市轉換為亮燈街道的城市。當小恐龍碰到不亮的燈泡，將城市轉換為黑暗街道的城市。", "note2": ""
+			},
+			{
+				"id": "69085132",
+				"title": "FZ-A21：功能積木：外觀：造型切換",
+				"tags": "造型", "cat": "測驗", "note": "請參考影片：https://youtu.be/xQicpxafiT0 讓小恐龍做出一樣的動作", "note2": ""
+			},
+			{
+				"id": "69081100",
+				"title": "FZ-A19：功能積木：動作：位置控制",
+				"tags": "動作", "cat": "測驗", "note": "讓甲蟲從點點球出現，沿著線段前進移動到第一個果實，再移動到第二個果實。", "note2": ""
+			},
+			{
+				"id": "69079834",
+				"title": "FZ-A18：繪製工具：群組、複製",
+				"tags": "繪圖", "cat": "測驗", "note": "把角色中的三個裝飾品，排列成符合牆上的組合。再運用群組功能，進行整組裝飾品的複製。將裝飾品放進牆上的影子上。", "note2": ""
+			},
+			{
+				"id": "69078262",
+				"title": "FZ-A17：繪製工具：變型",
+				"tags": "繪圖", "cat": "測驗", "note": "將三隻小恐龍，進行放大、縮小、旋轉、翻轉後，讓他們可以完全貼到背景的影子上。", "note2": ""
+			},
+			{
+				"id": "69077708",
+				"title": "FZ-A16：繪製工具：輪廓點造型",
+				"tags": "繪圖", "cat": "測驗", "note": "進行輪廓點的新增、刪除、拖曳，調整出所需的造型。", "note2": ""
+			},
+			{
+				"id": "69076490",
+				"title": "FZ-A25：音樂：選擇樂曲：播放練習",
+				"tags": "音樂", "cat": "測驗", "note": "這是一個練習操作音樂播放時機的專案。我們將運用芭蕾女孩「音效」內的兩個音樂片段，完成以下的指定任務。並且所有的積木必須串接在相同的積木序列中。1. 播放［前奏］音樂。這時女孩先不要動作。2. 等待［前奏］一播完，女孩立即開始反覆不停的［表演］，並同時持續播放［主旋律］音樂。", "note2": ""
+			}
+		];
+
+		var dataRoot = document.getElementsByTagName('tbody')[0];
+
+		for (var item of dObj) {
+
+			dataRoot.innerHTML = dataRoot.innerHTML +
+				`<tr><td><a href="https://scratch.mit.edu/projects/${item.id}/" target="_blank">${item.title}</a></td>
+<td><img width=200 src="https://cdn2.scratch.mit.edu/get_image/project/${item.id}_480x360.png" alt="" srcset=""></td>
+								<td>${item.tags}</td>
+								<td>${item.cat}</td>
+								<td>${item.note}</td>
+								<td>${item.note2}</td></tr>`;
+
+		}
+		let table = new DataTable('#data_table' ,  {
+    lengthMenu: [
+        [-1, 25, 50, 100],
+        ['All', 25, 50,100 ]
+    ]
+});
+
+		// set tages
+		// var bgs = document.getElementsByClassName('badge-pill');
+		
+		// for (var item of bgs) {
+		// 	console.log( item.textContent) ;
+		// 	item.addEventListener("click", () => {
+				
+		// 	});
+		// }
+		function set_tag( tag ){
+			var target = document.getElementsByTagName("input")[0];
+			target.value = tag;				
+			target.dispatchEvent(new Event("input"));
+		}
+
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+	
+		<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+		<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+        <link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+        
+		<title>chrome extension - 彈出頁框：網頁清單</title>
+	</head>
+	<body id="page-top"  onload='prettyPrint()' >
+		<!-- Navigation -->
+		<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+		</a>
+		<nav id="sidebar-wrapper"></nav>
+		<!-- Header -->
+		<header class="masthead d-flex">
+			<div class="container text-center my-auto">
+				<h1 class="mb-1">chrome extension</h1>
+				<h3 class="mb-5">                    
+                    彈出頁框：網頁清單
+				</h3>
+				<p>
+					<button type="button" class="btn btn-outline-info btn-sm">chrome-extension</button>
+					<button type="button" class="btn btn-outline-info btn-sm">JS 進階</button>
+				</p>
+				<a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
+			</div>
+			<div class="overlay"></div>
+		</header>
+        <!-- About -->
+		<section class="content-section bg-light" id="about">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5" >運作流程</h3>        
+                        <p class="lead mb-5"><i class="fa fa-rocket" aria-hidden="true"></i>&nbsp;&nbsp;操作動畫</p> 
+                        <p class="mb-4">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/WDtARMr2heY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        </p>
+                        <p class="lead mb-5"><i class="fa fa-rocket" aria-hidden="true"></i>&nbsp;&nbsp;流程示意圖</p> 
+                        <p class="mb-4">
+                            <img src="https://docs.google.com/drawings/d/e/2PACX-1vS4H5SjcG5D7uSCVBEwhBt8HH8hwOI9m4AHlRN70V9sR9-vXLaE9JdQAh3Vc7FJA4lOt1VwWJ-HsqKY/pub?w=920&amp;h=794">
+                        </p>
+                        <br/>
+                        <a class="btn btn-dark js-scroll-trigger" href="#practice">next</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- practice -->
+		<section class="content-section bg-light2" id="practice">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5" >小試身手</h3>                       
+                        <p class="lead mb-2">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;相關檔案
+                        </p> 
+                        <img src="https://docs.google.com/drawings/d/e/2PACX-1vSZzx4SEuwhwAyvCTOpNrBc0PbatxRtutU3Qf3euyO0K6HO6l4W-sqAXi16DtXUFSUw5u7jC6KhMmvS/pub?w=607&amp;h=262">
+                        <br><br><br>
+                        
+                        <p class="lead mb-2">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;manifest.json 擴充程式描述檔
+                        </p> 
+                        
+                        
+                        
+<pre class="prettyprint lang-js">// manifest.json
+{
+   "manifest_version":2,
+   "name":"Link Pocket",
+   "version":"0.1",
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
+    "permissions": ["activeTab","tabs"]
+}
+</pre> 
+                        
+                        
+                        <br><br>
+                        <p class="lead mb-2">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;製作彈出頁框 popup.html
+                        </p>
+                        
+                        
+                        
+                        
+<pre  class="prettyprint lang-html"><xmp><html>
+    <head>
+        <link href="bootstrap/bootstrap.min.css" rel="stylesheet"> 
+        <script src="bootstrap/jquery-3.3.1.slim.min.js"></script>
+        <script src="bootstrap/popper.min.js"></script>
+        <script src="bootstrap/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container" style="width: 350px;margin: 30px;">
+            <button id='addBtn' type="button" class="btn btn-info">Add</button>
+            <button id='clrBtn' type="button" class="btn btn-warning">Clear</button>
+            
+            <!--  準備插入項目的位置  -->
+            <div id="my_list" class="list-group" style="margin-top: 20px;"></div>
+            <!--  準備插入項目的位置  -->
+                        
+        </div>
+    </body>
+    <script src="popup.js"></script>
+</html></xmp></pre>    
+                        
+                        
+                        
+                        <br>
+                        
+                        <p class="lead mb-2">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;重點功能程式片段 popup.js
+                        </p>
+                        <ol>
+                            <li>取得網頁標題與連結</li>
+                            
+<pre  class="prettyprint lang-js">var target_url ;
+var target_title ;
+var params = {    
+    active:true ,
+    currentWindow:true
+}
+chrome.tabs.query(params , gotTab) ;
+function gotTab(tab){
+    
+    console.log(tab) ;
+    console.log(tab[0].title) ;
+    console.log(tab[0].url) ;
+    
+    target_title = tab[0].title ;
+    target_url   = tab[0].url   ;
+}</pre><br><br>
+                            
+                            
+                            <li>資料倉庫的存取：localStorage</li>
+                            
+<pre  class="prettyprint lang-js">                             
+function saveToLocalStorage(){
+    // 儲存內容
+    localStorage.setItem( 'urls' , JSON.stringify(urls)) ;
+    localStorage.setItem('titles', JSON.stringify(titles)) ;       
+}
+
+function loadLoadStorage(){
+    
+    // 取出來是文字格式
+    var strUrls   = localStorage.getItem('urls') ;
+    var strTitles = localStorage.getItem('titles') ;
+
+    if( strUrls != null ){
+        urls = JSON.parse(strUrls) ;
+    }else{
+        urls   = [] ;
+    }
+
+    if( strTitles != null){
+        titles = JSON.parse(strTitles) ;
+    }else{
+        titles = [] ;
+    } 
+    
+}</pre><br><br>
+                            
+                            
+                            
+                            
+                            <li>取出資料變成 HTML 清單</li>
+                            <img src="https://docs.google.com/drawings/d/e/2PACX-1vSQGRF_MsjWtVqBg9xKkybVhvT62xs8XLr4w8y3pGlskGnD-qcr6IaZXqHkY1l8FA0w0OsQhM15x6g7/pub?w=951&amp;h=675">
+                            <br><br>
+                            
+                            
+                            
+                            
+                            
+                            <li>「按鈕｣觸發工作綁定</li>
+                            
+<pre  class="prettyprint lang-js">                          
+// 綁定『新增按鈕』點擊行為
+document.getElementById('addBtn').addEventListener('click' , addUrl ) ;
+function addUrl(){
+    
+    // 檢查有沒有重複,有重複不加入（離開）    
+    if( titles.indexOf(target_title)>-1 ){
+        return ;
+    }
+    
+    urls.push( target_url) ;
+    titles.push( target_title) ;
+    
+    // 儲存內容
+    saveToLocalStorage();
+    
+    refresh();
+}
+
+// 綁定『清除按鈕』點擊行為
+document.getElementById('clrBtn').addEventListener('click' , clearList ) ;
+function clearList(){
+    
+    // 清空 html
+    urls=[];
+    titles=[];
+    
+    // 儲存內容
+    saveToLocalStorage();
+    
+    // 更新清單
+    refresh();
+}
+</pre><br><br>
+                            
+                            
+                            <br><br>
+                            <li>「刪除按鈕｣工作綁定 / 如何刪除項目</li>
+<pre  class="prettyprint lang-js">                             
+// ***** 刪除功能 ****** //
+// 取出頁面上的刪除按鈕
+var btns = document.getElementById('my_list').getElementsByTagName('button');
+for( let b of btns){
+
+    // 對每個項目的『刪除按鈕』綁定刪除動作
+    b.addEventListener('click' , function(){
+        console.log("-->"+ this.nextElementSibling.text);
+
+        // 找到項目的標題
+        let i = titles.indexOf(this.nextElementSibling.text) ;
+
+        // 從陣列刪除
+        titles.splice(i,1)  ;
+        urls.splice(i,1)    ;     
+
+        saveToLocalStorage();
+
+        refresh();
+    });
+}
+</pre><br><br>
+                            
+                        </ol>
+                        
+                        <br><br>
+                        <p class="lead mb-2">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;完整範例
+                        </p>
+                        <br>
+                        <p data-height="743" data-theme-id="dark" data-slug-hash="NOoWax" data-default-tab="js" data-user="jeff-wei" data-pen-title="chrome-extension-ex02_background_popup_add_list" class="codepen">See the Pen <a href="https://codepen.io/jeff-wei/pen/NOoWax/">chrome-extension-ex02_background_popup_add_list</a> by jeff-wei (<a href="https://codepen.io/jeff-wei">@jeff-wei</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+                        <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+                        
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<!-- Footer -->
+		<footer class="footer text-center" id="footer">
+			
+		</footer>
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+		</a>
+		<!-- Bootstrap core JavaScript -->
+		<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+		<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- Plugin JavaScript -->
+		<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Custom scripts for this template -->
+		<script src="../_assets/js/stylish-portfolio.js"></script>
+       
+        <script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+<!--        <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>-->
+	</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="icon" href="../_assets/img/icon.png">
+	<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+	<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+	<link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+
+
+	<title>JS-IfElse</title>
+</head>
+
+<body id="page-top" onload='prettyPrint()'>
+	<!-- Navigation -->
+	<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+	</a>
+	<nav id="sidebar-wrapper"></nav>
+	<!-- Header -->
+	<header class="masthead d-flex">
+		<div class="container text-center my-auto">
+			<h1 class="mb-1">JavaScript</h1>
+			<h3 class="mb-5">
+				電腦問問題（if-else）
+			</h3>
+			<p>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#feature'>使用特性</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#statement'>基礎語法</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app'>小試身手</a>
+			</p>
+			<a class="btn btn-primary btn-xl js-scroll-trigger" href="#feature">Start</a>
+		</div>
+		<div class="overlay"></div>
+	</header>
+	<!-- About -->
+	<section class="content-section bg-light" id="feature">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">使用特性</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;問問題變得更聰明？
+					</p>
+					<p>
+						<img src="../_assets/img/js_basic/robot.png" height="100px;" style="margin:20px;">以下兩種機器人，大家一起想想他們的差別？
+					</p>
+
+					<ol>
+						<li class="mb-3">聽命令的機器人</li>
+						<p> 🧹 掃地 100 分鐘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⇨&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							🔋 充電 30 分鐘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↲
+						</p>
+						<li class="mb-3">會問問題的機器人（會問電還有多少）</li>
+						<p> 🧹 一直掃地（直到：電快沒了）&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⇨&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							🔋 充電（直到：電充飽了）&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↲
+						</p>
+					</ol>
+					<p><br>&nbsp;&nbsp;&nbsp;
+						［討論］這兩種機器人，各有什麼優缺點？
+					</p>
+
+					<br><br><br>
+					<a class="btn btn-dark js-scroll-trigger" href="#app">next</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content-section bg-light2" id="statement">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">基礎語法</h3>
+
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;用 if / if-else
+					</p>
+					<ul class="mb-5">
+						<li class="mb-2">
+							把［積木］變成打字～<br><br>
+							<img src="../_assets/img/js_basic/if.png" width="500px"><br><br>
+							<img src="../_assets/img/js_basic/ifelse.png" width="500px">
+						</li>
+					</ul>
+
+
+<p class="lead mb-3">
+	<i class="fa fa-rocket" aria-hidden="true"></i>
+	&nbsp;&nbsp;把問題放 ( 框框 ) 裡
+</p>
+					<ul>
+						<li class="mb-2">
+							框框裡只能放結果是
+							<span class="font-weight-bold text-danger">true</span>
+							、<span class="font-weight-bold text-danger">false</span>
+						</li>
+					</ul>
+
+					<ol>
+						<li class="mb-2">可以直接放 true、false （通常沒有意義！）
+						</li>
+						<pre class="prettyprint lang-js">
+// a. 機器人會掃地
+if( true ){
+	// 掃地
+}
+
+// b. 機器人不會掃地
+if( false ){
+	// 掃地
+}
+
+</pre>
+<li class="mb-2">放結果是 true、false 的變數
+</li>
+<pre class="prettyprint lang-js">
+var battery = 50 ;
+var charge = ( battery < 30 ) ;
+if( charge ){
+	// 充電
+}
+</pre>
+<li class="mb-2">放結果是 true、false 的條件式
+</li>
+<pre class="prettyprint lang-js">
+// ex.1
+var battery = 50 ;
+if( battery < 30 ){
+	// 充電
+}
+
+// ex.2：老闆是 Joe
+var p = 'Jeff' ;
+if( p=='Joe' ){
+	// 老闆好
+}else{
+	// 歡迎光臨
+}
+</pre>
+</ol>
+
+
+					<br><br>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;寫條件式（問問題） - 文字
+					</p>
+					<ul>
+						<p class="mb-2">
+<img src="https://docs.google.com/drawings/d/e/2PACX-1vQ202kiWXkz-ru4Bin9ndFg9_IOKo3csaXBCVfkxPhGZo3fGYfSnQRPDIjJQDIkfEEEF6X2Hwb7OeWq/pub?w=502&amp;h=180">
+						</p>
+						<pre class="prettyprint lang-js">
+var a = 'Jeff' ;
+var b = 'Mary' ;
+a == b  ; //  false
+a != b  ; //  true
+
+if( a==b ){
+	// a , b 兩位名字一樣
+}
+
+if( a != 'Peter' ){
+	// a 不是 Peter
+}
+
+</pre>
+
+					</ul>
+					<br><br>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;寫條件式（問問題） - 數字
+					</p>
+					<ul>
+						<p class="mb-2">
+							<img src="https://docs.google.com/drawings/d/e/2PACX-1vTHjh4tyDcvHuQyDeWoht1NJHOhigoMLp0lGOsTia_X3cSNQVLLzmt5wlUxIO4dTzkFIm-9MYWvmFum/pub?w=527&amp;h=506">
+						</p>
+						<pre class="prettyprint lang-js">
+var a = 5 ;
+var b = 7 ;
+var c = 9 ;
+
+a == 5 ; // true
+a != 5 ; // false
+a >  b ; // false
+a <  c ; // true
+9 <= c ; // true
+</pre>
+<pre class="prettyprint lang-js">
+// ex: 年紀 7 歲以上就可以上小學了
+var age = 10 ;
+if( age >= 7 ){
+	// 可以上小學
+}else{
+	// 年紀太小了
+}
+</pre>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content-section bg-light" id="app">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">小試身手</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;<a target="_blank" href="https://www.code-seed.click/lecture/js/Javascript_Playground/">題目演練</a>
+					</p>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;<a target="_blank" href="https://www.code-seed.click/lecture/js/Javascript_Playground/home_if.html">迷宮挑戰</a>
+						<br>
+						<img style="margin-left:30px;" src="../_assets/img/js_basic/if_maze.png" alt="">
+					</p>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer class="footer text-center" id="footer">
+
+	</footer>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+	<!-- Bootstrap core JavaScript -->
+	<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Plugin JavaScript -->
+	<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Custom scripts for this template -->
+	<script src="../_assets/js/stylish-portfolio.js"></script>
+	<script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<ul class="sidebar-nav" id="accordion">
+    <li class="sidebar-brand">
+        <a data-toggle="collapse" data-parent="#accordion" href="#basic">語法練習</a>
+    </li>
+    <div id="basic" class="panel-collapse collapse" data-parent="#accordion">
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="practice_variable.html">變數 Variable</a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="practice_literal_ifelse.html">句型 if-else</a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="practice_condition.html">條件 Condition</a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="practice_array.html">陣列 Array</a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="practice_function.html">函式 Function</a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="practice_string.html">字串 String</a>
+        </li>
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="practice_literal_javaclass.html">物件 Class</a>
+        </li>
+    </div>
+
+    <li class="sidebar-brand">
+        <a data-toggle="collapse" data-parent="#accordion" href="#practice">練習題</a>
+    </li>
+    <div id="practice" class="panel-collapse collapse" data-parent="#accordion">
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="java_test_basic.html">基礎語法練習</a>
+        </li>
+    </div>
+    <li class="sidebar-brand">
+        <a data-toggle="collapse" data-parent="#accordion" href="#system">系統</a>
+    </li>
+    <div id="system" class="panel-collapse collapse" data-parent="#accordion">
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" id="uploaditem">上傳紀錄</a>
+        </li>
+    </div>
+</ul>
+
+<script type="module">
+    import db from "./firebase_util_08.js";
+    //console.log(db);
+    document
+        .getElementById("uploaditem")
+        .addEventListener("click", db.uploadScore);
+</script>

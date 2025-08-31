@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="icon" href="../_assets/img/icon.png">
+	<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+	<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+	<link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+
+<style>
+	 img{
+		 margin: 20px;
+	 }
+</style>
+
+	<title>專題應用：跑跑方塊屋</title>
+</head>
+
+<body id="page-top" onload='prettyPrint()'>
+	<!-- Navigation -->
+	<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+	</a>
+	<nav id="sidebar-wrapper"></nav>
+	<!-- Header -->
+	<header class="masthead d-flex">
+		<div class="container text-center my-auto">
+			<h1 class="mb-1">JavaScript</h1>
+			<h3 class="mb-5">
+				P5JS 專題應用：跑跑方塊屋
+			</h3>
+			<p>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app_demo'>遊戲展示</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#elt'>元素拆解</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#all_view'>程式全貌</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#func'>工具函式</a>				
+			</p>
+
+		</div>
+		<div class="overlay"></div>
+	</header>
+	<!-- About -->
+	<section class="content-section bg-light" id="app_demo">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">跑跑方塊屋 - 遊戲展示</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 模擬示範
+					</p>
+					<ul>
+						<li>使用滑鼠上下移動小球，閃避所有的磚塊。碰到磚塊遊戲結束，輸入名稱會記錄分數。</li>
+						<br>
+
+						<p>
+							<iframe width="605px" height="405px" src="https://editor.p5js.org/chuan.me@gmail.com/embed/WqG5JdfrY"></iframe>
+						</p>
+
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="content-section bg-light2" id="elt">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">元素拆解</h3>
+
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;環境設定
+					</p>
+
+					<ul class="mb-5">
+						<p>
+							<img src="https://docs.google.com/drawings/d/e/2PACX-1vTjNXdMoXkNyQAtPCQbpjjDNYPoxhmS-mfnmyHm9-tk0L4wuxVHzLVjVwuvLKm6Vjw3IbIcLzb7E2ct/pub?w=913&amp;h=548">
+						</p>
+<pre class="prettyprint lang-js">
+function setup() {
+	// 遊戲內容放在指定的區塊
+	var cnv = createCanvas(600, 400);
+	cnv.parent('my_canvas');
+
+	// 設定矩形的參考點在中心，方便計算距離
+	rectMode(CENTER);
+}
+
+function draw() {
+	background(63, 89, 130);
+}</pre>
+					</ul>
+
+					<br><br><br>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;玩家小球
+					</p>
+					<ul class="mb-5">
+					<p>
+						<img src="https://docs.google.com/drawings/d/e/2PACX-1vRuWXXDhJhSVC6YgEIqahAk_vforJzdTfNhLD1OKAint9oYeVNMAqd39DbGuj_3uAM8giFiOLJF3P4O/pub?w=1006&amp;h=562">
+					</p>
+<pre class="prettyprint lang-js">
+var player_x = 50;
+var player_y = 200;
+var player_s = 30;
+
+function draw() {
+
+	background(63, 89, 130);
+
+	//-------------
+	// 玩家小球
+	//-------------
+	fill(224, 218, 51);
+	circle(player_x, player_y, player_s); // 畫球
+	// 球移動
+	if (stop_all == false) {
+		if (mouseY < player_y) {
+			player_y = player_y - 3;
+		}
+		if (mouseY > player_y) {
+			player_y = player_y + 3;
+		}
+	}
+}
+</pre></ul>
+<br><br><br>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;障礙箱子
+					</p>
+
+					<ul class="mb-5">
+						<li>
+							設定箱子一開始的位置、大小
+						<img src="https://docs.google.com/drawings/d/e/2PACX-1vRcudVHrfcPPmiadYcytj3owunCjBRhoXMOBl6_-H_xMPEp7Qp_cVvTDX6-52_PkFsVagwCW_Kljsc4/pub?w=1019&amp;h=729">
+					</li>
+<pre class="prettyprint lang-js">
+var box_x = [];
+var box_y = [];
+var box_w = [];
+var box_h = [];
+
+var stop_all;		
+var score;
+var speed;
+
+function reset_game() {
+	stop_all = false;
+	score = 0;
+	speed = 1;
+	reset_all_boxes();
+}
+
+function reset_all_boxes() {
+	for (var i = 0; i < 5; i++) {
+		reset_box(i);
+	}
+}
+	 
+function reset_box(i) {
+	box_x[i] = random(650, 1500);
+	box_y[i] = random(0, 400);
+	box_w[i] = random(25, 100);
+	box_h[i] = random(25, 100);
+}
+</pre>
+<li>
+		箱子移動與碰撞偵測
+</li>
+<pre class="prettyprint lang-js">
+function draw(){ 
+	//------------
+	// 箱子
+	//------------
+	fill(100);
+	for (var i = 0; i < 5; i++) {
+		if (stop_all == false) {
+			// 移動
+			box_x[i] = box_x[i] - speed;
+
+			// 移到最底 -> 重新
+			if (box_x[i] < -100) {
+				reset_box(i);
+			}
+
+			// 如果擊中了，設定停止
+			if ( check_hit(box_x[i], box_y[i], box_w[i], box_h[i]) == true) {
+				stop_all = true;
+			}
+		}
+		rect(box_x[i], box_y[i], box_w[i], box_h[i]); // 畫箱子
+	}
+}</pre>
+</ul>
+<br><br><br>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;碰撞
+					</p>
+					<ul class="mb-5">
+					<p>
+							<img src="https://docs.google.com/drawings/d/e/2PACX-1vS0XZDlOf7qRWKl93W4kS91JTykdVy_SVX3Usz0GputUVWBjd9Gb9pIUHwH1wNA_eCvb8tB3rt165x3/pub?w=856&amp;h=985">
+					</p>
+<pre class="prettyprint lang-js">
+function check_hit(bx, by, bw, bh) {
+
+	if (Math.abs(bx - player_x) < (bw + player_s) / 2 &&
+		Math.abs(by - player_y) < (bh + player_s) / 2
+	) {
+		return true;
+	} else {
+		return false;
+	}
+}</pre>
+</ul>
+<br><br><br>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;訊息與分數
+					</p>
+					<ul>
+<pre class="prettyprint lang-js">
+// ---------------
+// 分數與訊息
+// ---------------
+// 沒有停止要加分
+if (stop_all == false) {
+	score = score + 1;
+}
+
+// 如果分數每超過 1000 加速
+if (score % 1000 == 0) {
+	speed = speed + 1;
+}      
+fill(255);
+text(score, 300, 20);
+fill(174, 239, 212);
+text("speed:" + speed, 200, 20);
+</pre>
+
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+	<section class="content-section bg-light" id="all_view">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5">程式全貌</h3>
+						<p class="lead mb-3">
+							<i class="fa fa-rocket" aria-hidden="true"></i>
+							&nbsp;&nbsp; 全貌視圖 
+						</p>
+						<ul>
+							<p>
+								<img src="https://docs.google.com/drawings/d/e/2PACX-1vQPTrwRANKQtV2E2LD56guOhYDf6Z6SMAsii4apAQHpznkvjPKx8t5FuRdOsCiT_0MvcNpXvHtnl7Jy/pub?w=563&amp;h=1729">
+							</p>
+						</ul>
+	
+	
+					
+	
+	
+	
+	
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+	<section class="content-section bg-light2" id="func">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">工具函式</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; <span class="text-danger">  Math.abs( ❔ ) </span> 
+					</p>
+					<ol>
+						<li>用來計算絕對值（負數轉正）的工具函式</li>
+						<li>用來計算距離很方便，可以不用在意數字誰大誰小。<br>
+							ex. 從 3km 走道 7km 處的距離<br>
+							➩ Math.abs( 7-3 )：獲得答案 4 <br>
+							➩ Math.abs( 3-7 )：獲得答案 4
+						</li>
+					</ol>
+
+
+				
+
+
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<!-- Footer -->
+	<footer class="footer text-center" id="footer">
+
+	</footer>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+	<!-- Bootstrap core JavaScript -->
+	<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Plugin JavaScript -->
+	<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Custom scripts for this template -->
+	<script src="../_assets/js/stylish-portfolio.js"></script>
+	<script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+</body>
+
+</html>

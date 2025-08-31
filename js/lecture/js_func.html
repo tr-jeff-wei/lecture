@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="icon" href="../_assets/img/icon.png">
+	<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+	<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+	<link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+
+
+	<title>JS-Function</title>
+</head>
+
+<body id="page-top" onload='prettyPrint()'>
+	<!-- Navigation -->
+	<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+	</a>
+	<nav id="sidebar-wrapper"></nav>
+	<!-- Header -->
+	<header class="masthead d-flex">
+		<div class="container text-center my-auto">
+			<h1 class="mb-1">JavaScript</h1>
+			<h3 class="mb-5">
+				工具包（函式）
+			</h3>
+			<p>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#basic_loop'>語法結構</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#statement'>基礎語法</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#basic'>基本演練</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app'>應用演練</a>
+			</p>
+			<a class="btn btn-primary btn-xl js-scroll-trigger" href="#feature">Start</a>
+		</div>
+		<div class="overlay"></div>
+	</header>
+	<!-- About -->
+	<section class="content-section bg-light" id="basic_loop">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">語法結構</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 簡介
+					</p>
+					<ul class="mb-5">
+						<li>
+							將多個任務放進一個「工具包」中，只要使用這個「工具包」就可以把多個任務一次執行。
+						</li>
+					</ul>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 設計方式
+					</p>
+					<ul>
+						<li>
+							如何撰寫與應用「工具包」，主要分成兩個部分：
+						</li>
+					</ul>
+					<ol class="mb-5">
+						<li>
+							定義「工具包」內容。使用 <span class="font-weight-bold text-danger"> function </span>、<span class="font-weight-bold text-danger">工具包名稱</span>、<span class="font-weight-bold text-danger">（）</span>
+						</li>
+						<pre class="prettyprint lang-js">
+// tool_name ↣ 自己定義工具包的名稱
+function tool_name(){
+	 // 工具包要執行的程式 ..
+	 // 工具包要執行的程式 ..
+	 // 工具包要執行的程式 ..
+}
+</pre>
+						<li>
+							使用「工具包」
+						</li>
+						<pre class="prettyprint lang-js">
+tool_name() ;  // 使用第一次
+tool_name() ;  // 使用第二次
+tool_name() ;  // 使用第三次
+
+</pre>
+					</ol>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 範例
+					</p>
+					<ul>
+						<li>
+							製作印出文字看板的「工具包」
+						</li>
+					</ul>
+					<ol class="mb-5">
+						<li>
+							定義文字看板「工具包」內容
+						</li>
+						<pre class="prettyprint lang-js">
+function show_message( text ){
+	console.log( "☆★☆★☆★☆★☆★☆★☆★☆★") ;
+	console.log( text ) ;
+	console.log( "❅❆❅❆❅❆❅❆❅❆❅❆❅❆❅❆") ;
+}	</pre>
+						<li>
+							使用「工具包」
+						</li>
+						<pre class="prettyprint lang-js">
+show_message( "= Welcome = " ) ;
+show_message( "~JavaScript World~" ) ;</pre>
+						<li>結果<br><img src="https://docs.google.com/drawings/d/e/2PACX-1vToloHJ_wtJSxXKP8QUCIQhemmuDy_dpwIOvKUo4GuvxZsq64JJ-j4vPjDzkkPZ8BPblndMUNAGCiJv/pub?w=234&amp;h=160">
+						</li>
+					</ol>
+					<br><br><br>
+					<a class="btn btn-dark js-scroll-trigger" href="#statement">next</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content-section bg-light2" id="statement">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">基礎語法</h3>
+
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;輸入訊息到小工具中
+					</p>
+					<ul>
+						<li class="mb-2">輸入「1個」訊息，放在變數 t 中，丟進小工具 </li>
+						<pre class="prettyprint lang-js">
+// 要印出的文字，透過變數 t ，傳進小工具中
+function say( t ){
+	console.log( "老師說：" + t ) ;
+}
+
+say( "各位同學好～" ) ;
+</pre>
+					</ul>
+
+					<ul>
+						<li class="mb-2">輸入「2個」訊息，放在變數 p , t 中，丟進小工具</li>
+						<pre class="prettyprint lang-js">
+function say( p , t ){
+	console.log( p + "說：" + t ) ;
+}
+
+say( "Jeff" , "上課囉～" ) ;
+//  "Jeff"     ↣ 傳進 p
+//  "上課囉～"  ↣ 傳進 t
+</pre>
+					</ul>
+					<br>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;小工具丟出訊息
+					</p>
+					<ul>
+						<li class="mb-2">運用 <span class="font-weight-bold text-danger"> return </span>把要丟出的訊息送出 </li>
+						<pre class="prettyprint lang-js">
+// 輸入學號，取得學生姓名
+function get_student_name ( n ){
+	if( n==1 ){
+		return "Jeff" ;
+	}
+	if( n==2 ){
+		return "Mary" ;
+	}
+	if( n==3 ){
+		return "Arial" ;
+	}
+}
+
+// 取得姓名後，把姓名存在變數 name 中
+var name = get_student_name(2) ;
+console.log( "2 號是 "+name) ;
+</pre>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content-section bg-light" id="basic">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">基本演練</h3>
+
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;組合練習：組合出需要的符號
+					</p>
+					<ol class="mb-5">
+						<li class="mb-2"> 運用 A()、B()、C() 函式組合出目標的信號
+						</li>
+						<pre class="prettyprint lang-js">
+function A(){
+	return "👐🤲🙌" ;
+}
+function B(){
+	return "👈👈" ;
+}
+function C(){
+	return "👉👉" ;
+}
+
+// 在變數 result 中，運用 A()、B()、C()
+// 組合出 ==>  👉👉👐🤲🙌👐🤲🙌👈👈
+var result = C()+A()+A()+B() ;
+</pre>
+
+						<li class="mb-2">接續上題 A()、B()、C() <br>
+							組合出：👈👈👐🤲🙌👉👉
+						</li>
+						<pre class="prettyprint lang-js">
+var result2 = ? ;
+</pre>
+<li class="mb-2">接續上題 A()、B()、C() <br>
+	組合出：👉👉👉👉👈👈👈👈
+</li>
+<pre class="prettyprint lang-js">
+var result3 = ? ;
+</pre>
+
+</ol>
+<p class="lead mb-3">
+	<i class="fa fa-rocket" aria-hidden="true"></i>
+	&nbsp;&nbsp;函式練習：思考函式內容
+</p>
+<ol class="mb-5">
+	<li class="mb-2"> 撰寫 A()、B() 函式內容，產生目標的信號
+	</li>
+	<pre class="prettyprint lang-js">
+function A(){
+  ❔
+}
+function B(){
+	❔
+}
+var result = A()+B()+A() ;
+// result ==>  👉👈👉👈🙌🙌👉👈👉👈
+</pre>
+<pre class="prettyprint lang-js">
+// 答案
+function A(){
+	return "👉👈👉👈" ;
+}
+function B(){
+	return "🙌🙌";
+}
+
+</pre>
+<li class="mb-2"> 撰寫 C()、D() 函式內容，產生目標的信號
+</li>
+<pre class="prettyprint lang-js">
+function C(){
+	❔
+}
+function D(){
+	❔
+}
+var result = C()+D()+C()+D() ;
+// result ==>  👉👉🙌👉👉🙌
+</pre>
+<li class="mb-2"> 撰寫 E()、F() 函式內容，產生目標的信號
+</li>
+<pre class="prettyprint lang-js">
+function E(){
+	❔
+}
+function F(){
+	❔
+}
+var result = E()+F()+F()+F() ;
+// result ==>  🙌👐🤲👐👐🤲👐👐🤲👐
+</pre>
+</ol>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content-section bg-light2" id="app">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">應用演練</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;會說話的函式
+					</p>
+					<ol class="mb-5">
+						<li class="mb-2"> 撰寫 say() 函式，把傳入的話，說指定的次數
+						</li>
+	<pre class="prettyprint lang-js">
+// 第一個位置： text ➩ 放要說的話
+// 第二個位置： n    ➩ 放重複的次數
+function say( text , n ){
+	for( var i=1 ; i<= n ; i++  ){
+		console.log( text ) ;
+	}
+}
+
+// === 下面是使用函式 ======
+say( "good job !! "  ,  3 ) ;
+</pre>
+
+<li class="mb-2"> 撰寫 say_pretty() 函式，把傳入的話，前後加上裝飾的符號
+</li>
+<pre class="prettyprint lang-js">
+// 第一個位置： text   ➩ 放要說的話
+// 第二個位置： symbol ➩ 裝飾的符號
+function say_pretty( text , symbol ){
+	console.log( symbol +"  "+ text +"  "+ symbol) ;
+}
+
+// === 下面是使用函式 ======
+say_pretty( "good job !! "  ,  "💎💎💎" ) ;
+</pre>
+
+<li class="mb-2"> 撰寫 say_box() 函式，把傳入的話，上下左右加上裝飾的符號
+</li>
+<pre class="prettyprint lang-js">
+// 第一個位置： text   ➩ 放要說的話
+// 第二個位置： symbol ➩ 裝飾的符號
+function say_box( text , symbol ){
+	console.log(symbol+symbol+symbol+symbol+symbol+symbol);
+	console.log( symbol +"  "+ text +"  "+ symbol) ;
+	console.log(symbol+symbol+symbol+symbol+symbol+symbol);
+}
+
+// === 下面是使用函式 ======
+say_box( "good"  ,  "💎" ) ;
+</pre></ol>
+<p class="lead mb-3">
+	<i class="fa fa-rocket" aria-hidden="true"></i>
+	&nbsp;&nbsp;我的小算盤
+</p>
+<ol class="mb-5">
+	<li class="mb-2"> 撰寫 add() 函式，把傳入的兩個數字相加
+	</li>
+<pre class="prettyprint lang-js">
+// 第一個位置： a  ➩ 第一個數字
+// 第二個位置： b  ➩ 第二個數字
+function add( a , b ){
+	var ans = a+b ;
+	return ans ;    // 傳回答案
+}
+
+// === 下面是使用函式 ======
+var q1 = add( 123 , 456 ) ;    // 計算 123 + 456 並把答案放進 q1
+console.log( "123+456=" + q1) ;
+</pre>
+
+<li class="mb-2"> 撰寫 multiply() 函式，把傳入的 3 個數字相乘
+</li>
+<pre class="prettyprint lang-js">
+// 第一個位置： a  ➩ 第一個數字
+// 第二個位置： b  ➩ 第二個數字
+// 第三個位置： c  ➩ 第三個數字
+function multiply( ❔ ){
+	❔
+}
+
+// === 下面是使用函式 ======
+var q2 = ❔ ;    // 使用函式計算 2 x 3 x 5 並把答案放進 q2
+console.log( "2 x 3 x 5 = " + q2) ;
+</pre>
+</ol>
+<p class="lead mb-3">
+	<i class="fa fa-rocket" aria-hidden="true"></i>
+	&nbsp;&nbsp;猜數字函式
+</p>
+<ol class="mb-5">
+	<li class="mb-2">
+		撰寫 guess() 函式，看看傳入的數字是否猜中
+	</li>
+<pre class="prettyprint lang-js">
+// 第一個位置： n  ➩ 傳入數字
+function guess( n ){
+	var x = 7 ;
+	if( n == x ){
+		console.log( "恭喜猜中了！" );
+	}else if( n < x ){
+		console.log( "再猜大一點～" ) ;
+	}else{
+		console.log( "再猜小一點～" ) ;
+	}
+}
+
+// === 下面是使用函式 ======
+guess(1) ;  // 再猜大一點～
+guess(9) ;  // 再猜小一點～
+guess(7) ;  // 恭喜猜中了！
+</pre>
+</ol>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Footer -->
+	<footer class="footer text-center" id="footer">
+
+	</footer>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+	<!-- Bootstrap core JavaScript -->
+	<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Plugin JavaScript -->
+	<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Custom scripts for this template -->
+	<script src="../_assets/js/stylish-portfolio.js"></script>
+	<script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+</body>
+
+</html>

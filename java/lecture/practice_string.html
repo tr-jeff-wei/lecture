@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <link rel="icon" href="../_assets/img/icon.png" />
+    <link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" />
+    <link href="../_assets/css/stylish-portfolio.css" rel="stylesheet" />
+    <link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .str_color {
+            color: #a05500;
+        }
+
+        .type_color {
+            color: #3a78ca;
+        }
+
+        .num_color {
+            color: #2d8014;
+        }
+    </style>
+    <script src="util_07.js"></script>
+    <script type="module" src="firebase_util_08.js"></script>
+    <script>
+        function s1(qid) {
+            let des = "請問使用什麼函式，可以得到「字串長度」";
+
+            let ans = [];
+            let ex = [];
+            let vname = ranStringVarName();
+            let w = ranWord();
+            let code = `String ${vname} = "${w}" ;
+? len = ____._______()    ;  // Q1
+System.out.println( len ) ;  // Q2`;
+            ans.push(`int len = ${vname}.length() ;`);
+            ex.push("? len = ____._______() ;");
+
+            ans.push(w.length);
+            ex.push("印出什麼?  output?");
+
+            build_question(qid, ans, des, code, ex);
+        }
+
+        function s2(qid) {
+            let des = "請問使用什麼函式，可以得到「字」的位置";
+
+            let ans = [];
+            let ex = [];
+            let vname = ranStringVarName();
+            let w = ranWord();
+            let w2 = ranWord();
+            while (w == w2) {
+                w2 = ranWord();
+            }
+            if (Math.random() > 0.5) {
+                w = w + "_" + w2;
+            }
+            let w3 = ranWord();
+            while (w.indexOf(w3) != -1) {
+                w3 = ranWord();
+            }
+            w = w + "_" + w3;
+            let w4 = ranWord();
+            w = w + "_" + w4;
+
+            let code = `String ${vname} =  "${w}" ;
+
+//---字元位置參考
+//---${w}
+//---012345678901234567890123456789
+
+// 尋找目標字串「${w3}」            
+? pos = ____._______(__)    ;  // Q1
+System.out.println( pos )   ;  // Q2`;
+
+            ans.push(`int pos = ${vname}.indexOf("${w3}") ;`);
+            ex.push("? pos = ____._______(__) ;");
+
+            ans.push(w.indexOf(w3));
+            ex.push("印出什麼?  output?");
+
+            build_question(qid, ans, des, code, ex);
+        }
+
+        function s3(qid) {
+            let des = "請問使用什麼函式，可以取出第 ? 個底線（_）後面的字";
+
+            let ans = [];
+            let ex = [];
+            let vname = ranStringVarName();
+            let idx = [];
+
+            let w = ranWord();
+            idx.push(0 + "," + w.length);
+
+            for (let i = 0; i < 3; i++) {
+                let w2 = ranWord();
+                while (w.indexOf(w2) != -1) {
+                    w2 = ranWord();
+                }
+                w = w + "_";
+                idx.push(w.length + "," + (w.length + w2.length));
+                w = w + w2;
+            }
+
+            let targeti = ranInt(idx.length);
+            let ta = parseInt(idx[targeti].split(",")[0]);
+            let tb = parseInt(idx[targeti].split(",")[1]);
+            let targetW = w.substring(ta, tb);
+            let code = `String ${vname} =  "${w}" ;
+
+//- 底線位置參考
+`;
+            let sidx = -1;
+            let countIdx = 1;
+            let qidx = 0;
+            while (true) {
+                sidx = w.indexOf('_', sidx + 1);
+                if (sidx < 0) {
+                    break;
+                }
+                if (sidx == ta - 1) {
+                    qidx = countIdx;
+                }
+                code += `//--- 第 ${countIdx} 個 _ 出現在 : ${sidx} 
+`;
+                countIdx++;
+            }
+            code += `
+
+// 請拿出第 ${qidx} 個底線後面的「${targetW}」            
+? s1 = ____._______(____)   ;  // Q1
+System.out.println( s1  )   ;  // Q2`;
+
+            ans.push(`String s1 = ${vname}.substring(${ta},${tb}) ;`);
+            ex.push("? s1 = ____._______(____)   ;");
+
+            ans.push(targetW);
+            ex.push("印出什麼?  output?");
+
+            build_question(qid, ans, des, code, ex);
+        }
+
+        function q0(qId, k) {
+            let n = k % 3;
+            switch (n) {
+                case 0:
+                    s1(qId);
+                    break;
+                case 1:
+                    s2(qId);
+                    break;
+                case 2:
+                    s3(qId);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function gen_q0(n) {
+            let arr = generate_norepeat_array(n);
+            let content = "";
+            for (let i = 0; i < n; i++) {
+                let s = `<ul id='s${i}'>
+    </ul>`;
+                content = content + s;
+            }
+            document.getElementById("sq0").innerHTML = content;
+            for (let i = 0; i < n; i++) {
+                q0(`s${i}`, arr[i]);
+            }
+        }
+    </script>
+
+    <title>Java 語法複習 - 字串 String</title>
+</head>
+
+<body id="page-top" onload="prettyPrint()">
+    <!-- Navigation -->
+    <a class="menu-toggle rounded" href="#">
+        <i class="fa fa-bars"></i>
+    </a>
+    <nav id="sidebar-wrapper"></nav>
+    <!-- Header -->
+    <header class="masthead d-flex">
+        <div class="container text-center my-auto">
+            <h1 class="mb-1">Java 語法複習</h1>
+            <h3 class="mb-5">字串 String</h3>
+            <p>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l1">Unit 1 - 基礎函式</a>
+            </p>
+        </div>
+        <div class="overlay"></div>
+    </header>
+    <section style="background-color: slategrey; padding: 25px">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">基礎函式測試</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px">
+        <div class="container" style="
+                    font-family: SFMono-Regular, Menlo, Monaco, Consolas,
+                        'Liberation Mono', 'Courier New', monospace;
+                ">
+            <div class="row">
+                <div class="col-lg-3" style="text-align: right; padding-right: 0px">
+                    <h5>
+                        <span class="type_color">String </span>
+                        <input style="width: 60px" type="text" id="test_vname" />
+                        =
+                    </h5>
+                </div>
+                <div class="col-lg-9">
+                    <h5 id="test_text">
+                        <span class="str_color" id="test_str">
+                            "Java is a high-level, class-based,
+                            object-oriented programming language"
+                        </span>
+                        ;
+                    </h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3" style="text-align: right; padding-right: 0px"></div>
+                <div class="col-lg-9">
+                    <h5 id="test_text">
+                        <span style="color: #8b8b8b">
+                            "0123456789_123456789_123456789_123456789_123456789_123456789_123456789_</span>
+                    </h5>
+                </div>
+            </div>
+            <div class="row" style="
+                        background-color: rgb(245, 245, 245);
+                        padding-top: 15px;
+                    ">
+                <div class="col-lg-3" style="text-align: right; padding-right: 0px">
+                    <h5><span class="type_color">String </span> s1 =</h5>
+                </div>
+                <div class="col-lg-5">
+                    <h5>
+                        <input style="width: 60px" type="text" disabled value="" id="test_vname1" /><span>.substring(
+                            <input style="width: 50px" type="number" id="subn1" />
+                            ,
+                            <input style="width: 50px" type="number" id="subn2" />
+                            ) ;</span>
+                    </h5>
+                </div>
+                <div class="col-lg-4">
+                    <h5>
+                        <span style="color: #8b8b8b">===></span> s1 :
+                        <span class="str_color" id="subresult"> "" </span>
+                    </h5>
+                </div>
+            </div>
+            <div class="row" style="background-color: rgb(245, 245, 245)">
+                <div class="col-lg-3" style="text-align: right; padding-right: 0px">
+                    <h5><span class="type_color">int </span> n1 =</h5>
+                </div>
+                <div class="col-lg-5">
+                    <h5>
+                        <input style="width: 60px" type="text" disabled value="" id="test_vname2" /><span>.indexOf(
+                            <input style="width: 100px" type="text" placeholder='"???"' id="indexof_str" />
+                            ) ;</span>
+                    </h5>
+                </div>
+                <div class="col-lg-4">
+                    <h5>
+                        <span style="color: #8b8b8b">===></span> n1 :
+                        <span class="num_color" id="indexof_result">
+                            -1
+                        </span>
+                    </h5>
+                </div>
+            </div>
+            <div class="row" style="background-color: rgb(245, 245, 245)">
+                <div class="col-lg-3" style="text-align: right; padding-right: 0px">
+                    <h5><span class="type_color">int </span> n2 =</h5>
+                </div>
+                <div class="col-lg-5">
+                    <h5>
+                        <input style="width: 60px" type="text" disabled value="" id="test_vname3" /><span>.length()
+                            ;</span>
+                    </h5>
+                </div>
+                <div class="col-lg-4">
+                    <h5>
+                        <span style="color: #8b8b8b">===></span> n2 :
+                        <span class="num_color"> 71 </span>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="background-color: slategrey; padding: 25px" id="l1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">Unit 1 - 基礎函式</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto" id="sq0"></div>
+                <script>
+                    (function () {
+                        gen_q0(10);
+                    })();
+                </script>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer text-center" id="footer"></footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Bootstrap core JavaScript -->
+    <script src="../_assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="../_assets/js/stylish-portfolio.js"></script>
+    <script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+    <script>
+        function setVisiable(isVisiable) {
+            var ds = document.getElementsByTagName("pre");
+            for (let it of ds) {
+                //console.log(it);
+                if (isVisiable) {
+                    it.setAttribute("style", "visibility: visible;");
+                } else {
+                    it.setAttribute("style", "visibility: hidden;");
+                }
+            }
+        }
+
+        const inputvname = document.getElementById("test_vname");
+        const subsn1 = document.getElementById("subn1");
+        const subsn2 = document.getElementById("subn2");
+        const idxStr = document.getElementById("indexof_str");
+        const log1 = document.getElementById("test_vname1");
+        const log2 = document.getElementById("test_vname2");
+        const log3 = document.getElementById("test_vname3");
+
+        function updateVarName(e) {
+            console.log(e.target.value);
+            log1.value = e.target.value;
+            log2.value = e.target.value;
+            log3.value = e.target.value;
+        }
+
+        function changeIndexOfTarget() {
+            try {
+                let target = idxStr.value;
+                // console.log("====>>> " + target + " " + target.length);
+                target = target.replaceAll('"', "");
+                // console.log("====>>> " + target + " " + target.length);
+
+                let s =
+                    "Java is a high-level, class-based, object-oriented programming language";
+                let result = s.indexOf(target);
+
+                let t = document.getElementById("indexof_result");
+                t.innerHTML = result;
+            } catch (e) { }
+        }
+
+        function changeSubstringContent() {
+            let s =
+                "Java is a high-level, class-based, object-oriented programming language";
+            try {
+                let n1 = parseInt(subsn1.value);
+                let n2 = parseInt(subsn2.value);
+                if (n1 >= 0 && n2 >= n1) {
+                    let sub = s.substring(n1, n2);
+                    let s1 = s.substring(0, n1);
+                    let s2 = s.substring(n2);
+                    let result = ` "${s1}<span style="background-color: rgb(190 235 255);">${sub}</span>${s2}" `;
+                    let t = document.getElementById("test_str");
+                    t.innerHTML = result;
+                    //console.log('substring ==> ' + sub);
+                    let t2 = document.getElementById("subresult");
+                    t2.innerHTML = `"${sub}"`;
+                } else {
+                    let result = ` "${s}" `;
+                    let t = document.getElementById("test_str");
+                    t.innerHTML = result;
+
+                    let t2 = document.getElementById("subresult");
+                    t2.innerHTML = `""`;
+                }
+
+                //IndexOutOfBoundsException
+            } catch (e) {
+                let result = ` "${s}" `;
+                let t = document.getElementById("test_str");
+                t.innerHTML = result;
+                let t2 = document.getElementById("subresult");
+                t2.innerHTML = `""`;
+            }
+        }
+        (function () {
+            inputvname.addEventListener("change", updateVarName);
+            subsn1.addEventListener("change", changeSubstringContent);
+            subsn2.addEventListener("change", changeSubstringContent);
+
+            idxStr.addEventListener("change", changeIndexOfTarget);
+        })();
+    </script>
+</body>
+
+</html>

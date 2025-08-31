@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="icon" href="../_assets/img/icon.png">
+	<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+	<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+	<link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+	<style>
+		.ans {
+			margin-left: 20px;
+		}
+	</style>
+
+	<title>JS-Test</title>
+</head>
+
+<!-- <body id="page-top" onload='prettyPrint()'> -->
+<!-- Navigation -->
+
+<body id="page-top">
+	<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+	</a>
+	<nav id="sidebar-wrapper"></nav>
+	<!-- Header -->
+	<header class="masthead d-flex">
+		<div class="container text-center my-auto">
+			<h1 class="mb-1">JavaScript</h1>
+			<h3 class="mb-5">
+				基礎語法測驗
+			</h3>
+			<p>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#variable'>變數倉庫</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#ifelse'>判斷式</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#for'>重複迴圈</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#func'>函式執行</a>
+			</p>
+			<a class="btn btn-primary btn-xl js-scroll-trigger" href="#variable">Start</a>
+		</div>
+		<div class="overlay"></div>
+	</header>
+	<!-- About -->
+	<section class="content-section bg-light" id="variable">
+		<div class=" container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">變數倉庫</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 基礎題型
+					</p>
+					<ol id="q_variable" class="mb-5">
+					</ol>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content-section" id="ifelse">
+		<div class=" container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">判斷式</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 基礎題型
+					</p>
+					<ol id="q_ifelse" class="mb-5">
+					</ol>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content-section bg-light" id="for">
+		<div class=" container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">重複迴圈</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 基礎題型
+					</p>
+					<ol id="q_for" class="mb-5">
+					</ol>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="content-section" id="func">
+		<div class=" container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">函式執行</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 基礎題型
+					</p>
+					<ol id="q_fun" class="mb-5">
+					</ol>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Footer -->
+	<footer class="footer text-center" id="footer">
+
+	</footer>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+	<!-- Bootstrap core JavaScript -->
+	<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Plugin JavaScript -->
+	<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Custom scripts for this template -->
+	<script src="../_assets/js/stylish-portfolio.js"></script>
+	<script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+	<script>
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////// String format 工具 /////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
+
+
+		//可在Javascript中使用如同C#中的string.format
+		//使用方式 : var fullName = String.format('Hello. My name is {0} {1}.', 'FirstName', 'LastName');
+		String.format = function () {
+			var s = arguments[0];
+			if (s == null) return "";
+			for (var i = 0; i < arguments.length - 1; i++) {
+				var reg = getStringFormatPlaceHolderRegEx(i);
+				s = s.replace(reg, (arguments[i + 1] == null ? "" : arguments[i + 1]));
+			}
+			return cleanStringFormatResult(s);
+		}
+		//可在Javascript中使用如同C#中的string.format (對jQuery String的擴充方法)
+		//使用方式 : var fullName = 'Hello. My name is {0} {1}.'.format('FirstName', 'LastName');
+		String.prototype.format = function () {
+			var txt = this.toString();
+			for (var i = 0; i < arguments.length; i++) {
+				var exp = getStringFormatPlaceHolderRegEx(i);
+				txt = txt.replace(exp, (arguments[i] == null ? "" : arguments[i]));
+			}
+			return cleanStringFormatResult(txt);
+		}
+		//讓輸入的字串可以包含{}
+		function getStringFormatPlaceHolderRegEx(placeHolderIndex) {
+			return new RegExp('({)?\\{' + placeHolderIndex + '\\}(?!})', 'gm')
+		}
+		//當format格式有多餘的position時，就不會將多餘的position輸出
+		//ex:
+		// var fullName = 'Hello. My name is {0} {1} {2}.'.format('firstName', 'lastName');
+		// 輸出的 fullName 為 'firstName lastName', 而不會是 'firstName lastName {2}'
+		function cleanStringFormatResult(txt) {
+			if (txt == null) return "";
+			return txt.replace(getStringFormatPlaceHolderRegEx("\\d+"), "");
+		}
+
+		////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
+		/////////// String format 工具 /////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+		function checkAns(ans) {
+			var answer = ans.getAttribute('data-ans');
+			var result = ans.previousElementSibling.value;
+
+			if (result == null) {
+				result = '';
+			} else {
+				result = result.replace(/\s/g, '');
+			}
+			if (answer == null) {
+				answer = '';
+			} else {
+				answer = answer.replace(/\s/g, '');
+			}
+			if (result == answer) {
+				ans.textContent = 'check ✔️';
+				ans.previousElementSibling.disabled = true;
+				ans.disabled = true;
+			} else {
+				ans.textContent = 'check ❌';
+			}
+		}
+
+		function rand(s, e) {
+			let r = e - s + 1;
+			let k = Math.floor(Math.random() * r) + s;
+			return k;
+		}
+
+		function randStr(len) {
+			// 0-9 : 48-57
+			// A-Z : 65-90
+			// a-z : 97-122
+			let text = '';
+			while (text.length < len) {
+				let r = rand(48, 122);
+				if (r >= 58 && r <= 64) {
+					continue;
+				}
+				if (r >= 91 && r <= 76) {
+					continue;
+				}
+				text += String.fromCharCode(r);
+			}
+			return text;
+		}
+
+		function rand_animals() {
+			let animals = ['frog', 'spider', 'bat', 'ant', 'fish'];
+			return animals[rand(0, animals.length - 1)];
+		}
+
+		function rand_animals_icons_less_than_ten(len){
+			if(len>10){
+				len=10 ;
+			}
+			var arr = ['🙈','🐎','🐷','🐘','🦇','🐇','🦅','🐟','🐞','🐲','🐳','🐔'];
+			var result=[] ;
+			for (var i = 0; i < len; i++) {
+				let ri = rand(0,arr.length-1) ;
+				result.push(  arr.splice(ri,1)[0] ) ;
+			}
+
+			return result;
+			
+		}
+
+		function rand_num_array(len, n) {
+			var arr = [];
+
+			for (var i = 0; i < len; i++) {
+				let num = n + i;
+				while (true) {
+					let idx = rand(0, len - 1);
+					if (arr[idx] == null) {
+						arr[idx] = num;
+						break;
+					}
+				}
+			}
+
+			return arr;
+		}
+
+		function addQuestion(title, code, ans, target) {
+
+			var nContent = '<li>' + title + '</li><pre class="prettyprint lang-js">' + code + '</pre>';
+			nContent += '<p class="ans"><input type="text" style="width: 350px;"> <button data-ans="' + ans + '" onclick="checkAns(this)">check</button></p>';
+			var content = document.getElementById(target);
+			content.innerHTML = content.innerHTML + nContent;;
+
+		}
+		function addQuestion2(title, code, exe, ans, target) {
+
+			var nContent = '<li>' + title + '</li><pre class="prettyprint lang-js">' + code + '</pre><div>' + exe + '<br></div>';
+			nContent += '<p class="ans"><input type="text" style="width: 350px;"> <button data-ans="' + ans + '" onclick="checkAns(this)">check</button></p><br><br>';
+			var content = document.getElementById(target);
+			content.innerHTML = content.innerHTML + nContent;;
+
+		}
+		function progResultLine() {
+			return ' ----------- 執行結果 ------- <br>';
+		}
+
+
+
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////// Question Start     /////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
+
+
+		// 變數運算：存變數
+		function fun_q_variable() {
+			var questions = [];
+			questions.push(function () {
+				var n = rand(5, 9);
+				var m = rand(1, 4);
+				var test_code = String.format('var t = {0} ;\nt + {1} ;', n, m);
+				var ans = n;
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_variable');
+			});
+
+			questions.push(function () {
+				var n = rand(1, 15);
+				var test_code = String.format('var t = {0} ;\nt = t + t ;', n);
+				var ans = (2 * n);
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_variable');
+			});
+
+			questions.push(function () {
+				var na = rand(1, 5);
+				var nb = rand(6, 9);
+				var nc = rand(10, 14);
+				var test_code = String.format('var a = {0} ;\n', na);
+				test_code += String.format('var b = {0} ;\n', nb);
+				test_code += String.format('var c = {0} ;\n', nc);
+				test_code += 'c = b ;\n';
+				test_code += 'a = c ;';
+				var ans = nb;
+				addQuestion('程式結束，變數 a ➔ ❔', test_code, ans, 'q_variable');
+			});
+
+			// 變數運算：文、數混合
+			questions.push(function () {
+				var na = rand(1, 5);
+				var nb = rand(6, 9);
+				var test_code = String.format('var a = {0} ;\n', na);
+				test_code += String.format('var b = {0} ;\n', nb);
+				test_code += 'var c = a + b ;\n';
+				test_code += "var t = 'result -> ' + c ;\n";
+				var ans = 'result -> ' + (na + nb);
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_variable');
+			});
+			questions.push(function () {
+				var na = rand(30, 50);
+				var nb = rand(10, 30);
+				var test_code = String.format('var cake = {0} ;\n', na);
+				test_code += String.format('var milk = {0} ;\n', nb);
+				test_code += "var c = 'total :' ;\n";
+				test_code += "var t = c + cake + milk ;\n";
+				var ans = 'total : ' + na + nb;
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_variable');
+			});
+			questions.push(function () {
+				var na = rand(30, 50);
+				var nb = rand(10, 30);
+				var test_code = String.format('var cake = {0} ;\n', na);
+				test_code += String.format('var milk = {0} ;\n', nb);
+				test_code += "var c = 'total :' ;\n";
+				test_code += "var t = c + (cake + milk) ;\n";
+				var ans = 'total : ' + (na + nb);
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_variable');
+			});
+			questions.push(function () {
+				var na = rand(5, 10);
+				var nb = rand(1, 10);
+				var test_code = String.format('var na = {0} ;\n', na);
+				test_code += String.format('var nb = {0} ;\n', nb);
+				test_code += "var t = na + ' + ' + nb ;\n";
+				var ans = na + '+' + nb;
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_variable');
+			});
+			questions.push(function () {
+				var na = rand(5, 10);
+				var nb = rand(1, 10);
+				var test_code = String.format('var na = {0} ;\n', na);
+				test_code += String.format('var nb = {0} ;\n', nb);
+				test_code += "var t = na + ' + ' + nb + ' = ' + ( na+nb )  ;\n";
+				var ans = na + '+' + nb + '=' + (na + nb);
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_variable');
+			});
+			questions.push(function () {
+				var n = rand(1, 7);
+				var test_code = String.format('var n = {0} ;\n', n);
+				test_code += 'n = n + n ; \n';
+				test_code += 'n = n + n ; \n';
+				var ans = n + n;
+				ans = ans + ans;
+				addQuestion('程式結束，變數 n ➔ ❔', test_code, ans, 'q_variable');
+			});
+			questions.push(function () {
+				var tt = randStr(2);
+				var test_code = String.format("var t = '{0}' ;\n", tt);
+				test_code += 't = t + t ; \n';
+				test_code += 't = t + t ; \n';
+
+				var ans = tt + tt;
+				ans = ans + ans;
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_variable');
+			});
+			return questions;
+		}
+
+
+
+		// if-else
+		function fun_q_ifelse() {
+			var questions = [];
+			questions.push(function () {
+				var n = rand(1, 9);
+				var m = rand(3, 7);
+				var test_code = String.format('var n = {0} ;\n', n);
+				test_code += "var t = '' ;\n";
+				test_code += String.format('if( n > {0} ){\n', m);
+				test_code += "	t = '🌎' ; \n";
+				test_code += '}else{\n';
+				test_code += "	t = '🌞' ; \n";
+				test_code += '} \n'
+				var ans = (n > m) ? '🌎' : '🌞';
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_ifelse');
+			});
+			questions.push(function () {
+				var n = rand(5, 8);
+				var m = rand(5, 8);
+				var test_code = String.format('var n = {0} ;\n', n);
+				test_code += String.format('var m = {0} ;\n', m);
+				test_code += "var t = '' ;\n";
+				test_code += 'if( n == m ){\n';
+				test_code += "	t = '🐒' ; \n";
+				test_code += '}else{\n';
+				test_code += "	t = '🍌' ; \n";
+				test_code += '} \n'
+				var ans = (n == m) ? '🐒' : '🍌';
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_ifelse');
+			});
+			questions.push(function () {
+				var n = rand(5, 8);
+				var m = rand(5, 8);
+				var test_code = String.format('var n = {0} ;\n', n);
+				test_code += String.format('var m = {0} ;\n', m);
+				test_code += "var t = '' ;\n";
+				test_code += 'if( n != m ){\n';
+				test_code += "	t = '🚓' ; \n";
+				test_code += '}else{\n';
+				test_code += "	t = '🛵' ; \n";
+				test_code += '} \n'
+				var ans = (n != m) ? '🚓' : '🛵';
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_ifelse');
+			});
+
+			questions.push(function () {
+				var n = rand_animals();
+				var m = rand_animals();
+				var test_code = String.format("var n = '{0}' ;\n", n);
+				test_code += String.format("var m = '{0}' ;\n", m);
+				test_code += "var t = '' ;\n";
+				test_code += 'if( n == m ){\n';
+				test_code += "	t = '💈' ; \n";
+				test_code += '}else{\n';
+				test_code += "	t = '💡' ; \n";
+				test_code += '} \n'
+				var ans = (n == m) ? '💈' : '💡';
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_ifelse');
+			});
+
+			questions.push(function () {
+				var n = rand_animals();
+				var m = rand_animals();
+				var test_code = String.format("var n = '{0}' ;\n", n);
+				test_code += String.format("var m = '{0}' ;\n", m);
+				test_code += "var t = '' ;\n";
+				test_code += 'if( n != m ){\n';
+				test_code += "	t = '🍗' ; \n";
+				test_code += '}else{\n';
+				test_code += "	t = '🌽' ; \n";
+				test_code += '} \n'
+				var ans = (n != m) ? '🍗' : '🌽';
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_ifelse');
+			});
+
+			questions.push(function () {
+				var n = rand(1, 20);
+				var m1 = rand(1, 20);
+				var m2 = rand(1, 20);
+				var a1 = rand_animals();
+				var a2 = rand_animals();
+				var a3 = rand_animals();
+				var test_code = String.format('var n = {0} ;\n', n);
+				test_code += "var t = '' ;\n";
+				test_code += String.format('if( n > {0} ){\n', m1);
+				test_code += String.format("	t = t + '{0}' + '#' ;\n", a1);
+				test_code += '} \n';
+				test_code += String.format('if( n < {0} ){\n', m2);
+				test_code += String.format("	t = t + '{0}' + '#' ;\n", a2);
+				test_code += '} \n';
+				test_code += String.format('if( n != {0} ){\n', m2);
+				test_code += String.format("	t = t + '{0}' + '#' ;\n", a3);
+				test_code += '} \n';
+
+				var ans = '';
+				if (n > m1) {
+					ans += (a1 + '#');
+				}
+				if (n < m2) {
+					ans += (a2 + '#');
+				}
+				if (n != m2) {
+					ans += (a3 + '#');
+				}
+				addQuestion('程式結束，變數 t ➔ ❔', test_code, ans, 'q_ifelse');
+			});
+
+			return questions;
+		}
+
+
+
+
+		// for
+		function fun_for() {
+			var questions = [];
+			questions.push(function () {
+				var a = rand(1, 25);
+				var b = rand(1, 5);
+				var sym = '<=';
+				if (rand(1, 2) == 1) {
+					b = b * (-1);
+					sym = '>=';
+				}
+
+				//// result
+				var c = 5;
+				var result = '';
+				var last;
+				for (let index = a; c > 0; index = index + b) {
+					result += (index + ' ♡');
+					result += '<br>';
+
+					last = index;
+					c--;
+				}
+
+				///// code
+				var test_code = String.format('for( var i={0}  ;  i{1}{2}  ;   🧐   ){\n', a, sym, last);
+				test_code += "	console.log(  i + ' ♡'  ) ;\n";
+				test_code += '} \n'
+				var ans = 'i=i';
+				if (b > 0) {
+					ans += ('+' + b);
+				} else {
+					ans += b;
+				}
+
+				addQuestion2('執行程式，印出下列結果，請問 🧐 應該填入什麼？', test_code, progResultLine() + result + progResultLine(), ans, 'q_for');
+			});
+
+			questions.push(function () {
+				var a = rand(1, 25);
+				var b = rand(3, 6);
+				var sym = '<=';
+				if (rand(1, 2) == 1) {
+					b = b * (-1);
+					sym = '>=';
+				}
+
+				//// result
+				var c = 5;
+				var result = '';
+				var last;
+				for (let index = a; c > 0; index = index + b) {
+					result += (index + ' ♡');
+					result += '<br>';
+
+					last = index;
+					c--;
+				}
+
+				var inc = 'i=i';
+				var diff;
+				if (rand(1, 2) == 1) {
+					diff = 0;
+				} else {
+					diff = Math.abs(b);
+				}
+
+				if (b > 0) {
+					inc += ('+' + b);
+					last += diff;
+				} else {
+					inc += b;
+					last -= diff;
+				}
+
+				if (diff > 0) {
+					sym = sym.substring(0, 1);
+				}
+
+
+
+				///// code
+				var test_code = String.format('for( var i={0}  ;     i ⬜ {1}    ;  {2}  ){\n', a, last, inc);
+				test_code += "	console.log(  i + ' ♡'  ) ;\n";
+				test_code += '} \n'
+
+
+
+				addQuestion2('執行程式，印出下列結果，請問 ⬜ 應該填入什麼', test_code, progResultLine() + result + progResultLine(), sym, 'q_for');
+			});
+
+			////////////////
+			// array
+			////////////////
+			questions.push(function () {
+
+				var arr1 = rand_num_array(3, 3);
+				var arr2 = rand_num_array(5, 7);
+				var r = rand(1, 2);
+
+				//// ans				
+				var ans = 'i<arr' + r + '.length';
+
+				//// result
+				var result = '';
+				let l = r == 1 ? arr1.length : arr2.length;
+				for (let i = 0; i < l; i++) {
+					if (r == 1) {
+						result += i + ' -> ' + arr1[i] + '<br>';
+					} else {
+						result += i + ' -> ' + arr2[i] + '<br>';
+					}
+				}
+
+
+				///// code
+				var test_code = 'var arr1=[] ;\n';
+				for (let i = 0; i < arr1.length; i++) {
+					test_code += 'arr1[' + i + ']=' + arr1[i] + ' ;\n';
+				}
+				test_code += '\nvar arr2=[] ;\n';
+				for (let i = 0; i < arr2.length; i++) {
+					test_code += 'arr2[' + i + ']=' + arr2[i] + ' ;\n';
+				}
+				test_code += '\nfor( var i=0  ;   ❔   ;  i=i+1  ){\n';
+				test_code += "	console.log(  i+' -> '+arr" + r + "[i]  ) ;\n";
+				test_code += '} \n'
+
+
+
+				addQuestion2('執行程式，印出下列結果，請問 ❔ 應該填入什麼（提示：使用 xxx.length）', test_code, progResultLine() + result + progResultLine(), ans, 'q_for');
+			});
+
+
+			questions.push(function () {
+
+				var arr1 = rand_num_array(3, 3);
+				var arr2 = rand_num_array(5, 7);
+				var r = rand(1, 2);
+
+				//// ans				
+				var ans = 'i=arr' + r + '.length-1';
+
+				//// result
+				var result = '';
+				let l = r == 1 ? arr1.length : arr2.length;
+				for (let i = l - 1; i >= 0; i--) {
+					if (r == 1) {
+						result += i + ' -> ' + arr1[i] + '<br>';
+					} else {
+						result += i + ' -> ' + arr2[i] + '<br>';
+					}
+				}
+
+
+				///// code
+				var test_code = 'var arr1=[] ;\n';
+				for (let i = 0; i < arr1.length; i++) {
+					test_code += 'arr1[' + i + ']=' + arr1[i] + ' ;\n';
+				}
+				test_code += '\nvar arr2=[] ;\n';
+				for (let i = 0; i < arr2.length; i++) {
+					test_code += 'arr2[' + i + ']=' + arr2[i] + ' ;\n';
+				}
+				test_code += '\nfor( var ❔  ;   i>=0   ;  i=i-1  ){\n';
+				test_code += "	console.log(  i+' -> '+arr" + r + "[i]  ) ;\n";
+				test_code += '} \n'
+
+
+
+				addQuestion2('執行程式，印出下列結果，請問 ❔ 應該填入什麼（提示：使用 xxx.length）', test_code, progResultLine() + result + progResultLine(), ans, 'q_for');
+			});
+
+
+			///////////////
+			// array total
+			///////////////
+
+			questions.push(function () {
+
+				var arr1 = [];
+				var ll = rand(3, 4);
+				for (let i = 0; i < ll; i++) {
+					arr1.push(rand(1, 5));
+				}
+
+				//// ans				
+				var ans = rand(0, 3);
+
+
+				///// code
+				var test_code = 'var arr1=[] ;\n';
+				for (let i = 0; i < arr1.length; i++) {
+					test_code += 'arr1[' + i + ']=' + arr1[i] + ' ;\n';
+				}
+				test_code += '\nvar total = ' + ans + ' ;\n';
+				test_code += 'for( var i=0  ;   i < arr1.length   ;  i=i+1  ){\n';
+				test_code += "	total = total + arr1[i]  ;\n";
+				test_code += '} \n';
+				test_code += 'console.log(  total ) ;'
+
+				for (let i = 0; i < arr1.length; i++) {
+					ans = ans + arr1[i];
+				}
+
+
+				addQuestion('執行程式，請問最後 total 印出的數字是多少 ', test_code, ans, 'q_for');
+			});
+
+
+			questions.push(function () {
+
+				var arr1 = [];
+				for (let i = 0; i < 3; i++) {
+					arr1.push(rand(1, 5));
+				}
+
+				//// ans				
+				var ans = rand(0, 3);
+
+
+				///// code
+				var test_code = 'var arr1=[] ;\n';
+				for (let i = 0; i < arr1.length; i++) {
+					test_code += 'arr1[' + i + ']=' + arr1[i] + ' ;\n';
+				}
+				test_code += '\nvar total = ' + ans + ' ;\n';
+				test_code += 'for( var i=0  ;   i < arr1.length   ;  i=i+1  ){\n';
+				test_code += "	total = total + arr1[i] + total  ;\n";
+				test_code += '} \n';
+				test_code += 'console.log(  total ) ;'
+
+				for (let i = 0; i < arr1.length; i++) {
+					ans = ans + arr1[i] + ans;
+				}
+
+
+				addQuestion('執行程式，請問最後 total 印出的數字是多少 ', test_code, ans, 'q_for');
+			});
+
+
+			////////////////////
+			// 2-D array
+			////////////////////
+
+			questions.push(function () {
+
+				var arr1 = rand_animals_icons_less_than_ten( rand(3,5)) ;
+				var arr2 = rand_animals_icons_less_than_ten( rand(3,5)) ;
+				var r = rand(1, 2);
+				var arr1_s = rand(0,1);
+				var arr1_e = rand(2,arr1.length);
+				var arr2_s = rand(0,1);
+				var arr2_e = rand(2,arr2.length);
+				//// ans				
+				var ans = '';
+				for( var i=arr1_s  ;  i < arr1_e   ;  i=i+1  ){
+					for( var j=arr2_s  ;  j < arr2_e   ;  j=j+1  ){
+							ans = ans + arr2[j] ;
+					} 
+					ans = ans + arr1[i] ;
+				} 
+				
+
+				///// code
+				var test_code = 'var arr1=[] ;\n';
+				for (let i = 0; i < arr1.length; i++) {
+					test_code += 'arr1[' + i + "]='" + arr1[i] + "' ;\n";
+				}
+				test_code += '\nvar arr2=[] ;\n';
+				for (let i = 0; i < arr2.length; i++) {
+					test_code += 'arr2[' + i + "]='" + arr2[i] + "' ;\n";
+				}
+				test_code += "\nvar t = ''\n";
+				test_code += 'for( var i='+arr1_s+'  ;  i < '+arr1_e+'   ;  i=i+1  ){\n';
+				test_code += '	for( var j='+arr2_s+'  ;  j < '+arr2_e+'   ;  j=j+1  ){\n';
+				test_code += "			t = t + arr2[j] ;\n";
+				test_code += '	} \n';
+				test_code += '	t = t + arr1[i] ;\n';
+				test_code += '} \n';
+				test_code += 'console.log(t) ;';
+
+
+				addQuestion('程式結束，變數 t ➔ ❔', test_code,  ans, 'q_for');
+			});
+
+
+
+			return questions;
+		}
+
+
+
+		function fun_q_function() {
+			var questions = [];
+
+			questions.push(function () {
+
+				var arr = rand_num_array(rand(2, 3), 4);
+				var rr = rand(4, 6);
+
+				//var test_code = String.format('var t = {0} ;\nt + {1} ;', n, m);
+				var test_code = '\nfunction light( n ){ \n';
+				test_code += '	if( n > ' + rr + ' ){ \n';
+				test_code += "		console.log( '💡💡' ) ;\n";
+				test_code += '	}else{ \n';
+				test_code += "		console.log( '💡💡💡' ) ;\n";
+				test_code += '	}\n';
+				test_code += '}\n\n';
+				for (let i = 0; i < arr.length; i++) {
+					test_code += String.format('light( {0} ) ; \n', arr[i]);
+				}
+
+				var ans = 0;
+
+				for (let i = 0; i < arr.length; i++) {
+					if (arr[i] > rr) {
+						ans += 2;
+					} else {
+						ans += 3;
+					}
+				}
+
+				addQuestion('程式執行結束，總共出現幾個 💡', test_code, ans, 'q_fun');
+			});
+
+			questions.push(function () {
+
+				var rr1 = rand_num_array(3, 1);
+				var rr2 = [];
+				for (let i = 0; i < rr1.length; i++) {
+					rr2.push(rand(1, 3));
+				}
+
+				//var test_code = String.format('var t = {0} ;\nt + {1} ;', n, m);
+				var test_code = '\nfunction meal( sandwich , drink ){ \n';
+				test_code += '	var t = 0 ; \n';
+				test_code += '	t = t + sandwich * 20 ; \n';
+				test_code += '	t = t + drink * 10 ; \n';
+				test_code += '	return t ; \n';
+				test_code += '}\n\n';
+				for (let i = 0; i < rr1.length; i++) {
+					test_code += String.format('var total{0} = meal( {1} , {2} ) ; \n', (i + 1), rr1[i], rr2[i]);
+				}
+				test_code += 'var total = total1 + total2 + total3 ; ';
+
+				var ans = 0;
+				for (let i = 0; i < rr1.length; i++) {
+					ans += rr1[i] * 20 + rr2[i] * 10;
+				}
+
+				addQuestion('程式執行結束，計算出餐點總價 total 是多少', test_code, ans, 'q_fun');
+			});
+
+
+			questions.push(function () {
+
+				var rr1 = rand_num_array(3, 1);
+				var rr2 = [];
+				var r = rand(2, 6);
+				var ranimal = rand_animals();
+				for (let i = 0; i < rr1.length; i++) {
+					rr2.push(rand(1, 3));
+				}
+
+				//var test_code = String.format('var t = {0} ;\nt + {1} ;', n, m);
+				var test_code = '\nfunction add_fruit( str , n ){ \n';
+				test_code += "	var t = '' ; \n";
+				test_code += '	if( n < 3 ){\n';
+				test_code += "		t = '🍔🍔' + str + '🍔🍔' ; \n";
+				test_code += "	}else{	\n";
+				test_code += "		t = '🍔🍔🍔🍔🍔' + str + '🍔🍔🍔🍔🍔' ; \n";
+				test_code += "	}	\n";
+				test_code += '	return t ; \n';
+				test_code += '}\n';
+				test_code += '\nfunction add_wall( str ){ \n';
+				test_code += "	var t =  add_fruit( str , " + r + " ) ; \n";
+				test_code += "	t = '||||' + t + '||||' ; \n";
+				test_code += '	return t ; \n';
+				test_code += '}\n\n';
+				test_code += "var result = add_wall( '" + ranimal + "' ) ; ";
+
+				var ans = '';
+				if (r < 3) {
+					ans = '🍔🍔' + ranimal + '🍔🍔';
+				} else {
+					ans = '🍔🍔🍔🍔🍔' + ranimal + '🍔🍔🍔🍔🍔';
+				}
+				ans = '||||' + ans + '||||';
+
+				addQuestion('程式執行結束，最後產生的 result 內容是什麼', test_code, ans, 'q_fun');
+			});
+
+
+
+
+
+			return questions;
+		}
+
+
+
+		////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////
+		/////////// Question End       /////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		/////////////////////////////
+
+		for (qs of fun_q_variable()) {
+			qs();
+			// qs();
+		}
+		for (qs of fun_q_ifelse()) {
+			qs();
+			// qs();
+		}
+		for (qs of fun_for()) {
+			qs();
+			qs();
+		}
+		for (qs of fun_q_function()) {
+			qs();
+			qs();
+			qs();
+		}
+
+		prettyPrint();
+	</script>
+
+</body>
+
+</html>

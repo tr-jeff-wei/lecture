@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="icon" href="../_assets/img/icon.png">
+	<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+	<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+	<link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+
+	<style>
+		img {
+			margin: 20px;
+		}
+	</style>
+
+	<title>病毒迷宮（混和應用演練）</title>
+</head>
+
+<body id="page-top" onload='prettyPrint()'>
+	<!-- Navigation -->
+	<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+	</a>
+	<nav id="sidebar-wrapper"></nav>
+	<!-- Header -->
+	<header class="masthead d-flex">
+		<div class="container text-center my-auto">
+			<h1 class="mb-1">JavaScript</h1>
+			<h3 class="mb-5">
+				病毒迷宮（混和應用演練）
+			</h3>
+			<p>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app_demo'>場景介紹</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#elt'>操作說明</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#example'>程式範例</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#level'>挑戰關卡</a>
+			</p>
+
+
+		</div>
+		<div class="overlay"></div>
+	</header>
+	<!-- About -->
+	<section class="content-section bg-light" id="app_demo">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">病毒迷宮</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 場景介紹
+					</p>
+					<ol>
+						<li>病毒（virus）：最主要的敵人。由洞穴（hole）出發，每個病毒自由移動，目標找到能量石（enery rock）。</li>
+						<li>炸彈（bomb）：阻擋病毒的武器。可以設定爆炸的時間，引爆後可殲滅範圍內的病毒。</li>
+						<li>目標：在 10 顆炸彈的使用限制內，消滅全部的病毒。</li>
+						<p>
+							<iframe frameBorder="0" width="950px" height="820px"
+								src="http://code-seed.click/lecture/js/js_pg_game_scene_bombgame/home%20demo.html"></iframe>
+						</p>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="content-section bg-light2" id="elt">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">操作說明</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;實驗場
+						<ul>
+							<li>前往遊戲測試頁面：<a target='_blank'
+									href="http://code-seed.click/lecture/js/js_pg_game_scene_bombgame/home_test.html">
+									http://code-seed.click/lecture/js/js_pg_game_scene_bombgame/home_test.html</a></li>
+							<li>開啟頁面 console 輸入如下語法進行測試</li>
+							<li>環境程式下載：<a href="http://code-seed.click/lecture/js/js2%E7%AF%84%E6%9C%AC_%E9%97%96%E9%97%9C%E9%81%8A%E6%88%B2.zip">點擊下載</a></li>
+						</ul>
+					</p>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;資料變數、函式
+					</p>
+
+					<ul class="mb-5">
+						<li> <span class="font-weight-bold text-primary">game_timer</span>&nbsp;&nbsp;&nbsp;計時器</li>
+						<li> <span class="font-weight-bold text-primary">rock_x , rock_y </span>&nbsp;&nbsp;&nbsp;能量寶石座標
+						</li>
+						<li> <span class="font-weight-bold text-primary">hole_x , hole_y </span>&nbsp;&nbsp;&nbsp;病毒洞穴座標
+						</li>
+						<li> <span class="font-weight-bold text-primary">add_bomb( ? , ? , ? )
+							</span>&nbsp;&nbsp;&nbsp;設置炸彈（ x、y、倒數時間）</li>
+						<li> <span class="font-weight-bold text-primary">enemy_list </span>&nbsp;&nbsp;&nbsp;病毒陣列</li>
+
+						<pre class="prettyprint lang-js">
+// --- 變數  game_timer ：取得計時器時間
+console.log( game_timer ) ;
+
+// --- 變數  rock_x , rock_y ：取得能量寶石座標
+console.log( rock_x ) ;
+console.log( rock_y ) ;
+
+// --- 變數  hole_x , hole_y ：取得病毒洞穴座標
+console.log( hole_x ) ;
+console.log( hole_y ) ;
+
+// --- 設置炸彈 add_bomb( ? , ? , ? ) ;
+// 參數分別是 x , y , 倒數時間
+// 範例：在 100 , 50 位置設置倒數 3 的炸彈
+add_bomb( 100 , 50 , 3 ) ; 
+</pre>
+					</ul>
+
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;本機執行方式
+					</p>
+					<ol>
+						<li>資料夾下，複製專案檔案「home_test.html」並重新命名，作為將要撰寫程式的檔案</li>
+						<li>在檔案「執行程式區」區段中，撰寫程式。<br>
+							該區段會被程式置於 p5js draw() 函式中執行，所以是被 <span class="font-weight-bold text-danger">持續重複</span>
+							的區段<br>
+							<img width='600' src="../_assets/img/js_practice_bomb_game/running_env.PNG" alt=""
+								srcset="">
+						</li>
+					</ol>
+					
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="content-section bg-light" id="example">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">程式範例</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;遊戲時鐘（game_timer）
+					</p>
+					<ul class="mb-5">
+						<li>應用遊戲時鐘（game_timer）在特定時間設置炸彈</li>
+						<pre class="prettyprint lang-js">
+// 在時間 10 的時候，放置炸彈
+if( game_timer == 10 ){
+	add_bomb(100,150,3) ;
+}
+
+// 在時間 5~10 之間（6,7,8,9），同一地點連續放置炸彈 
+if( game_timer > 5 && game_timer < 10 ){
+	add_bomb(100,150,1) ;
+}
+
+// 每間隔 7 秒，放置炸彈
+if( game_timer % 7 == 0 ){
+	add_bomb(100,150,1) ;
+}
+
+</pre>
+</ul>
+
+<p class="lead mb-3">
+	<i class="fa fa-rocket" aria-hidden="true"></i>
+	&nbsp;&nbsp;空間設置技巧
+</p>
+
+					<ul>
+						<li>直向、橫向擺放</li>
+						<span>
+							<img width='150' src="../_assets/img/js_practice_bomb_game/exp_bomb_horizontal.png">
+							<img width='150' src="../_assets/img/js_practice_bomb_game/exp_bomb_horizontal1.png">
+							<img width='150' src="../_assets/img/js_practice_bomb_game/exp_bomb_vertical.png">
+							<img width='150' src="../_assets/img/js_practice_bomb_game/exp_bomb_vertical1.png">
+						</span>
+						<pre class="prettyprint lang-js">
+// 開始位置 x:100，y:200
+var bomb_x = 100 ;
+var bomb_y = 200 ;
+
+// 橫向每隔 50 間隔，放置炸彈 3 顆
+for( var i=1 ; i<=3 ; i=i+1 ){
+	add_bomb( bomb_x , bomb_y , 3 ) ;
+	bomb_x = bomb_x + 50 ; // 間隔 50
+}
+
+// 縱向每隔 70 間隔，放置炸彈 4 顆
+bomb_x = 100 ;
+bomb_y = 50 ;
+for( var i=1 ; i<=4 ; i=i+1 ){
+	add_bomb( bomb_x , bomb_y , 3 ) ;
+	bomb_y = bomb_y + 70 ; // 間隔 70
+}
+</pre>
+
+						<br><br>
+						<li>炸彈陣列</li>
+						<span>
+							<img width='150' src="../_assets/img/js_practice_bomb_game/exp_bomb_arr.png">
+							<img width='150' src="../_assets/img/js_practice_bomb_game/exp_bomb_arr1.png">
+
+						</span>
+						<pre class="prettyprint lang-js">
+// 開始位置 x:100，y:180
+var bomb_x = 100 ;
+var bomb_y = 180 ;
+
+// 間隔 40 ，橫向炸彈 3 顆，縱向 2 顆
+for( var yi=1 ; yi<=2 ; yi=yi+1 ){
+
+	bomb_x = 100 ;  // 回到最左側
+	for( var xi=1 ; xi<=3 ; xi=xi+1 ){
+		add_bomb( bomb_x , bomb_y , 3 ) ;
+		bomb_x = bomb_x + 40 ; // 往右移
+	}
+	bomb_y = bomb_y + 40 ; // 移向下一排
+
+}
+</pre><br><br>
+						<li>上下左右包圍</li>
+						<span>
+							<img width='150' src="../_assets/img/js_practice_bomb_game/exp_bomb_cross.png">
+							<img width='150' src="../_assets/img/js_practice_bomb_game/exp_bomb_cross1.png">
+
+						</span>
+						<pre class="prettyprint lang-js">
+// 包圍洞穴 => 目標座標：hole_x , hole_y
+var range = 40 ;
+add_bomb( hole_x-range , hole_y       ,3 ) ;	// 左
+add_bomb( hole_x+range , hole_y       ,3 ) ;	// 右
+add_bomb( hole_x       , hole_y-range ,3 ) ;	// 上
+add_bomb( hole_x       , hole_y+range ,3 ) ;	// 下
+</pre>
+
+</ul><br><br>
+
+<p class="lead mb-3">
+	<i class="fa fa-rocket" aria-hidden="true"></i>
+	&nbsp;&nbsp;其他技巧
+</p>
+
+					<ul>
+
+
+						<li>利用函式，簡化複雜的動作 ➩ 上下左右炸彈包圍</li>
+						<pre class="prettyprint lang-js">
+// 設計函式工具 : target_x , target_x 使用時傳入包圍的目標座標
+function bomb_wall( target_x , target_y ){
+	var range = 40 ;
+	add_bomb( target_x-range , target_y       ,3 ) ;	// 左
+	add_bomb( target_x+range , target_y       ,3 ) ;	// 右
+	add_bomb( target_x       , target_y-range ,3 ) ;	// 上
+	add_bomb( target_x       , target_y+range ,3 ) ;	// 下
+}
+
+// 使用函式工具
+bomb_wall( 150 , 300 ) ; // 包圍 150 , 300 的位置
+bomb_wall( hole_x , hole_y ) ; // 包圍病毒洞穴
+</pre><br><br>
+
+
+						<li>追蹤病毒：利用病毒陣列 enemy_list 取得存活病毒的座標</li>
+						<pre class="prettyprint lang-js">
+// 應用 for 找出每一個病毒
+for( var i=0 ; i < enemy_list.length ; i=i+1 ){
+
+	var virus = enemy_list[i] ;  // 取出陣列的病毒，放在 virus
+	if( virus == null ){
+		// 被殺掉的病毒
+	}else{
+		// 存活的病毒，運用 virus.sx  , virus.sy 取得病毒位置
+		// 在位置上放炸彈
+		add_bomb( virus.sx , virus.sy , 1 ) ;
+	}
+
+}
+
+</pre>
+
+
+					</ul>					
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="content-section bg-light2" id="level">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">挑戰關卡</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 關卡
+						<ul>							
+							<li>L1_LMap<br>
+								<img src="../_assets/img/js_practice_bomb_game/L1.png" width="400"></li>
+							<li>L2_LMap<br>
+								<img src="../_assets/img/js_practice_bomb_game/L2.png" width="400"></li>
+							<li>L3_LMap<br>
+								<img src="../_assets/img/js_practice_bomb_game/L3.png" width="400"></li>
+							
+						</ul>
+					</p>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 任務提示						
+						<ul>							
+							<li>固定時間間隔，在洞口放炸彈</li>
+							<li>在狹窄的巷子裡，放整排的炸彈</li>
+							<li>追蹤存活的病毒，在病毒位置附近放炸彈</li>
+							<li>在封閉的小空間，把房間填滿炸彈</li>
+							<li>計算所有病毒都出現的時機，開始放炸彈</li>
+						</ul>
+					</p>
+					
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<!-- Footer -->
+	<footer class="footer text-center" id="footer">
+
+	</footer>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+	<!-- Bootstrap core JavaScript -->
+	<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Plugin JavaScript -->
+	<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Custom scripts for this template -->
+	<script src="../_assets/js/stylish-portfolio.js"></script>
+	<script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+</body>
+
+</html>

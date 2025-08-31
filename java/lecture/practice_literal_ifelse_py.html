@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <link rel="icon" href="../_assets/img/icon.png" />
+    <link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" />
+    <link href="../_assets/css/stylish-portfolio.css" rel="stylesheet" />
+    <link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.8.1/ace.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script src="util_07.js"></script>
+
+    <script>
+        // 對應 const CMP_OP_SYM = ['>', '>=', '<', '<=', '!=', '==']; 的反向邏輯(在util_xx.js 中)
+        const CMP_OP_SYM_OPP = ['<=', '<', '>=', '>', '==', '!='];
+
+
+        function block_code(qId, qCode) {
+            let codeElt = document.createElement('pre');
+            codeElt.setAttribute('class', 'prettyprint lang-py');
+            codeElt.textContent = qCode;
+            let rootElt = document.getElementById(qId);
+            rootElt.appendChild(codeElt);
+        }
+
+
+        function check_ans(elt, item_id) {
+
+            // user code
+            let item = ace.edit(item_id);
+            let t = item.getValue();
+            //print(t);
+            t = t.replace(/[\n ]?/gm, '');
+            //print(t);
+
+            // answer code
+            let ans = elt.dataset.qans;
+            let ans_tokens = ans.split(',');
+            let vname = ans_tokens[0];
+            let vval = ans_tokens[1];
+            let op = ans_tokens[2];
+            let opVal = ans_tokens[3];
+            //print(ans);
+            let answer_code = `${vname}=${vval}\nif  ${vname} ${op} ${opVal}  :\n    print('yes')\n`;
+            let cmp_code = answer_code.replace(/[\n ]?/gm, '');
+            //print(cmp_code);
+
+            if (t == cmp_code) {
+                elt.setAttribute('class', 'btn btn-success');
+                elt.textContent = ' ✔️ ';
+                elt.disabled = true;
+            } else {
+                elt.setAttribute('class', 'btn btn-danger');
+                elt.textContent = ' ❌ ';
+                alert('==== 參考答案如下 ====\n' + answer_code);
+            }
+        }
+
+        function check_ans2(elt, item_id) {
+
+            // user code
+            let item = ace.edit(item_id);
+            let t = item.getValue();
+            //print(t);
+            t = t.replace(/[\n ]?/gm, '');
+            //print(t);
+
+            // answer code
+            let ans = elt.dataset.qans;
+            let ans_tokens = ans.split(',');
+            let vname = ans_tokens[0];
+            let vval = ans_tokens[1];
+            let op = ans_tokens[2];
+            let opVal = ans_tokens[3];
+            let w1 = ans_tokens[4];
+            let w2 = ans_tokens[5];
+            //print(ans);
+            let answer_code = `${vname}=${vval}\nif  ${vname} ${op} ${opVal}  :\n    print('${w1}')\nelse :\n    print('${w2}')\n`;
+            let cmp_code = answer_code.replace(/[\n ]?/gm, '');
+            //print(cmp_code);
+
+            if (t == cmp_code) {
+                elt.setAttribute('class', 'btn btn-success');
+                elt.textContent = ' ✔️ ';
+                elt.disabled = true;
+            } else {
+                elt.setAttribute('class', 'btn btn-danger');
+                elt.textContent = ' ❌ ';
+                alert('==== 參考答案如下 ====\n' + answer_code);
+            }
+        }
+
+
+        function check_ans3(elt, item_id) {
+
+            // user code
+            let item = ace.edit(item_id);
+            let t = item.getValue();
+            //print(t);
+            let tks = t.split('\n');
+            for( let it of tks){
+                if( it.indexOf('#')!=-1){
+                    t = it.trim();
+                    break;
+                }
+            }
+            // console.log(tks) ;
+            // console.log(t) ;
+            t = t.replace(/[\n ]?/gm, '');
+            // //print(t);
+
+            // answer code
+            let ans = elt.dataset.qans;
+            let ans_tokens = ans.split(',');
+            let vname = ans_tokens[0];           
+            let op = ans_tokens[1];
+            let opVal = ans_tokens[2];
+           
+            //print(ans);
+            let answer_code = `# ${vname} ${op} ${opVal}`;
+            let cmp_code = answer_code.replace(/[\n ]?/gm, '');
+            //print(cmp_code);
+
+            if (t == cmp_code) {
+                elt.setAttribute('class', 'btn btn-success');
+                elt.textContent = ' ✔️ ';
+                elt.disabled = true;
+            } else {
+                elt.setAttribute('class', 'btn btn-danger');
+                elt.textContent = ' ❌ ';
+                alert('==== 參考答案如下 ====\n' + answer_code);
+            }
+        }
+
+        function lit_q_1(did, num) {
+
+
+            let k = generate_norepeat_array(num);
+            //print(k);
+            for (let n = 0; n < num; n++) {
+                let item_id = did + '_' + n;
+
+                let vname = ranIntVarName();
+                let vVal = ranInt(20) + 1;
+                let cmpVal = ranInt(20) + 1;
+                let opIdx = k[n] % CMP_OP_WORD.length;
+
+                let ulElt = document.createElement('ul');
+
+                let desElt = document.createElement('li');
+                desElt.setAttribute('class', 'mb-2');
+                let qtitle = document.createElement('span');
+                qtitle.innerHTML = `變數 ${vname} 設為 ${vVal}。如果 ${vname} <span class='bg-warning'>${CMP_OP_WORD[opIdx]}</span> <span style='color:red;'>${cmpVal}</span> 就說「yes」（答案寫下方）`;
+                desElt.appendChild(qtitle);
+                ulElt.appendChild(desElt);
+
+                let codeElt = document.createElement('div');
+                ulElt.appendChild(codeElt);
+                codeElt.setAttribute('id', item_id);
+                let es = codeElt.style;
+                es.fontSize = '24px';
+                es.height = "150px";
+                es.width = '95%';
+                es.padding = '1em';
+
+                let rootElt = document.getElementById(did);
+                rootElt.appendChild(ulElt);
+
+
+                let code = `
+
+
+
+`;
+
+                let editor = ace.edit(item_id);
+                editor.setTheme("ace/theme/twilight");
+                editor.session.setMode("ace/mode/python");
+                editor.setValue(code, -1);
+                editor.resize();
+
+                let btnElt = document.createElement('div');
+                btnElt.innerHTML = `<div><div><button class="btn btn-info" type="button" data-qfunc="lit_q_1" data-qans='${vname},${vVal},${CMP_OP_SYM[opIdx]},${cmpVal}' onclick="check_ans(this, ${item_id});">CHECK</button></div></div>`
+                ulElt.appendChild(btnElt);
+            }
+
+        }
+
+
+        function lit_q_2(did, num) {
+
+            let k = generate_norepeat_array(num);
+            //print(k);
+            for (let n = 0; n < num; n++) {
+                let item_id = did + '_' + n;
+
+                let vname = ranIntVarName();
+                let vVal = ranInt(20) + 1;
+                let cmpVal = ranInt(20) + 1;
+                let opIdx = k[n] % CMP_OP_WORD.length;
+                let w1 = WORDS_GOODORNOT[k[2 * n % k.length] % WORDS_GOODORNOT.length];
+                let w2 = WORDS_GOODORNOT[k[(2 * n + 1) % k.length] % WORDS_GOODORNOT.length];
+
+                let ulElt = document.createElement('ul');
+
+                let desElt = document.createElement('li');
+                desElt.setAttribute('class', 'mb-2');
+                let qtitle = document.createElement('span');
+                qtitle.innerHTML = `變數 ${vname} 設為 ${vVal}。<span class='text-white bg-dark'>如果</span> ${vname} <span class='bg-warning'>${CMP_OP_WORD[opIdx]}</span> <span style='color:red;'>${cmpVal}</span> 就說「${w1}」<span class='text-white bg-dark'>否則</span>說「${w2}」（答案寫下方）`;
+                desElt.appendChild(qtitle);
+                ulElt.appendChild(desElt);
+
+                let codeElt = document.createElement('div');
+                ulElt.appendChild(codeElt);
+                codeElt.setAttribute('id', item_id);
+                let es = codeElt.style;
+                es.fontSize = '24px';
+                es.height = "200px";
+                es.width = '95%';
+                es.padding = '1em';
+
+                let rootElt = document.getElementById(did);
+                rootElt.appendChild(ulElt);
+
+
+                let code = `
+
+
+
+
+
+`;
+
+                let editor = ace.edit(item_id);
+                editor.setTheme("ace/theme/twilight");
+                editor.session.setMode("ace/mode/python");
+                editor.setValue(code, -1);
+                editor.resize();
+
+                let btnElt = document.createElement('div');
+                btnElt.innerHTML = `<div><div><button class="btn btn-info" type="button" data-qfunc="lit_q_2" data-qans='${vname},${vVal},${CMP_OP_SYM[opIdx]},${cmpVal},${w1},${w2}' onclick="check_ans2(this, ${item_id});">CHECK</button></div></div>`
+                ulElt.appendChild(btnElt);
+            }
+
+        }
+
+        function lit_q_3(did, num) {
+
+            let k = generate_norepeat_array(num);
+            //print(k);
+            for (let n = 0; n < num; n++) {
+                let item_id = did + '_' + n;
+
+                let vname = ranIntVarName();
+                let vVal = ranInt(20) + 1;
+                let cmpVal = ranInt(20) + 1;
+                let opIdx = k[n] % CMP_OP_WORD.length;
+                let w1 = WORDS_GOODORNOT[k[2 * n % k.length] % WORDS_GOODORNOT.length];
+                let w2 = WORDS_GOODORNOT[k[(2 * n + 1) % k.length] % WORDS_GOODORNOT.length];
+
+                let ulElt = document.createElement('ul');
+
+                let desElt = document.createElement('li');
+                desElt.setAttribute('class', 'mb-2');
+                let qtitle = document.createElement('span');
+                qtitle.innerHTML = `變數 ${vname} 設為 ${vVal}。<span class='text-white bg-dark'>如果</span> ${vname} <span class='bg-warning'>${CMP_OP_WORD[opIdx]}</span> <span style='color:red;'>${cmpVal}</span> 就說「${w1}」<span class='text-white bg-dark'>否則</span>說「${w2}」（答案寫下方）`;
+                desElt.appendChild(qtitle);
+                ulElt.appendChild(desElt);
+
+                let codeElt = document.createElement('div');
+                ulElt.appendChild(codeElt);
+                codeElt.setAttribute('id', item_id);
+                let es = codeElt.style;
+                es.fontSize = '24px';
+                es.height = "200px";
+                es.width = '95%';
+                es.padding = '1em';
+
+                let rootElt = document.getElementById(did);
+                rootElt.appendChild(ulElt);
+
+
+                let code = `${vname} = ${vVal}
+if ${vname} ${CMP_OP_SYM[opIdx]} ${cmpVal} :
+    print( ${w1} )
+else:
+    #
+    print( ${w2} )`;
+
+                let editor = ace.edit(item_id);
+                editor.setTheme("ace/theme/twilight");
+                editor.session.setMode("ace/mode/python");
+                editor.setValue(code, -1);
+                editor.resize();
+
+                let btnElt = document.createElement('div');
+                btnElt.innerHTML = `<div><div><button class="btn btn-info" type="button" data-qfunc="lit_q_3" data-qans='${vname},${CMP_OP_SYM_OPP[opIdx]},${cmpVal}' onclick="check_ans3(this, ${item_id});">CHECK</button></div></div>`
+                ulElt.appendChild(btnElt);
+            }
+
+        }
+        function q_if_1(qId, topId) {
+            // basic info
+            block_info(qId, "變數 a 設為 5。如果 a 大於 6，就說「yes」 （答案如下）");
+            let ri = generate_norepeat_array(5);
+
+            let code =
+                `a = 5 
+if  a > 6  :
+    print('yes') 
+
+`;
+
+
+            // code
+            block_code(qId, code);
+
+            // 產生回答區段
+            lit_q_1(topId, 7);
+        }
+
+        function q_if_2(qId, topId) {
+            // basic info
+            block_info(qId, "變數 a 設為 5。如果 a 大於 6，就說「good」否則說「nice」 （答案如下）");
+            let ri = generate_norepeat_array(5);
+
+            let code =
+                `a = 5 
+if  a > 6  :
+    print('good') 
+else :
+    print('nice') 
+
+`;
+
+
+            // code
+            block_code(qId, code);
+
+            // 產生回答區段
+            lit_q_2(topId, 7);
+        }
+
+        function q_if_3(qId, topId) {
+            // basic info
+            block_info(qId, "變數 a 設為 5。如果 a 大於 6，就說「good」否則說「nice」 。寫出「否則」的條件");
+            let ri = generate_norepeat_array(5);
+
+            let code =
+                `a = 5 
+if  a > 6  :
+    print('good') 
+else :
+    # a <= 6
+    print('nice') 
+
+`;
+
+
+            // code
+            block_code(qId, code);
+
+            // 產生回答區段
+            lit_q_3(topId, 7);
+        }
+
+    </script>
+
+    <title>Python 語法複習 - if else 寫法</title>
+</head>
+
+<body id="page-top" onload="prettyPrint()">
+    <!-- Navigation -->
+    <a class="menu-toggle rounded" href="#">
+        <i class="fa fa-bars"></i>
+    </a>
+    <nav id="sidebar-wrapper"></nav>
+    <!-- Header -->
+    <header class="masthead d-flex">
+        <div class="container text-center my-auto">
+            <h1 class="mb-1">Python 語法複習</h1>
+            <h3 class="mb-5">if else 寫法</h3>
+            <p>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#info">語法提示</a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l1">Unit 1 -
+                    單一條件</a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l2">Unit 2 - 單一條件 + 否則</a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l3">Unit 3 - 否則的相反條件</a>
+            </p>
+        </div>
+        <div class="overlay"></div>
+    </header>
+
+    <section style="background-color: slategrey; padding: 25px" id="info">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">
+                        語法提示
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul>
+                        <li class="mb-2">
+                            <span class="font-weight-bold text-primary" style="margin-right:15px;">數值比較</span>單一比較
+                        </li>
+                        <pre class="prettyprint lang-py">
+a = ? 
+b = ? 
+
+# == 等於
+if  a==b  :
+    print( '兩個一樣')
+
+
+# != 不等於
+if  a!=b  :
+    print( '兩個不一樣')
+
+
+# >  大於
+if  a>b  :
+    print( 'a 大於 b')
+
+
+# >= 大於等於
+if  a>=b  :
+    print( 'a大於等於b')
+
+
+# <  小於
+if  a< b  :
+    print( 'a小於b')
+
+
+# <=  小於等於
+if  a<=b  :
+    print( 'a小於等於b')
+
+</pre>
+                        <li class="mb-2">
+                            <span class="font-weight-bold text-primary" style="margin-right:15px;">數值比較</span>組合
+                        </li>
+                        <pre class="prettyprint lang-py">
+a = ? 
+b = ?
+
+# ----> and 且
+if  a>5 and a<10  : 
+    # 5 < a < 10
+
+if  a%2==0 and a>20 :
+    # a 是大於 20 的偶數
+
+if  a>0 and b>0  :
+    # a , b 都要 >0
+
+
+# ----> or 或
+if  a<5 or a>25  :
+    # a<5 或 a>25 
+
+
+</pre>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background-color: slategrey; padding: 25px" id="l1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">
+                        Unit 1 -
+                        單一條件
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto" id="q_01">
+                    <ul id="答題範例">
+                        <script>
+                            (function () {
+                                q_if_1("答題範例", "q_01");
+                            })();                           
+                        </script>
+
+                    </ul>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section style="background-color: slategrey; padding: 25px" id="l2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">Unit 2 - 單一條件 + 否則</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto" id="q_02">
+                    <ul id="ifelse答題範例">
+                        <script>
+                            (function () {
+                                q_if_2("ifelse答題範例", "q_02");
+                            })();                       
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="background-color: slategrey; padding: 25px" id="l3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">Unit 3 - 否則的相反條件</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto" id="q_03">
+                    <ul id="否則的相反條件">
+                        <script>
+                            (function () {
+                                q_if_3("否則的相反條件", "q_03");
+                            })();                       
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer text-center" id="footer"></footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Bootstrap core JavaScript -->
+    <script src="../_assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="../_assets/js/stylish-portfolio.js"></script>
+    <script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+
+
+
+</body>
+
+</html>

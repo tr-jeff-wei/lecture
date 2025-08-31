@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <link rel="icon" href="../_assets/img/icon.png" />
+    <link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" />
+    <link href="../_assets/css/stylish-portfolio.css" rel="stylesheet" />
+    <link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.8.1/ace.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script src="util_07.js"></script>
+
+    <script>
+
+
+        function check_ans(elt) {
+
+            let t = elt.parentElement.parentElement.parentElement.parentElement.children[0].textContent;
+            // var textarea = document.getElementById('text');
+            console.log(t);
+            let re_fname = /void (.*)\(/;
+            let re_content = /\((.*)\)/;
+            let re_sp = /([ ,]+)/g;
+            let fname = t.match(re_fname)[1];
+            console.log(fname);
+            let content = t.match(re_content)[1].trim().replace(re_sp, '#');
+            content = content.split('#');
+            console.log(content);
+            let ans = JSON.parse(elt.dataset.qans);
+            console.log(ans);
+
+            let correct = true;
+            let var_names = [] ;
+
+            if ((ans.length - 1) * 2 == content.length) {
+
+                for (let i = 1; i < ans.length; i++) {
+                    if (ans[i] != content[(i - 1) * 2]) {
+                        correct = false;
+                    }
+                    let vn = content[(i-1)*2+1];
+                    if( var_names.includes(vn)){
+                        correct = false ;
+                    }
+                    var_names.push(vn) ;
+                }
+            } else {
+                correct = false;
+            }
+
+
+
+            if (correct) {
+                elt.setAttribute('class', 'btn btn-success');
+                elt.textContent = ' ✔️ ';
+                elt.disabled = true;
+            } else {
+                elt.setAttribute('class', 'btn btn-danger');
+                elt.textContent = ' ❌ ';
+            }
+        }
+
+
+        function check_ans2(elt) {
+
+            let t = elt.parentElement.parentElement.parentElement.parentElement.children[0].textContent;
+            // var textarea = document.getElementById('text');
+            console.log(t);
+            let re_content = /static (.*) Q/
+            let content = t.match(re_content)[1].trim();
+            console.log(content);
+            let ans = elt.dataset.qans.trim();
+            console.log(ans);
+
+            let correct = false;
+
+            if( ans==content){
+                correct = true ;
+            }
+
+
+
+            if (correct) {
+                elt.setAttribute('class', 'btn btn-success');
+                elt.textContent = ' ✔️ ';
+                elt.disabled = true;
+            } else {
+                elt.setAttribute('class', 'btn btn-danger');
+                elt.textContent = ' ❌ ';
+            }
+        }
+
+        function fun_q_1(did, arr) {
+
+            for (let n = 0; n < arr.length; n++) {
+                let item_id = did + '_' + n;
+
+                let ulElt = document.createElement('ul');
+                let codeElt = document.createElement('div');
+                ulElt.appendChild(codeElt);
+                codeElt.setAttribute('id', item_id);
+                let es = codeElt.style;
+                es.fontSize = '24px';
+                es.height = "160px";
+                es.width = '95%';
+                es.padding = '1em';
+
+                let rootElt = document.getElementById(did);
+                rootElt.appendChild(ulElt);
+
+
+                let code = `//問號應該寫為 ... \nstatic void ${arr[n][0]}( ? ){\n   // code\n}\n`;
+
+                let editor = ace.edit(item_id);
+                editor.setTheme("ace/theme/twilight");
+                editor.session.setMode("ace/mode/java");
+                editor.setValue(code, -1);
+                editor.resize();
+
+                let btnElt = document.createElement('div');
+                btnElt.innerHTML = `<div><div><button class="btn btn-info" type="button" data-qfunc="fun_q_1" data-qans='${JSON.stringify(arr[n])}' onclick="check_ans(this);">CHECK</button></div></div>`
+                ulElt.appendChild(btnElt);
+            }
+
+
+            // editor.session.on('change', function (delta) {
+            //     // delta.start, delta.end, delta.lines, delta.action
+            //     console.log(delta);
+            // });
+
+        }
+
+        function fun_q_2(did) {
+
+
+
+            for (let n = 0; n < 10; n++) {
+                let item_id = did + '_' + n;
+
+                let ulElt = document.createElement('ul');
+                let codeElt = document.createElement('div');
+                ulElt.appendChild(codeElt);
+                codeElt.setAttribute('id', item_id);
+                let es = codeElt.style;
+                es.fontSize = '24px';
+                es.height = "360px";
+                es.width = '95%';
+                es.padding = '1em';
+
+                let rootElt = document.getElementById(did);
+                rootElt.appendChild(ulElt);
+
+
+                let code = `//問號應該寫為 ... \nstatic ? Q${n + 1}(){\n\n`;
+
+
+                let ri = generate_norepeat_array(5);
+                let vname = VAR_NAME.sort((a, b) => 0.5 - Math.random());
+                let ans = ranInt(6); //0~5
+                let ans_str = '';
+                let ans_var = '';
+                for (let i = 0; i < 5; i++) {
+                    let val = get_value(ri[i]);
+                    code += `       ${java_data_type[ri[i]]} ${vname[ri[i]]} = ${val} ;\n`;
+                    if (i == ans) {
+                        ans_str = java_data_type[ri[i]];
+                        ans_var = vname[ri[i]];
+                    }
+                }
+                if (ans == 5) {
+                    ans_str = 'void';
+                } else {
+                    code += `\n       return ${ans_var} ;\n`;
+                }
+                code += `\n}\n`;
+
+                let editor = ace.edit(item_id);
+                editor.setTheme("ace/theme/twilight");
+                editor.session.setMode("ace/mode/java");
+                editor.setValue(code, -1);
+                editor.resize();
+
+                let btnElt = document.createElement('div');
+                btnElt.innerHTML = `<div><div><button class="btn btn-info" type="button" data-qfunc="fun_q_1" data-qans='${ans_str}' onclick="check_ans2(this);">CHECK</button></div></div>`
+                ulElt.appendChild(btnElt);
+            }
+
+
+            // editor.session.on('change', function (delta) {
+            //     // delta.start, delta.end, delta.lines, delta.action
+            //     console.log(delta);
+            // });
+
+        }
+
+
+
+        function question(qId) {
+            // basic info
+            block_info(qId, "請參考下列程式片段，寫出正確的函式輸入定義。");
+            let ri = generate_norepeat_array(5);
+
+            let code = `class Test{
+    public static void main(String[] args){
+
+`;
+            let val = "";
+            let vname = VAR_NAME.sort((a, b) => 0.5 - Math.random());
+            for (let i = 0; i < 5; i++) {
+                let val = get_value(ri[i]);
+                code += `       ${java_data_type[ri[i]]} ${vname[ri[i]]} = ${val} ;
+`;
+            }
+
+            let wi = generate_norepeat_array(VERB_NAME.length);
+            code += '\n';
+            let ans = [];
+            for (let i = 1; i <= 3; i++) {
+                let args = generate_norepeat_array(5);
+                //console.log(args) ;
+                if (i == 1) {
+                    code += `       ${VERB_NAME[wi[0]]}( ${vname[args[0]]} );\n`;
+                    ans.push([VERB_NAME[wi[0]], java_data_type[args[0]]]);
+                    code += `       ${VERB_NAME[wi[1]]}( ${vname[args[1]]} );\n`;
+                    ans.push([VERB_NAME[wi[1]], java_data_type[args[1]]])
+                } else if (i == 2) {
+                    code += `       ${VERB_NAME[wi[2]]}( ${vname[args[0]]} , ${vname[args[1]]} );\n`;
+                    ans.push([VERB_NAME[wi[2]], java_data_type[args[0]], java_data_type[args[1]]]);
+                    code += `       ${VERB_NAME[wi[3]]}( ${vname[args[4]]} , ${vname[args[3]]} );\n`;
+                    ans.push([VERB_NAME[wi[3]], java_data_type[args[4]], java_data_type[args[3]]]);
+                } else {
+                    code += `       ${VERB_NAME[wi[4]]}( ${vname[args[0]]} , ${vname[args[1]]} , ${vname[args[2]]} );\n`;
+                    ans.push([VERB_NAME[wi[4]], java_data_type[args[0]], java_data_type[args[1]], java_data_type[args[2]]]);
+                    code += `       ${VERB_NAME[wi[5]]}( ${vname[args[4]]} , ${vname[args[3]]} , ${vname[args[1]]} );\n`;
+                    ans.push([VERB_NAME[wi[5]], java_data_type[args[4]], java_data_type[args[3]], java_data_type[args[1]]]);
+
+                }
+            }
+            //console.log(ans) ;
+            code += `
+    }
+}
+            `;
+            // code
+            block_code(qId, code);
+
+            // 產生回答區段
+            fun_q_1('q_01', ans);
+        }
+
+        function var_q1(qId) {
+            let des = "請依序寫出每個變數 Variable 所使用的類型 type？";
+
+            let ri = generate_norepeat_array(5);
+            let ans = [];
+            ans[0] = "";
+
+            let code = "";
+            let val = "";
+            for (let i = 0; i < 5; i++) {
+                let val = get_value(ri[i]);
+                ans[0] += java_data_type[ri[i]] + " ";
+                code += `? x${i} = ${val} ;
+`;
+            }
+            code += `
+`;
+            //build_question(qId, qAnswer, qTitle, qCode, exDesc)
+            build_question(qId, ans, des, code, [
+                "String int int boolean int",
+            ]);
+        }
+
+    </script>
+
+    <title>Java 語法複習 - 函式 Function</title>
+</head>
+
+<body id="page-top" onload="prettyPrint()">
+    <!-- Navigation -->
+    <a class="menu-toggle rounded" href="#">
+        <i class="fa fa-bars"></i>
+    </a>
+    <nav id="sidebar-wrapper"></nav>
+    <!-- Header -->
+    <header class="masthead d-flex">
+        <div class="container text-center my-auto">
+            <h1 class="mb-1">Java 語法複習</h1>
+            <h3 class="mb-5">函式 Function</h3>
+            <p>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l1">Unit 1 -
+                    輸入參數定義（Parameters、Arguments） </a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l2">Unit 2 - 輸出定義</a>
+            </p>
+        </div>
+        <div class="overlay"></div>
+    </header>
+    <section style="background-color: slategrey; padding: 25px" id="l1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">
+                        Unit 1 - 輸入參數定義（Parameters、Arguments）
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto" id="q_01">
+                    <ul id="題目程式碼">
+                        <script>
+                            (function () {
+                                question("題目程式碼");
+                            })();                           
+                        </script>
+
+                    </ul>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section style="background-color: slategrey; padding: 25px" id="l2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">Unit 2 - 輸出定義</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto" id="q_02">
+                    <ul id="題目程式碼">
+                        <script>
+                            (function () {
+                                fun_q_2("q_02");
+                            })();                           
+                        </script>
+
+                    </ul>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer text-center" id="footer"></footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Bootstrap core JavaScript -->
+    <script src="../_assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="../_assets/js/stylish-portfolio.js"></script>
+    <script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+
+
+
+</body>
+
+</html>

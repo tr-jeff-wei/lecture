@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+	
+		<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+		<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+        <link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+        
+		<title>chrome extension - 工具列-彈出頁框</title>
+	</head>
+	<body id="page-top">
+		<!-- Navigation -->
+		<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+		</a>
+		<nav id="sidebar-wrapper"></nav>
+		<!-- Header -->
+		<header class="masthead d-flex">
+			<div class="container text-center my-auto">
+				<h1 class="mb-1">chrome extension</h1>
+				<h3 class="mb-5">                    
+                    工具列-彈出頁框
+				</h3>
+				<p>
+					<button type="button" class="btn btn-outline-info btn-sm">chrome-extension</button>
+					<button type="button" class="btn btn-outline-info btn-sm">JS 進階</button>
+				</p>
+				<a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
+			</div>
+			<div class="overlay"></div>
+		</header>
+        <!-- About -->
+		<section class="content-section bg-light" id="about">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5" >運作流程</h3>                       
+                        <p class="lead mb-5"><i class="fa fa-rocket" aria-hidden="true"></i>&nbsp;&nbsp;流程示意圖</p> 
+                        <p class="mb-4">
+                            <img src="https://docs.google.com/drawings/d/e/2PACX-1vQ2Mxh2DyG4bUM-BYVLZKc4XSIZ9pl8-wUUowxON2hZaHdcG792trqpWr_eyajKWX9m_UIhnZsOtuqk/pub?w=799&amp;h=394">
+                        </p>
+                        
+                        <ol>
+                            <li>由網址列旁的外掛程式按鈕開啟『工具設定小頁面』</li>
+                            <li>『工具設定小頁面』上面的按鈕將訊息轉送到頁面的 content.js 程式中</li>
+                            <li>content.js 接收到送來的訊號，去改變外掛程式的功能（開啟/關閉、改變顏色）</li>
+                        </ol>
+                        <br/>
+                        <a class="btn btn-dark js-scroll-trigger" href="#practice">next</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- practice -->
+		<section class="content-section bg-light2" id="practice">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5" >小試身手</h3>                       
+                        <p class="lead mb-2">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;相關檔案
+                        </p> 
+                        <img src="https://docs.google.com/drawings/d/e/2PACX-1vRmKjQofgyGc4IfdbmYjnVtouf00km4B_rgKUY7Lh4NkVqwAJJQkMRoUrFUaM5kDbGsIlpI7CnOfC_D/pub?w=918&amp;h=618">
+                        <br><br>
+                        
+                        <p class="lead mb-2">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;manifest.json 擴充程式描述檔
+                        </p> 
+                        <p data-height="420" data-theme-id="dark" data-slug-hash="PyeKzY" data-default-tab="js" data-user="jeff-wei" data-pen-title="chrome-extension-ex02_background_popup" class="codepen">See the Pen <a href="https://codepen.io/jeff-wei/pen/PyeKzY/">chrome-extension-ex02_background_popup</a> by jeff-wei (<a href="https://codepen.io/jeff-wei">@jeff-wei</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+                        <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+                        <ol>
+                            <li>browser_action >> default_popup：工具列彈出視窗（<a href="https://developer.chrome.com/extensions/browserAction#popups">官網說明</a>）</li>
+                            <li>"permissions": ["tabs"]（<a href="https://developer.chrome.com/extensions/tabs">官網說明</a>）</li>
+                            <p>讓頁面使用 tabs 相關 API 來取得頁面資訊。知道訊息要投送到哪一個頁面（正在使用的頁面）</p>
+                        </ol>
+                        
+                        <br><br>
+                        <p class="lead mb-2">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;彈出頁框 popup.html / popup.js
+                        </p>
+                        <p data-height="547" data-theme-id="dark" data-slug-hash="vVjeEN" data-default-tab="html" data-user="jeff-wei" data-pen-title="chrome-extension-ex02_background_popup_page" class="codepen">See the Pen <a href="https://codepen.io/jeff-wei/pen/vVjeEN/">chrome-extension-ex02_background_popup_page</a> by jeff-wei (<a href="https://codepen.io/jeff-wei">@jeff-wei</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+
+                        <br>
+                        
+                        <ol>
+                            <li><tc1>chrome.tabs.query( 參數 , 執行函式 )</tc1>：取得分頁的資訊（<a href="https://developer.chrome.com/extensions/tabs">官網說明</a>）
+                            </li>
+                            <br>
+                            <img src="https://docs.google.com/drawings/d/e/2PACX-1vQ6f9kN0ZrwvFZZTmPhtIdy4r0yfCGj2ubGIRwPTDHntD0cUFAe1QvoK1jJvdJZqZEQBDb6jactjy8X/pub?w=544&amp;h=290">
+                            <br><br>
+                            <li>
+                                <tc1>element.addEventListener('click' , 執行函式 )</tc1>：按鈕點擊動作設定
+                            </li>
+                            <br>
+                            <img src="https://docs.google.com/drawings/d/e/2PACX-1vQSaF1W4O6jl7rgC_mHKlAEW8mHw2h5Iw5Er1fn6LABqX7ZW1QlMQJnYfxysOW1I-7AKTsCCfeKHdtl/pub?w=765&amp;h=188">
+                            <br><br>
+                            
+                        </ol>
+                        
+                        <br><br>
+                        <p class="lead mb-2">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;content script
+                        </p>
+                        <br>
+                        <p data-height="1099" data-theme-id="dark" data-slug-hash="gBzXpe" data-default-tab="js" data-user="jeff-wei" data-pen-title="chrome-extension-ex02_background_popup_page_content_js" class="codepen">See the Pen <a href="https://codepen.io/jeff-wei/pen/gBzXpe/">chrome-extension-ex02_background_popup_page_content_js</a> by jeff-wei (<a href="https://codepen.io/jeff-wei">@jeff-wei</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+                        <ol>
+                            <li><tc1>chrome.runtime.onMessage.addListener</tc1>(...)：接收訊息動作設定</li>
+                        </ol>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<!-- Footer -->
+		<footer class="footer text-center" id="footer">
+			
+		</footer>
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+		</a>
+		<!-- Bootstrap core JavaScript -->
+		<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+		<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- Plugin JavaScript -->
+		<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Custom scripts for this template -->
+		<script src="../_assets/js/stylish-portfolio.js"></script>
+       
+<!--        <script src="../_assets/vendor/google-code-prettify/prettify.js"></script>-->
+<!--        <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>-->
+	</body>
+</html>

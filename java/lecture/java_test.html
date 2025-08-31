@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="icon" href="../_assets/img/icon.png">
+	<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+	<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+	<link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+
+
+	<title>Java 語法複習</title>
+</head>
+
+<body id="page-top" onload='prettyPrint()'>
+	<!-- Navigation -->
+	<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+	</a>
+	<nav id="sidebar-wrapper"></nav>
+	<!-- Header -->
+	<header class="masthead d-flex">
+		<div class="container text-center my-auto">
+			<h1 class="mb-1">Java 語法複習</h1>
+			<h3 class="mb-5">
+				Java 語法測驗
+			</h3>
+			<p>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#snip'>語法小片段</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#structure'>物件結構</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app'>應用語法片段</a>
+
+
+			</p>
+			
+		</div>
+		<div class="overlay"></div>
+	</header>
+	<section style="background-color:slategrey;padding: 25px;" id="snip">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 style="color: white;">語法小片段</h3>					
+				</div>
+			</div>
+		</div>
+	</section>
+<section style="padding: 16px;" class="bg-light">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">		
+						[ 文字 String ]				
+					<ul>
+						<li class="mb-2">建立變數 str 放文字 1234<br>
+							再將文字轉成數字，放入變數 num</li>
+<pre class="prettyprint lang-java">
+String str = "1234" ;
+int    num = Integer.parseInt(str) ;
+</pre>
+					</ul>
+					<ul>
+							<li class="mb-2">建立變數 str 放文字「2018-05-12」<br>
+								用 substring 取出 「05」 片段放入 str2 </li>
+	<pre class="prettyprint lang-java">
+String str = "2018-05-12" ;
+String str2= str.substring(5,7) ;</pre>
+						</ul>
+						<ul>
+								<li class="mb-2">
+									用 split 將 str 依據「-」把 2018、05、12 切開，分別放入陣列 arr2 中  </li>
+		<pre class="prettyprint lang-java">
+String[] arr2 = str.split("-") ;
+
+</pre>
+							</ul>
+				</div>
+			</div>
+		</div>
+	</section>	
+	<section style="padding: 16px;" class="bg-light2">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">		
+							[ 迴圈 for ]				
+						<ul>
+							<li class="mb-2">用迴圈印出數字序列 33 , 36 , 39 , ... , 999 </li>
+<pre class="prettyprint lang-java">
+for( int i=33 ; i <= 999 ; i=i+3 ){
+	System.out.println( i ) ;
+}
+</pre>
+						</ul>
+						<ul>
+								<li class="mb-2">用迴圈印出數字序列 88 , 77 , 66 , ... , 11 </li>
+<pre class="prettyprint lang-java">
+for( int i=88 ; i >= 11 ; i=i-11 ){
+	System.out.println( i ) ;
+}
+</pre>
+							</ul>
+						<ul>
+								<li class="mb-2">用迴圈印出數字 57~67，遇到 63 用 continue 跳過 </li>
+<pre class="prettyprint lang-java">
+for( int i=57 ; i <= 67 ; i=i+1 ){
+	if( i==63 ){
+		continue ;
+	}
+	System.out.println( i ) ;
+}
+</pre>
+							</ul>
+							<ul>
+									<li class="mb-2">用迴圈找數字 380 ~ 400 <br>
+										找到 17 的倍數，用 break 中斷搜尋 </li>
+	<pre class="prettyprint lang-java">
+for( int i=380 ; i <= 400 ; i=i+1 ){
+	if( i%17==0 ){
+		System.out.println( "found !! "+i ) ;
+		break ;
+	}		
+}
+	</pre>
+								</ul>
+					</div>
+				</div>
+			</div>
+		</section>	
+	<section style="padding: 16px;" class="bg-light">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					[ 陣列、Array ]		
+					<ul>
+						<li class="mb-2">建立陣列，變數名稱 arr ，放入 3 , 7 , 2 , 4</li>
+<pre class="prettyprint lang-java">
+int[] arr = new int[4] ;
+arr[0] = 3 ;
+arr[1] = 7 ;
+arr[2] = 2 ;
+arr[3] = 4 ;
+</pre>
+					</ul>
+					<ul>
+						<li class="mb-2">印出陣列內容如下：<br>
+							0 -> 3<br>
+							1 -> 7<br>
+							2 -> 2<br>
+							3 -> 4<br>
+						</li>
+<pre class="prettyprint lang-java">
+for( int i=0 ; i < arr.length ; i++){
+	System.out.println(i+" -> "+arr[i]);
+}
+</pre>
+					</ul>
+					<ul>
+						<li class="mb-2">計算陣列總和，放入變數 total</li>
+<pre class="prettyprint lang-java">
+int total = 0 ;
+for( int i=0 ; i < arr.length ; i++){
+	total = total + arr[i] ;
+}
+System.out.println( "total -> "+total );
+</pre>
+					</ul>
+					<ul>
+							<li class="mb-2">尋找陣列最大值，放入變數 max</li>
+<pre class="prettyprint lang-java">
+int max = arr[0] ;
+for( int i=0 ; i < arr.length ; i++){
+	if( arr[i] > max ){
+		max = arr[i] ;
+	}
+}
+System.out.println( "max -> "+max );
+</pre>
+						</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section style="padding: 16px;" class="bg-light2">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">		
+					[ 函式、Function ]					
+					<ul>
+						<li class="mb-2">建立函式 F1<br>可以輸入 3 個數字，將 3 個數字相乘，丟出結果</li>
+<pre class="prettyprint lang-java">
+// 建立
+public static int F1( int a , int b ,int c){
+	int ans = a*b*c ;
+	return ans ;
+}
+
+// 使用
+int r = F1( 3 ,4 ,5 );
+</pre>
+
+<li class="mb-2">建立函式 F2
+	<br> 可以輸入 2 個名字，將 2 個名字用逗號連接，作為結果丟出</li>
+<pre class="prettyprint lang-java">
+// 建立
+public static int F2( String name1 , String name2 ){
+	String r = name1+","+name2 ;
+	return r ;
+}
+// 使用
+String result = F2( "Joe" , "May" ) ;
+</pre>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section style="background-color:slategrey;padding: 25px;" id="structure">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 style="color: white;">物件結構</h3>					
+					</div>
+				</div>
+			</div>
+		</section>
+
+	<section style="padding: 16px;" class="bg-light">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">					
+					<ul>
+						<li class="mb-2">建立 class 「Student」<br>
+							# 具備變數：「name」放姓名、「math」放數學成績、「java」放 java 成績 <br>
+							# 具備函式：show() 印出姓名、數學、java 成績
+						</li>
+<pre class="prettyprint lang-java">
+class Student{
+	
+	String name ;
+	int math ;
+	int java ;
+
+	public void show(){
+		System.out.println("name : "+name ) ;
+		System.out.println("math : "+math ) ;
+		System.out.println("java : "+java ) ;
+	}
+
+}
+</pre>
+<li class="mb-2">使用 Student class，建立 Student 物件 <br>
+	姓名：Joe、數學成績：98、java 成績：99。並使用函式 show() 
+	<pre class="prettyprint lang-java">
+class Test{
+
+	public static void main(String[] args){
+
+		Student s = new Student() ;
+		s.name = "Joe" ;
+		s.math = 98 ;
+		s.java = 99 ;
+		s.show() ;
+	}
+}		
+	</pre>
+</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+
+
+	<section style="background-color:slategrey;padding: 25px;" id="app">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 style="color: white;">應用語法片段</h3>					
+				</div>
+			</div>
+		</div>
+	</section>
+	<section style="padding: 16px;" class="bg-light">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">		
+						[ 文字 String ]				
+					<ul>
+						<li class="mb-2">用 charAt 搭配 for 取出文字變數 str 的每一個字元<br>
+							String str = "apple" ;<br>
+							印出內容如下：<br>
+							0 --> a <br>
+							1 --> p <br>
+							2 --> p <br>
+							3 --> l <br>
+							4 --> e <br>
+
+						</li>
+<pre class="prettyprint lang-java">
+String str = "apple" ;
+for( int i=0 ; i < str.length() ; i++ ){
+	char c = str.charAt(i) ;
+	System.out.println( i+" --> "+ c ) ;
+}
+</pre>
+					</ul>
+					<ul>
+							<li class="mb-2">用 charAt 搭配 for 取出文字變數 str 的每一個字元<br>
+								計算文字中出現字母 a 的次數
+								String str = "approach" ;</li>
+	<pre class="prettyprint lang-java">
+String str = "approach" ;
+int total = 0 ;
+for( int i=0 ; i < str.length() ; i++ ){
+	char c = str.charAt(i) ;
+	if( c == 'a' ){
+		total++ ;
+	}
+}
+System.out.println( total ) ;
+</pre>
+						</ul>
+						<ul>
+								<li class="mb-2">
+									用 split 將 str 依據「,」把 str 切開，計算「晴天」次數 <br>
+									String str = "晴天,雨天,晴天,晴天,雨天,晴天" ; </li>
+		<pre class="prettyprint lang-java">
+String str = "晴天,雨天,晴天,晴天,雨天,晴天" ; 
+String[] arr = str.split(",") ;
+int total = 0 ;
+for( int i=0 ; i < arr.length ; i++ ){
+	if( arr[i].equals("晴天") == true ){
+		total++ ;
+	}
+}
+System.out.println( total ) ;
+</pre>
+							</ul>
+
+							[ 陣列、Array ]				
+					<ul>
+						<li class="mb-2">用雙 for 把二維陣列的內容印出<br>
+							String[][] data = new String[2][3] ;<br>
+							data[0][0] = "A" ; <br>
+							data[0][1] = "B" ; <br>
+							data[0][2] = "C" ; <br>
+							data[1][0] = "D" ; <br>
+							data[1][1] = "E" ; <br>
+							data[1][2] = "F" ; <br>
+							印出內容如下：<br>
+							ABC <br>
+							DEF <br>
+						</li>
+<pre class="prettyprint lang-java">
+String[][] data = new String[2][3] ;
+data[0][0] = "A" ; 
+data[0][1] = "B" ; 
+data[0][2] = "C" ; 
+data[1][0] = "D" ; 
+data[1][1] = "E" ; 
+data[1][2] = "F" ; 
+for (int i = 0 ; i < data.length ; i++) {
+	for (int j = 0 ; j < data[i].length ; j++) {
+		System.out.print( data[i][j] );
+	}
+	System.out.println();
+}
+</pre>
+					</ul>
+					<ul>
+						<li class="mb-2">呈上題 data ，用雙 for 把二維陣列的內容印出<br>
+							印出內容如下：<br>
+							AD <br>
+							BE <br>
+							CF <br>
+						</li>
+<pre class="prettyprint lang-java">
+for (int j = 0; j < data[0].length; j++) {
+	for (int i = 0; i < data.length; i++) {
+		System.out.print( data[i][j] );
+	}
+	System.out.println();
+}
+</pre>
+					</ul>
+					<ul>
+						<li class="mb-2">用雙 for 把二維陣列的內容建立出來（逗點、換行分隔）<br>
+							陣列內容如下：<br>
+							22,23,24,25<br>
+							26,27,28,29<br>
+							30,31,32,33<br>
+						</li>
+<pre class="prettyprint lang-java">
+int[][] data = new int[3][4];
+int number = 22;
+for (int i = 0; i < data.length; i++) {
+	for (int j = 0; j < data[i].length; j++) {
+		data[i][j] = number;
+		number++;
+	}
+}
+</pre>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>	
+
+	<!-- Footer -->
+	<footer class="footer text-center" id="footer">
+
+	</footer>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+	<!-- Bootstrap core JavaScript -->
+	<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Plugin JavaScript -->
+	<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Custom scripts for this template -->
+	<script src="../_assets/js/stylish-portfolio.js"></script>
+	<script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+	<script>
+	
+		function setVisiable( isVisiable ){
+
+			var ds = document.getElementsByTagName('pre') ;
+			for( let it of ds){
+				//console.log(it);
+				if( isVisiable ){
+					it.setAttribute('style','visibility: visible;') ;
+				}else{
+					it.setAttribute('style','visibility: hidden;') ;
+				}
+				
+				
+			}
+
+
+		}
+	</script>
+
+</body>
+
+</html>

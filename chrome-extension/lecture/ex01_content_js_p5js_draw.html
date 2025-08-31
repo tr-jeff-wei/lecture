@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+	
+		<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+		<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+        <link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+        
+		<title>chrome extension - content.js</title>
+	</head>
+	<body id="page-top">
+		<!-- Navigation -->
+		<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+		</a>
+		<nav id="sidebar-wrapper"></nav>
+		<!-- Header -->
+		<header class="masthead d-flex">
+			<div class="container text-center my-auto">
+				<h1 class="mb-1">chrome extension</h1>
+				<h3 class="mb-5">                    
+                    p5js - painter
+				</h3>
+				<p>
+					<button type="button" class="btn btn-outline-info btn-sm">chrome-extension</button>
+					<button type="button" class="btn btn-outline-info btn-sm">JS 進階</button>
+				</p>
+				<a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Find Out More</a>
+			</div>
+			<div class="overlay"></div>
+		</header>
+        <!-- About -->
+		<section class="content-section bg-light" id="about">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5" >工具說明</h3>                       
+                        <p class="lead mb-5"><i class="fa fa-rocket" aria-hidden="true"></i>&nbsp;&nbsp;在 content.js 中運用 p5js 處理圖像設計。設計在頁面上可以作畫的工具。</p> 
+                        <p class="mb-4">
+                        <img src="https://docs.google.com/drawings/d/e/2PACX-1vS-ttOiPV9UrRltWx736ZCzVxPb0lPRDUOiGU4Hly6Ox-NSBtXHsBXUkD-zh6pkQPlcP1Q5QeuvkFhP/pub?w=897&h=629">
+                        </p>
+                        
+                        <a class="btn btn-dark js-scroll-trigger" href="#practice">next</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- practice -->
+		<section class="content-section bg-light2" id="practice">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5" >小試身手</h3>  
+                        <p class="lead mb-2">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;檔案結構</p>
+                        <img src="https://docs.google.com/drawings/d/e/2PACX-1vTjtU3kyR6NS0voDAuPonwvw4j-LLB9VdY_lA9vM5xOQsX3b6uDBhAfw8-UDyfh5iAqfW8WVhf5asNt/pub?w=280&h=162">
+                        <br/><br/>
+                        <p class="lead mb-2">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;manifest.json 擴充程式描述檔</p>    
+                        <p data-height="317" data-theme-id="dark" data-slug-hash="vVYZez" data-default-tab="js" data-user="jeff-wei" data-pen-title="chrome-extension-ex01_p5js_painter" class="codepen">See the Pen <a href="https://codepen.io/jeff-wei/pen/vVYZez/">chrome-extension-ex01_p5js_painter</a> by jeff-wei (<a href="https://codepen.io/jeff-wei">@jeff-wei</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+                        <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+                        <ol>
+                            <li>在 js 的欄位要加入：p5.min.js 、p5.dom.js 檔案。</li>
+                        </ol>
+                        <br/>
+                        <p class="lead mb-2"><i class="fa fa-rocket" aria-hidden="true"></i>&nbsp;&nbsp; 範例程式</p>                           
+                        <p data-height="735" data-theme-id="dark" data-slug-hash="ZqEyZK" data-default-tab="js" data-user="jeff-wei" data-pen-title="chrome-extension-ex01_p5js_painter_code" class="codepen">See the Pen <a href="https://codepen.io/jeff-wei/pen/ZqEyZK/">chrome-extension-ex01_p5js_painter_code</a> by jeff-wei (<a href="https://codepen.io/jeff-wei">@jeff-wei</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+                        <ol>
+                            <li>此處載入 p5js 用 instance object 的方式，可以把物件與方法封裝完整。<br/>（若使用全域模式的操作，發現有時候讀取網頁功能會失敗，猜測是命名空間衝突造成）</li>
+                        </ol>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<!-- Footer -->
+		<footer class="footer text-center" id="footer">
+			
+		</footer>
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+		</a>
+		<!-- Bootstrap core JavaScript -->
+		<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+		<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- Plugin JavaScript -->
+		<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Custom scripts for this template -->
+		<script src="../_assets/js/stylish-portfolio.js"></script>
+        
+<!--        <script src="../_assets/vendor/google-code-prettify/prettify.js"></script>-->
+<!--        <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>-->
+	</body>
+</html>

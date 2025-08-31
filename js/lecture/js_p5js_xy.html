@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="icon" href="../_assets/img/icon.png">
+	<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+	<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+	<link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+
+
+	<title>JS-xy</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"></script>
+	<script>
+
+	function setup() {
+  createCanvas(800, 800);
+}
+
+function draw() {
+  background(0);
+  stroke(200,200,0);
+  line(mouseX,0,mouseX,height) ;
+
+  stroke(66, 197, 244);
+  line(0,mouseY, width,mouseY) ;
+
+
+  textSize(20);
+  noStroke();
+  fill(200,200,0);
+  text( mouseX , mouseX+5,30) ;
+	text( mouseX , mouseX+35,mouseY-15) ;
+
+  fill(66, 197, 244);
+  text( mouseY , 20,mouseY-10) ;
+	text( mouseY , mouseX+105,mouseY-15) ;
+
+  let t = '(            ,            )';
+
+  fill(200);
+  text(t , mouseX+15,mouseY-15) ;
+}
+	</script>
+</head>
+
+<body >
+
+
+</body>
+
+</html>

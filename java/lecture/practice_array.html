@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <link rel="icon" href="../_assets/img/icon.png" />
+    <link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" />
+    <link href="../_assets/css/stylish-portfolio.css" rel="stylesheet" />
+    <link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css" />
+
+    <script src="util_07.js"></script>
+    <script>
+        function q0a(qId) {
+            let des = '請問 ? 應該填入什麼（回答 "=" 之前的內容）';
+
+            // 產生隨機型別索引值陣列 ==> [ random type index]
+            let ri = generate_norepeat_array(java_data_type.length);
+            let ans = [];
+            let ex = [];
+
+            let code = "";
+            let val = "";
+            for (let i = 0; i < 5; i++) {
+                let ans_ = java_data_type[ri[i]] + "[] arr";
+                ans.push(ans_);
+                ex.push("int[] arr");
+                code += `${q_array_to_javacode(
+                    "arr",
+                    ri[i],
+                    3 + ranInt(3),
+                    true
+                )}
+`;
+            }
+            build_question(qId, ans, des, code, ex);
+            // build_question(qId, qAnswer, qTitle, qCode, exDesc)
+        }
+
+        function q0b(qId) {
+            let des = "請問建立陣列（第一行）應該如何寫？";
+            let ri = ranInt(java_data_type.length);
+            let ans = [];
+            let a_size = 2 + ranInt(3);
+            let code = `? arr = new ?   ;
+`;
+            for (let i = 0; i < a_size; i++) {
+                code += `arr[${i}] =  ${get_value(ri)} ;
+`;
+            }
+
+            ans.push(
+                java_data_type[ri] +
+                "[]arr=new" +
+                java_data_type[ri] +
+                "[" +
+                a_size +
+                "];"
+            );
+
+            build_question(qId, ans, des, code, [
+                "int[] arr = new int[3];",
+            ]);
+        }
+
+        function q0c(qId) {
+            let dtype = 0;
+            // if( Math.random()>0.5){
+            // 	dtype=0;
+            // }else{
+            // 	dtype=3;
+            // }
+            let ans = [];
+
+            let vlist = [];
+            let code = `${q_array_to_javacode(
+                "arr",
+                dtype,
+                3 + ranInt(3),
+                false,
+                vlist
+            )}
+arr[ ? ] = ? ;
+`;
+            let a1 = ranInt(vlist.length);
+            let a2 = get_value(dtype);
+            ans.push("arr[" + a1 + "]=" + a2 + ";");
+
+            let des = `請問 ? 應該依序填入什麼，可以將  ${vlist[a1]}  改為  ${a2}`;
+            build_question(qId, ans, des, code, [`arr[ ? ] = ? ;`]);
+        }
+
+        function q1a(qId) {
+            let des = "請問程式執行後，將印出哪些數字？";
+
+            // question // ---------------------------
+            let a1 = generate_array(4, 20);
+            let a1s = array_to_javacode("int", a1, "arr");
+            let e1 = ranInt(a1.length);
+            let f1 = (e1 + 1) % a1.length;
+            let g1 = (f1 + 2) % a1.length;
+
+            a1[e1] = a1[f1];
+            a1[f1] = a1[g1];
+            //console.log(a1);
+            // question-code //-----------------------
+            let code = `${a1s}
+
+arr[${e1}] = arr[${f1}] ;
+arr[${f1}] = arr[${g1}] ;
+
+for( int i=0 ; i<arr.length ; i++ ){
+	System.out.println( arr[i] ) ;
+}
+
+`;
+            // question-code //-----------------------
+
+            let ans = "";
+            let ex = "";
+            for (let i = 0; i < a1.length; i++) {
+                if (i == 0) {
+                    ans += a1[i];
+                    ex += i;
+                } else {
+                    ans += "," + a1[i];
+                    ex += "," + i;
+                }
+            }
+
+            build_question(qId, [ans], des, code, [ex]);
+        }
+
+        function q1_g_a(qId) {
+            let des = "請問 ? 填入多少，將印出 : ";
+
+            // question // ---------------------------
+            let a1 = generate_array(7, 50);
+            let a1s = array_to_javacode("int", a1, "arr");
+            let e1 = ranInt(a1.length / 2);
+            let e2 = e1 + ranInt(a1.length - e1) + 1;
+            //console.log(a1);
+            // question-code //-----------------------
+            let code = `${a1s}
+for( int i=? ; i<? ; i++ ){
+	System.out.println( arr[i] ) ;
+}
+
+`;
+            let str = "";
+            for (let i = e1; i < e2; i++) {
+                if (str.length == 0) {
+                    str = a1[i];
+                } else {
+                    str = str + " , " + a1[i];
+                }
+            }
+            des = des + str;
+            // question-code //-----------------------
+            let ans = [`for( int i=${e1} ; i<${e2} ; i++ ){`]; //[e1, e2];
+
+            build_question(qId, ans, des, code, [
+                "for( int i=? ; i<? ; i++ ){",
+            ]);
+        }
+
+        /**
+         * 向後傳遞
+         * @param {*} qId
+         */
+        function q1b(qId) {
+            let des = "請問程式執行後，將印出哪些數字？";
+
+            // question // ---------------------------
+            let si = ranInt(3);
+            let inc = ranInt(2) + 1;
+            let a1 = generate_array(Math.max(4, si + 2 * inc + 1), 10);
+            let a1s = array_to_javacode("int", a1, "arr");
+            let code =
+                a1s +
+                `
+`;
+
+            for (let i = si; i < a1.length - 1; i += inc) {
+                a1[i + 1] = a1[i];
+                code += `
+arr[${i + 1}] = arr[${i}] ;`;
+            }
+            code += `
+
+for( int i=0 ; i<arr.length ; i++ ){
+	System.out.println( arr[i] ) ;
+}
+`;
+
+            let ans = "";
+            let ex = "";
+            for (let i = 0; i < a1.length; i++) {
+                if (i == 0) {
+                    ans += a1[i];
+                    ex += i;
+                } else {
+                    ans += "," + a1[i];
+                    ex += "," + i;
+                }
+            }
+            build_question(qId, [ans], des, code, [ex]);
+        }
+
+        /**
+         * 向前傳遞
+         * @param {*} qId
+         */
+        function q1c(qId) {
+            let des = "請問程式執行後，將印出哪些數字？";
+
+            // question // ---------------------------
+            let si = ranInt(3);
+            let inc = ranInt(2) + 1;
+            let a1 = generate_array(Math.max(4, si + 2 * inc + 1), 10);
+            let a1s = array_to_javacode("int", a1, "arr");
+            let code =
+                a1s +
+                `
+`;
+
+            for (let i = a1.length - 1 - si; i > 0; i -= inc) {
+                a1[i - 1] = a1[i];
+                code += `
+arr[${i - 1}] = arr[${i}] ;`;
+            }
+            code += `
+
+for( int i=0 ; i<arr.length ; i++ ){
+	System.out.println( arr[i] ) ;
+}
+`;
+            let ans = "";
+            let ex = "";
+            for (let i = 0; i < a1.length; i++) {
+                if (i == 0) {
+                    ans += a1[i];
+                    ex += i;
+                } else {
+                    ans += "," + a1[i];
+                    ex += "," + i;
+                }
+            }
+            build_question(qId, [ans], des, code, [ex]);
+        }
+
+        function q2a(qId) {
+            let des = "請問程式執行後，將印出哪些數字？";
+
+            // question // ---------------------------
+            let n = ranInt(3) + 3;
+            let k = ranInt(3) + 3;
+            let ans = [];
+            for (let index = 0; index < n; index++) {
+                ans[index] = index + k;
+            }
+
+            //console.log(ans);
+            // question-code //-----------------------
+            let code = `
+int arr = new int[${n}] ;
+
+for (int i = 0 ; i < arr.length ; i++ ) {
+	arr[i] = i+${k} ;
+}
+
+for( int i=0 ; i<arr.length ; i++ ){
+	System.out.println( arr[i] ) ;
+}
+
+`;
+            // question-code //-----------------------
+            let answer = "";
+            let ex = "";
+            for (let i = 0; i < ans.length; i++) {
+                if (i == 0) {
+                    answer += ans[i];
+                    ex += i;
+                } else {
+                    answer += "," + ans[i];
+                    ex += "," + i;
+                }
+            }
+            build_question(qId, [answer], des, code, [ex]);
+        }
+
+        function q2b(qId) {
+            let des = "請問程式執行後，將印出哪些數字？";
+
+            // question // ---------------------------
+            let arr = generate_array(6, 10);
+            let arr_str = array_to_javacode("int", arr, "arr");
+            let s = ranInt(2);
+            let k = ranInt(3) + 1;
+            let c = ranInt(8) + 1;
+            for (let index = s; index < arr.length; index += k) {
+                arr[index] = c;
+            }
+
+            //console.log(ans);
+            // question-code //-----------------------
+            let code =
+                arr_str +
+                `
+
+for (int i = ${s} ; i < arr.length ; i=i+${k} ) {
+	arr[i] = ${c} ;
+}
+
+for( int i=0 ; i<arr.length ; i++ ){
+	System.out.println( arr[i] ) ;
+}
+
+`;
+            // question-code //-----------------------
+            let answer = "";
+            let ex = "";
+            for (let i = 0; i < arr.length; i++) {
+                if (i == 0) {
+                    answer += arr[i];
+                    ex += i;
+                } else {
+                    answer += "," + arr[i];
+                    ex += "," + i;
+                }
+            }
+            build_question(qId, [answer], des, code, [ex]);
+        }
+
+        function q2c(qId) {
+            let des = "請問程式執行後，將印出哪些數字？";
+
+            // question // ---------------------------
+            let arr = generate_array(6, 10);
+            let arr_str = array_to_javacode("int", arr, "arr");
+            let s = ranInt(2) + 1;
+            let k = ranInt(3) + 1;
+            let c = ranInt(8) + 1;
+            for (let index = arr.length - s; index >= 0; index -= k) {
+                arr[index] = c;
+            }
+
+            //console.log(ans);
+            // question-code //-----------------------
+            let code =
+                arr_str +
+                `
+
+for (int i = arr.length-${s} ; i>=0  ; i=i-${k} ) {
+	arr[i] = ${c} ;
+}
+
+for( int i=0 ; i<arr.length ; i++ ){
+	System.out.println( arr[i] ) ;
+}
+
+`;
+            // question-code //-----------------------
+            let answer = "";
+            let ex = "";
+            for (let i = 0; i < arr.length; i++) {
+                if (i == 0) {
+                    answer += arr[i];
+                    ex += i;
+                } else {
+                    answer += "," + arr[i];
+                    ex += "," + i;
+                }
+            }
+            build_question(qId, [answer], des, code, [ex]);
+        }
+
+        function q2d(qId) {
+            let des = "請問程式執行後，將印出哪些數字？";
+
+            // question // ---------------------------
+            let n = ranInt(2) + 3;
+
+            let ans = [];
+            ans[0] = ranInt(7);
+            ans[1] = ranInt(7);
+
+            for (let index = 2; index < n; index++) {
+                ans[index] = ans[index - 1] + ans[index - 2];
+            }
+
+            //console.log(ans);
+            // question-code //-----------------------
+            let code = `
+int arr = new int[${n}] ;
+arr[0] = ${ans[0]} ;
+arr[1] = ${ans[1]} ;
+
+for (int i = 2 ; i < arr.length ; i++ ) {
+	arr[i] = arr[i-1] + arr[i-2] ;
+}
+
+for( int i=0 ; i<arr.length ; i++ ){
+	System.out.println( arr[i] ) ;
+}
+
+`;
+            // question-code //-----------------------
+            let answer = "";
+            let ex = "";
+            for (let i = 0; i < ans.length; i++) {
+                if (i == 0) {
+                    answer += ans[i];
+                    ex += i;
+                } else {
+                    answer += "," + ans[i];
+                    ex += "," + i;
+                }
+            }
+            build_question(qId, [answer], des, code, [ex]);
+        }
+
+        function q2e(qId) {
+            let des = "請問程式執行後，將印出哪些數字？";
+
+            // question // ---------------------------
+            let ans = generate_array(5, 10);
+            let arr_str = array_to_javacode("int", ans, "arr");
+
+            for (let index = 1; index < ans.length - 1; index++) {
+                ans[index - 1] = ans[index + 1] + ans[index];
+            }
+
+            //console.log(ans);
+            // question-code //-----------------------
+            let code = `
+${arr_str} 
+
+for (int i = 1 ; i < arr.length-1 ; i++ ) {
+	arr[i-1] = arr[i+1] + arr[i] ;
+}
+
+for( int i=0 ; i<arr.length ; i++ ){
+	System.out.println( arr[i] ) ;
+}
+
+`;
+            // question-code //-----------------------
+            let answer = "";
+            let ex = "";
+            for (let i = 0; i < ans.length; i++) {
+                if (i == 0) {
+                    answer += ans[i];
+                    ex += i;
+                } else {
+                    answer += "," + ans[i];
+                    ex += "," + i;
+                }
+            }
+            build_question(qId, [answer], des, code, [ex]);
+        }
+
+        function qb0(qId) {
+            let t = ["int", "String", "boolean"];
+            let ti = ranInt(t.length);
+            let des = `請問如何產生下方大小，存放 "${t[ti]}" 陣列?`;
+
+            let row = ranInt(4) + 1;
+            let col = ranInt(3) + 2;
+            let table = [];
+            for (let i = 0; i < row; i++) {
+                let r = [];
+                for (let j = 0; j < col; j++) {
+                    r.push("　");
+                }
+                table.push(r);
+            }
+            let ans = [`${t[ti]}[][]table=new${t[ti]}[${row}][${col}];`];
+
+            let code = "?[][] table = new ?[#][#] ;";
+
+            build_question_with_table(
+                qId,
+                [ans],
+                des,
+                code,
+                ["寫出完整程式碼"],
+                table
+            );
+        }
+
+        function qb1(qId) {
+            let des = `請問如何印出陣列中的 ｘ `;
+
+            let row = ranInt(4) + 1;
+            let col = ranInt(3) + 2;
+            let r1 = ranInt(row);
+            let c1 = ranInt(col);
+            let table = [];
+            for (let i = 0; i < row; i++) {
+                let r = [];
+                for (let j = 0; j < col; j++) {
+                    if (i == r1 && j == c1) {
+                        r.push("ｘ");
+                    } else {
+                        r.push("　");
+                    }
+                }
+                table.push(r);
+            }
+            let ans = [`System.out.println( table[${r1}][${c1}] );`];
+
+            let code = "System.out.println( table[?][?] ) ;";
+
+            build_question_with_table(
+                qId,
+                [ans],
+                des,
+                code,
+                ["System.out.println( table[?][?] );"],
+                table
+            );
+        }
+
+        function qb2(qId) {
+            let des = `請問如何印出陣列中整排的 ｘ `;
+
+            let row = ranInt(5) + 3;
+            let col = ranInt(5) + 3;
+            let rc = ranInt(2);
+            let rci = -1;
+            if (rc == 0) {
+                rci = ranInt(row);
+            } else {
+                rci = ranInt(col);
+            }
+            let table = [];
+            for (let i = 0; i < row; i++) {
+                let r = [];
+                for (let j = 0; j < col; j++) {
+                    if (rc == 0) {
+                        if (i == rci) {
+                            r.push("ｘ");
+                        } else {
+                            r.push("　");
+                        }
+                    } else {
+                        if (j == rci) {
+                            r.push("ｘ");
+                        } else {
+                            r.push("　");
+                        }
+                    }
+                    // if (i == r1 && j == c1) {
+                    //     r.push('ｘ');
+                    // } else {
+                    //     r.push('　');
+                    // }
+                }
+                table.push(r);
+            }
+            let ans = [];
+            let ex = [];
+            if (rc == 0) {
+                ans.push(`for(int k=0;k<table[${rci}].length;k++){`);
+                ans.push(`System.out.println( table[${rci}][k] ) ;`);
+            } else {
+                ans.push(`for(int k=0;k<table.length;k++){`);
+                ans.push(`System.out.println( table[k][${rci}] ) ;`);
+            }
+            ex.push(`for(int k=0 ; k< ???.length ; k++){`);
+            ex.push(`System.out.println( table[?][?] ) ;`);
+
+            let code = `for( int k=0  ;  k<???.length  ;  k++){
+    System.out.println( table[?][?] ) ;
+}`;
+
+            build_question_with_table_tableIdx(
+                qId,
+                ans,
+                des,
+                code,
+                ex,
+                table
+            );
+        }
+
+        function qb6(qId) {
+            let all = Math.random() > 0.5 ? true : false;
+            let des = "加總陣列（Sum of given array）：";
+
+            let num;
+            if (all) {
+                num = ranInt(3) + 3;
+            } else {
+                num = ranInt(3) + 2;
+            }
+
+            // question // ---------------------------
+            let a1;
+            if (all) {
+                a1 = generate_array(num, 8);
+            } else {
+                a1 = generate_array(num + 5, 8);
+            }
+            let vname = ranArrVarName();
+            let a1s = array_to_javacode("int", a1, vname);
+
+            if (all) {
+                des = des + "全部項目 all items，使用 xx.length";
+            } else {
+                des = des + `前 ${num} 個項目 first ${num} items`;
+            }
+
+            // question-code //-----------------------
+            let code = `${a1s}
+
+int total = 0 ;
+
+for( int i=? ; i<? ; i++ ){  // Q.1
+    ? = ? + ? ;              // Q.2 
+}
+
+System.out.println( ? ) ;  // Q.3
+                           // Q.4 印出什麼
+`;
+            // question-code //-----------------------
+
+            let ans = [];
+            let ex = [];
+            let total = 0;
+            for (let i = 0; i < num; i++) {
+                total += a1[i];
+            }
+
+            if (all) {
+                ans.push(`for( int i=0 ; i<${vname}.length ; i++ ){`);
+            } else {
+                ans.push(`for( int i=0 ; i<${num} ; i++ ){`);
+            }
+            ex.push("for( int i=? ; i<? ; i++ ){");
+
+            ans.push(`total = total +${vname}[i] ;`);
+            ex.push(" ?  =  ? + ?  ;");
+
+            ans.push("System.out.println( total ) ;");
+            ex.push("System.out.println( ? ) ;");
+
+            ans.push(total);
+            ex.push("印出什麼?  output?");
+
+            build_question(qId, ans, des, code, ex);
+        }
+
+        function qb7(qId, xse) {
+            // xse 找大、小、相同目標三種類型 0,1,2
+            // let xse = ranInt(3);
+            // xse = 0;
+
+            let a1 = generate_norepeat_array2(10);
+
+            let t;
+            let findN;
+            let codet1 =
+                "int target   = ?  ; // Q.1 放入已知的值，0 號的值";
+            let codep1 =
+                "int position = ?  ; // Q.2 放入 target 值的位置，0 號";
+            switch (xse) {
+                case 0:
+                    t =
+                        " 最大的數值 和 陣列位置（maximum value & array index）";
+                    break;
+                case 1:
+                    t =
+                        " 最小的數值 和 陣列位置（minimum value & array index）";
+                    break;
+                case 2:
+                    if (Math.random() > 0.4) {
+                        findN = a1[ranInt(a1.length)];
+                    } else {
+                        findN = ranInt(100);
+                    }
+                    t = ` 目標數值「${findN}」 和 陣列位置（minimum value & array index）`;
+                    codet1 =
+                        "int target   = ?  ; // Q.1 放入目標值 " + findN;
+                    codep1 = "int position = ?  ; // Q.2 放入不存在值 -1";
+                    break;
+            }
+
+            let des = `找出` + t;
+
+            // question // ---------------------------
+
+            let vname = ranArrVarName();
+            let a1s = array_to_javacode("int", a1, vname);
+
+            // question-code //-----------------------
+
+            let code = `${a1s}
+
+// 用來記住 值、位置 的兩個變數
+${codet1}
+${codep1}
+
+// 用 for 檢查每一個數
+for( int i=? ; i<? ; i++ ){  // Q.3 重頭走一遍。
+    if( ??  target ){        // Q.4 判斷每個元素 大於、小於、等於 目標
+        target  = ? ;        // Q.5 記住值（修改目標值）
+        position= ? ;        // Q.6 記住位置（修改目標位置）
+    }      
+}
+
+System.out.println( ? ) ;  // Q.7 印出值 target 
+                           // Q.8 上列看到什麼結果
+System.out.println( ? ) ;  // Q.9 印出位置 position
+                           // Q.10 上列看到什麼結果
+`;
+            // question-code //-----------------------
+
+            let ans = [];
+            let ex = [];
+            let target = a1[0];
+            let position = 0;
+            if (xse == 2) {
+                target = findN;
+                position = -1;
+            }
+            for (let i = 0; i < a1.length; i++) {
+                if (xse == 0) {
+                    if (target < a1[i]) {
+                        target = a1[i];
+                        position = i;
+                    }
+                }
+                if (xse == 1) {
+                    if (target > a1[i]) {
+                        target = a1[i];
+                        position = i;
+                    }
+                }
+                if (xse == 2) {
+                    if (target == a1[i]) {
+                        target = a1[i];
+                        position = i;
+                    }
+                }
+            }
+
+            // q1
+            if (xse == 2) {
+                // 找目標
+                ans.push(`int target=${findN};`);
+            } else {
+                // 找大小
+                ans.push(`int target=${vname}[0];`);
+            }
+            ex.push("int target   = ?  ;");
+
+            // q2
+            if (xse == 2) {
+                // 找目標
+                ans.push("int position = -1 ;");
+            } else {
+                // 找大小
+                ans.push("int position = 0 ;");
+            }
+            ex.push("int position = ?  ;");
+
+            // q3
+            ans.push(`for( int i=0 ; i<${vname}.length ; i++ ){`);
+            ex.push("for( int i=? ; i<? ; i++ ){");
+
+            // q4
+            switch (xse) {
+                case 0:
+                    ans.push(`if(${vname}[i]>target){`);
+                    break;
+                case 1:
+                    ans.push(`if(${vname}[i]<target){`);
+                    break;
+                case 2:
+                    ans.push(`if(${vname}[i]==target){`);
+                    break;
+            }
+            ex.push("if( ??  target ){");
+
+            // q5
+            ans.push(`target=${vname}[i];`);
+            ex.push("target  = ? ;");
+
+            // q6
+            ans.push(`position=i;`);
+            ex.push("position  = ? ;");
+
+            // q7
+            ans.push(`System.out.println( target ) ;`);
+            ex.push("System.out.println( ? ) ;");
+
+            // q8
+            ans.push(target);
+            ex.push("印出什麼?  output?");
+
+            // q9
+            ans.push(`System.out.println( position ) ;`);
+            ex.push("System.out.println( ? ) ;");
+
+            // q10
+            ans.push(position);
+            ex.push("印出什麼?  output?");
+
+            build_question(qId, ans, des, code, ex);
+        }
+
+        function qb7_target(qId) {
+            // xse 找大、小、相同目標三種類型 0,1,2
+            // let xse = ranInt(3);
+            // xse = 0;
+
+            let a1 = generate_norepeat_array2(10);
+
+            let findN;
+            if (Math.random() > 0.4) {
+                findN = a1[ranInt(a1.length)];
+            } else {
+                findN = ranInt(100);
+            }
+            let t = ` 目標數值「${findN}」 和 陣列位置（minimum value & array index）`;
+            let codet1 = "int target   = ?  ; // Q.1 放入目標值 " + findN;
+            let codep1 = "int position = ?  ; // Q.2 放入不存在值 -1";
+
+            let des = `找出` + t;
+
+            // question // ---------------------------
+
+            let vname = ranArrVarName();
+            let a1s = array_to_javacode("int", a1, vname);
+
+            // question-code //-----------------------
+
+            let code = `${a1s}
+
+// 用來記住 值、位置 的兩個變數
+${codet1}
+${codep1}
+
+// 用 for 檢查每一個數
+for( int i=? ; i<? ; i++ ){  // Q.3 重頭走一遍。
+    if( ??  target ){        // Q.4 判斷每個元素 等於 目標
+        position= ? ;        // Q.5 記住位置（修改目標位置）
+    }      
+}
+
+System.out.println( ? ) ;  // Q.6 印出位置 position
+                           // Q.7 上列看到什麼結果
+`;
+            // question-code //-----------------------
+
+            let ans = [];
+            let ex = [];
+            let target = findN;
+            let position = -1;
+
+            for (let i = 0; i < a1.length; i++) {
+                if (target == a1[i]) {
+                    target = a1[i];
+                    position = i;
+                }
+            }
+
+            // q1
+            ans.push(`int target=${findN};`);
+            ex.push("int target   = ?  ;");
+
+            // q2
+            ans.push("int position = -1 ;");
+            ex.push("int position = ?  ;");
+
+            // q3
+            ans.push(`for( int i=0 ; i<${vname}.length ; i++ ){`);
+            ex.push("for( int i=? ; i<? ; i++ ){");
+
+            // q4
+            ans.push(`if(${vname}[i]==target){`);
+            ex.push("if( ??  target ){");
+
+            // q5
+            ans.push(`position=i;`);
+            ex.push("position  = ? ;");
+
+            // q6
+            ans.push(`System.out.println( position ) ;`);
+            ex.push("System.out.println( ? ) ;");
+
+            // q7
+            ans.push(position);
+            ex.push("印出什麼?  output?");
+
+            build_question(qId, ans, des, code, ex);
+        }
+    </script>
+
+    <title>Java 語法複習 - 陣列 Array</title>
+</head>
+
+<body id="page-top" onload="prettyPrint()">
+    <!-- Navigation -->
+    <a class="menu-toggle rounded" href="#">
+        <i class="fa fa-bars"></i>
+    </a>
+    <nav id="sidebar-wrapper"></nav>
+    <!-- Header -->
+    <header class="masthead d-flex">
+        <div class="container text-center my-auto">
+            <h1 class="mb-1">Java 語法複習</h1>
+            <h3 class="mb-5">陣列 Array</h3>
+            <p>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l1">Unit 1 - 建立</a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l2">Unit 2 - 取值</a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l3">Unit 3 - 換值</a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l4">Unit 4 - 變數給值</a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l5">Unit 5 - 2D 陣列</a>
+            </p>
+            <p>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l6">Unit 6 - 加總</a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l7">Unit 7 - 最大、最小、目標</a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l">Unit - 物件陣列</a>
+            </p>
+        </div>
+        <div class="overlay"></div>
+    </header>
+    <section style="background-color: slategrey; padding: 25px" id="l1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">Unit 1 - 建立</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="q0-1">
+                        <script>
+                            (function () {
+                                q0a("q0-1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="q0-2">
+                        <script>
+                            (function () {
+                                q0a("q0-2");
+                            })();
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 16px" class="bg-light2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="q0-3">
+                        <script>
+                            (function () {
+                                q0b("q0-3");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="q0-4">
+                        <script>
+                            (function () {
+                                q0b("q0-4");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="q0-5">
+                        <script>
+                            (function () {
+                                q0b("q0-5");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="q0-6">
+                        <script>
+                            (function () {
+                                q0b("q0-6");
+                            })();
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background-color: slategrey; padding: 25px" id="l2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">Unit 2 - 取值</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="qg-1">
+                        <script>
+                            (function () {
+                                q1_g_a("qg-1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qg-2">
+                        <script>
+                            (function () {
+                                q1_g_a("qg-2");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qg-3">
+                        <script>
+                            (function () {
+                                q1_g_a("qg-3");
+                            })();
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="background-color: slategrey; padding: 25px" id="l3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">Unit 3 - 換值</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="qs-1">
+                        <script>
+                            (function () {
+                                q0c("qs-1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qs-2">
+                        <script>
+                            (function () {
+                                q0c("qs-2");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qs-3">
+                        <script>
+                            (function () {
+                                q0c("qs-3");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qs-4">
+                        <script>
+                            (function () {
+                                q0c("qs-4");
+                            })();
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="q1a-1">
+                        <script>
+                            (function () {
+                                q1a("q1a-1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="q1a-2">
+                        <script>
+                            (function () {
+                                q1a("q1a-2");
+                            })();
+                        </script>
+                    </ul>
+                    <!-- <ul id='q1a-3'>
+						<script>(function () { q1a('q1a-3'); })();</script>
+					</ul> -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="q1b-1">
+                        <script>
+                            (function () {
+                                q1b("q1b-1");
+                            })();
+                        </script>
+                    </ul>
+                    <!-- <ul id='q1b-2'>
+						<script>(function () { q1b('q1b-2'); })();</script>
+					</ul>	  -->
+                    <ul id="q1c-1">
+                        <script>
+                            (function () {
+                                q1c("q1c-1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="q1c-2">
+                        <script>
+                            (function () {
+                                q1c("q1c-2");
+                            })();
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background-color: slategrey; padding: 25px" id="l4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">Unit 4 - 變數給值</h3>
+                    正向、反向
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="q2a-1">
+                        <script>
+                            (function () {
+                                q2a("q2a-1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="q2b-1">
+                        <script>
+                            (function () {
+                                q2b("q2b-1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="q2c-1">
+                        <script>
+                            (function () {
+                                q2c("q2c-1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="q2d-1">
+                        <script>
+                            (function () {
+                                q2d("q2d-1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="q2e-1">
+                        <script>
+                            (function () {
+                                q2e("q2e-1");
+                            })();
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background-color: slategrey; padding: 25px" id="l5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">Unit 5 - 2D Array 二維陣列</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="qb_2d_1">
+                        <script>
+                            (function () {
+                                qb0("qb_2d_1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb_2d_2">
+                        <script>
+                            (function () {
+                                qb0("qb_2d_2");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb_2d_3">
+                        <script>
+                            (function () {
+                                qb0("qb_2d_3");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb_2d_4">
+                        <script>
+                            (function () {
+                                qb0("qb_2d_4");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb_2d_5">
+                        <script>
+                            (function () {
+                                qb0("qb_2d_5");
+                            })();
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 16px" class="bg-light2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="qb1_1">
+                        <script>
+                            (function () {
+                                qb1("qb1_1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb1_2">
+                        <script>
+                            (function () {
+                                qb1("qb1_2");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb1_3">
+                        <script>
+                            (function () {
+                                qb1("qb1_3");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb1_4">
+                        <script>
+                            (function () {
+                                qb1("qb1_4");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb1_5">
+                        <script>
+                            (function () {
+                                qb1("qb1_5");
+                            })();
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="qb2_1">
+                        <script>
+                            (function () {
+                                qb2("qb2_1");
+                            })();
+                        </script>
+                    </ul>
+
+                    <ul id="qb2_2">
+                        <script>
+                            (function () {
+                                qb2("qb2_2");
+                            })();
+                        </script>
+                    </ul>
+
+                    <ul id="qb2_3">
+                        <script>
+                            (function () {
+                                qb2("qb2_3");
+                            })();
+                        </script>
+                    </ul>
+
+                    <ul id="qb2_4">
+                        <script>
+                            (function () {
+                                qb2("qb2_4");
+                            })();
+                        </script>
+                    </ul>
+
+                    <ul id="qb2_5">
+                        <script>
+                            (function () {
+                                qb2("qb2_5");
+                            })();
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background-color: slategrey; padding: 25px" id="l6">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">Unit 6 - 加總</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="qb6_1">
+                        <script>
+                            (function () {
+                                qb6("qb6_1");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb6_2">
+                        <script>
+                            (function () {
+                                qb6("qb6_2");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb6_3">
+                        <script>
+                            (function () {
+                                qb6("qb6_3");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb6_4">
+                        <script>
+                            (function () {
+                                qb6("qb6_4");
+                            })();
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background-color: slategrey; padding: 25px" id="l7">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">Unit 7 - 最大、最小、目標</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul id="qb7_1">
+                        <script>
+                            (function () {
+                                qb7("qb7_1", 0);
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb7_2">
+                        <script>
+                            (function () {
+                                qb7("qb7_2", 0);
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb7_3">
+                        <script>
+                            (function () {
+                                qb7("qb7_3", 1);
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb7_4">
+                        <script>
+                            (function () {
+                                qb7("qb7_4", 1);
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb7_5">
+                        <script>
+                            (function () {
+                                qb7_target("qb7_5");
+                            })();
+                        </script>
+                    </ul>
+                    <ul id="qb7_6">
+                        <script>
+                            (function () {
+                                qb7_target("qb7_6");
+                            })();
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer text-center" id="footer"></footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Bootstrap core JavaScript -->
+    <script src="../_assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="../_assets/js/stylish-portfolio.js"></script>
+    <script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+    <script>
+        function setVisiable(isVisiable) {
+            var ds = document.getElementsByTagName("pre");
+            for (let it of ds) {
+                //console.log(it);
+                if (isVisiable) {
+                    it.setAttribute("style", "visibility: visible;");
+                } else {
+                    it.setAttribute("style", "visibility: hidden;");
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

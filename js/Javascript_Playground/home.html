@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+       <meta charset="utf-8">
+       <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+       <title></title>
+</head>
+
+<body>
+
+       <div class="card" style="margin:30px; width:650px;">
+              <div class="card-header">
+                     歡迎 <span id='u_name'></span> 來挑戰，加油！！ 🏅🏅🏅<br>
+                     <br><br>
+                     <select class="form-control" id="sel_opt">
+                            <option>準備好了嗎！</option>
+                            <option value="0">挑戰：變數倉庫（1）</option>
+                            <option value="1">挑戰：變數倉庫（2）</option>
+                            <option value="2">挑戰：if-else（1）</option>
+                            <option value="3">挑戰：if-else（2）</option>
+                            <option value="4">挑戰：if-else（3）</option>
+                            <option value="5">挑戰：for</option>
+                            <option value="6">挑戰：array（1）</option>
+                            <option value="7">挑戰：array（2）</option>
+                     </select>
+              </div>
+              <div class="card-body" id="my_canvas">
+              </div>
+       </div>
+</body>
+<script src="lib/jquery-3.3.1.min.js"></script>
+<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="lib/p5.min.js"></script>
+<script src="tool.js"></script>
+<script src="qs_item_var.js"></script>
+<script src="qs_item_var_str.js"></script>
+<script src="qs_item_if_sent_digit.js"></script>
+<script src="qs_item_if_sent.js"></script>
+<script src="qs_item_if.js"></script>
+<script src="qs_item_for.js"></script>
+<script src="qs_item_array.js"></script>
+<script src="qs_item_array_1.js"></script>
+<script src="qs.js"></script>
+<script src="main.js">
+</script>
+<script type="text/javascript">
+       $("#sel_opt").change(function() {
+              if (qsObj != null) {
+                     var v = parseInt($("#sel_opt").val());
+                     qsObj.set_question(v);
+              }
+       });
+</script>
+
+</html>

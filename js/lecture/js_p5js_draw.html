@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<link rel="icon" href="../_assets/img/icon.png">
+	<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+	<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+	<link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+
+
+	<title>JS-P5JS</title>
+</head>
+
+<body id="page-top" onload='prettyPrint()'>
+	<!-- Navigation -->
+	<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+	</a>
+	<nav id="sidebar-wrapper"></nav>
+	<!-- Header -->
+	<header class="masthead d-flex">
+		<div class="container text-center my-auto">
+			<h1 class="mb-1">JavaScript</h1>
+			<h3 class="mb-5">
+				繪圖工具包
+			</h3>
+			<p>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#p5js'>p5js 繪圖套件應用</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app1'>應用演練（1） - 靜態圖樣</a>
+				<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app2'>應用演練（2） - 圖樣移動</a>
+			</p>
+
+		</div>
+		<div class="overlay"></div>
+	</header>
+	<!-- About -->
+	<section class="content-section bg-light" id="p5js">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">p5js 繪圖套件應用</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 簡介
+					</p>
+					<ul class="mb-5">
+						<li>
+							p5js 是一個輔助進行「視覺化設計與創作」的 JavaScript 函示庫。
+						</li>
+						<li>官方網站：<a href="https://p5js.org/" target="_blank">https://p5js.org/</a></li>
+					</ul>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 設計方式
+					</p>
+					<ul>
+						<li>
+							建立包含 p5js 的網頁
+						</li>
+					</ul>
+					<pre class="prettyprint">
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"&gt;&lt;/script&gt;
+		&lt;script&gt;
+			function setup(){
+				createCanvas(600,400) ;
+			}
+			function draw(){
+				background(0);
+			}
+		&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+	&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+					<ol class="mb-5">
+						<li>
+							引用 p5js 工具包 ➯ <br>
+							<span class="font-weight-bold text-primary"> &lt;script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.js"&gt;&lt;/script&gt; </span>
+
+						</li>
+						<br>
+						<li>
+							撰寫準備工作的地方 ➯ <br><span class="font-weight-bold text-primary">
+							function setup(){
+								<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+							}</span><br>
+						</li>
+						<br>
+						<li>
+							每一次更新畫面的地方，想像外面有一個『永不停止的重複執行』 ➯ <br><span class="font-weight-bold text-primary">
+							function draw(){
+								<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+							}</span><br>
+						</li>
+					</ol>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp; 常用 p5js 工具（函式）
+					</p>
+					<ul>
+						<li>
+							官網參考：<a href="https://p5js.org/reference/" target="_blank">https://p5js.org/reference/</a>
+						</li>
+						<li>座標參考：<a href="js_p5js_xy.html" target="_blank">開啟網頁</a></li>
+						<li>選擇顏色：<a href="https://htmlcolorcodes.com/" target="_blank">https://htmlcolorcodes.com/</a></li>
+						<br>
+						<hr>
+						<br>
+						<li>建立畫框大小 &nbsp;&nbsp;<span class="font-weight-bold text-danger">createCanvas ( ❔ , ❔ )</span>
+								<br> ➯ ❔ ： 畫框寬度
+								<br> ➯ ❔ ： 畫框高度
+						</li>
+						<br>
+						<li>塗背景顏色 &nbsp;&nbsp;<span class="font-weight-bold text-danger">background ( ❔ )</span>
+									<br> ➯ ❔ ： 顏色代碼<br>（1 個數字：黑灰白）<br>（3 個數字：RGB）
+						</li>
+						<br>
+						<hr>
+						<br>
+						<li>長方形 &nbsp;&nbsp;<span class="font-weight-bold text-danger">rect ( ❔ , ❔ , ❔ , ❔ )</span>
+									<br> ➯ ❔ ： x 位置
+									<br> ➯ ❔ ： y 位置
+									<br> ➯ ❔ ： 寬
+									<br> ➯ ❔ ： 高
+						</li>
+						<br>
+						<li>橢圓形 &nbsp;&nbsp;<span class="font-weight-bold text-danger">ellipse ( ❔ , ❔ , ❔ , ❔ )</span>
+									<br> ➯ ❔ ： x 位置
+									<br> ➯ ❔ ： y 位置
+									<br> ➯ ❔ ： 寬
+									<br> ➯ ❔ ： 高
+						</li>
+						<br>
+						<li>三角形 &nbsp;&nbsp;<span class="font-weight-bold text-danger">triangle ( ❔ , ❔ , ❔ , ❔ , ❔ , ❔ )</span>
+									<br> ➯ ❔ ： 第 1 點 x 位置
+									<br> ➯ ❔ ： 第 1 點 y 位置
+									<br> ➯ ❔ ： 第 2 點 x 位置
+									<br> ➯ ❔ ： 第 2 點 y 位置
+									<br> ➯ ❔ ： 第 3 點 x 位置
+									<br> ➯ ❔ ： 第 3 點 y 位置
+						</li>
+						<br>
+						<hr>
+						<br>
+						<li>上顏色 &nbsp;&nbsp;<span class="font-weight-bold text-danger">fill ( ❔ , ❔ , ❔ )</span>
+									<br> ➯ ❔ ： 顏色代碼<br>（1 個數字：黑灰白）<br>（3 個數字：RGB）
+						</li>
+					</ul>
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="content-section bg-light2" id="app1">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">應用演練（1） - 靜態圖樣</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;簡單範例
+					</p>
+
+					<ul class="mb-5">
+
+
+<li class="mb-2">車子(<a href="https://editor.p5js.org/chuan.me@gmail.com/sketches/BSGJdH1ln" target="_blank">參考</a>)<br>
+	<iframe width="405px" height="405px" src="https://editor.p5js.org/chuan.me@gmail.com/embed/BSGJdH1ln"></iframe>
+</li>
+
+<li class="mb-2">冰淇淋(<a href="https://editor.p5js.org/chuan.me@gmail.com/sketches/36zFTA8eH" target="_blank">參考</a>)<br>
+	<iframe width="405px" height="405px" src="https://editor.p5js.org/chuan.me@gmail.com/embed/36zFTA8eH"></iframe>
+</li>
+
+<li class="mb-2">小貓熊 (<a href="https://editor.p5js.org/chuan.me@gmail.com/sketches/MQNm7YVoz" target="_blank">參考</a>)<br>
+		<iframe width="405px" height="405px" src="https://editor.p5js.org/chuan.me@gmail.com/embed/MQNm7YVoz"></iframe>
+</li>
+</ul>
+
+
+
+<p class="lead mb-3">
+	<i class="fa fa-rocket" aria-hidden="true"></i>
+	&nbsp;&nbsp;進階練習
+</p>
+<ul>
+	<li>
+		for 和 『 變數 variable 』 的應用
+	</li>
+	<ol>
+		<iframe  width="305px" height="105px" src="https://editor.p5js.org/chuan.me@gmail.com/embed/YrxYeBiu4"></iframe>
+		<li>設計一個變數「x」，來代表數字。就可以用程式去改變數字。</li>
+		<pre class="prettyprint lang-js">
+var x = 20 ;
+rect( x , 50 , 30 , 30 ) ;</pre>
+		<li>用 for 重複，每畫一個，就把 x 往後移動 50</li>
+		<pre class="prettyprint lang-js">
+var x = 20 ;
+for(var i=1 ; i<=5 ; i++){   // 畫 5 個
+	rect( x , 50 , 30 , 30 ) ;
+	x = x + 50 ;  // 往後移動 50
+}</pre>
+	</ol>
+</ul>
+
+
+<ul class="mb-5">
+<li class="mb-2">車子的窗戶和標線(<a href="https://editor.p5js.org/chuan.me@gmail.com/sketches/qfSiSXWFL" target="_blank">參考</a>)<br>
+<iframe width="405px" height="405px" src="https://editor.p5js.org/chuan.me@gmail.com/embed/qfSiSXWFL"></iframe>
+</li>
+<li class="mb-2">冰淇淋(<a href="https://editor.p5js.org/chuan.me@gmail.com/sketches/1PpYH3m6O" target="_blank">參考</a>)<br>
+	<iframe width="405px" height="405px" src="https://editor.p5js.org/chuan.me@gmail.com/embed/1PpYH3m6O"></iframe>
+
+</li>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+	<section class="content-section bg-light" id="app2">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<h3 class="mb-5">應用演練（2） - 圖樣移動</h3>
+					<p class="lead mb-3">
+						<i class="fa fa-rocket" aria-hidden="true"></i>
+						&nbsp;&nbsp;運作方式
+					</p>
+
+
+					<ol>
+						<li>設計一個變數「x」，來代表數字。就可以用程式去改變數字。<br>
+							<span class="font-weight-bold text-danger">特別注意，需要在 function 外，才能夠把每次 draw() 執行後的結果保留下來。</span></li>
+<pre class="prettyprint lang-js">
+var x = 0 ;
+function setup(){
+	// ... 其他程式
+}
+function draw(){
+	// ... 其他程式
+}</pre>
+						<li>每次畫完，就把 x 往後移動 10</li>
+<pre class="prettyprint lang-js">
+var x = 0 ;
+function setup(){
+	// ... 其他程式
+}
+function draw(){
+	// ... 其他程式
+
+	rect( x , 50 , 30 , 30 ) ; // 畫圖形
+	x = x + 10 ; // 往後移動 10
+
+}</pre>
+						<li>用<span class="font-weight-bold text-danger"> if( ❔ ) </span>判斷走到邊邊後，再把 x 變成左邊的座標。
+						</li>
+<pre class="prettyprint lang-js">
+var x = 0 ;
+function setup(){
+	// ... 其他程式
+}
+function draw(){
+	// ... 其他程式
+
+	if( x>width ){ // 超過邊的範圍
+		x = 0 ;   // 重新回到起點
+	}
+
+	rect( x , 0 , 30 , 30 ) ; // 畫圖形
+	x = x + 1 ; // 往後移動 1
+
+}</pre>
+<li> 範例(<a href="https://editor.p5js.org/chuan.me@gmail.com/sketches/lBTsvp8Hu" target="_blank">參考</a>)<br>
+<iframe width="405px" height="105px" src="https://editor.p5js.org/chuan.me@gmail.com/embed/lBTsvp8Hu"></iframe>
+
+
+</li>
+
+
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+
+	<!-- Footer -->
+	<footer class="footer text-center" id="footer">
+
+	</footer>
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+	</a>
+	<!-- Bootstrap core JavaScript -->
+	<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+	<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- Plugin JavaScript -->
+	<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<!-- Custom scripts for this template -->
+	<script src="../_assets/js/stylish-portfolio.js"></script>
+	<script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+</body>
+
+</html>

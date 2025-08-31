@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <link rel="icon" href="../_assets/img/icon.png" />
+    <link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" />
+    <link href="../_assets/css/stylish-portfolio.css" rel="stylesheet" />
+    <link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.8.1/ace.js" type="text/javascript"
+        charset="utf-8"></script>
+    <script src="util_07.js"></script>
+
+    <script>
+
+        function copy(item_id) {
+
+        // user code
+        let item = ace.edit(item_id);
+        let t = item.getValue();
+        //console.log(t);
+        // t = t.replace(/[\n ]?/gm, '');
+        //console.log(t);
+        navigator.clipboard.writeText(t);
+        }
+
+        function check_ans(elt, item_id) {
+
+            // user code
+            let item = ace.edit(item_id);
+            let t = item.getValue();
+            //console.log(t);
+            t = t.replace(/[\n ]?/gm, '');
+            //console.log(t);
+
+            // answer code
+            let ans = elt.dataset.qans;
+            let ans_tokens = ans.split(',');
+            let vname = ans_tokens[0];
+            let vval = ans_tokens[1];
+            let op = ans_tokens[2];
+            let opVal = ans_tokens[3];
+            //console.log(ans);
+            let answer_code = `var ${vname}=${vval};\nif( ${vname} ${op} ${opVal} ){\n    console.log("yes");\n}`;
+            let cmp_code = answer_code.replace(/[\n ]?/gm, '');
+            //console.log(cmp_code);
+
+            if (t == cmp_code) {
+                elt.setAttribute('class', 'btn btn-success');
+                elt.textContent = ' ✔️ ';
+                elt.disabled = true;
+            } else {
+                elt.setAttribute('class', 'btn btn-danger');
+                elt.textContent = ' ❌ ';
+                alert('==== 參考答案如下 ====\n' + answer_code);
+            }
+        }
+
+        function check_ans2(elt, item_id) {
+
+            // user code
+            let item = ace.edit(item_id);
+            let t = item.getValue();
+            //console.log(t);
+            t = t.replace(/[\n ]?/gm, '');
+            //console.log(t);
+
+            // answer code
+            let ans = elt.dataset.qans;
+            let ans_tokens = ans.split(',');
+            let vname = ans_tokens[0];
+            let vval = ans_tokens[1];
+            let op = ans_tokens[2];
+            let opVal = ans_tokens[3];
+            let w1 = ans_tokens[4];
+            let w2 = ans_tokens[5];
+            //console.log(ans);
+            let answer_code = `var ${vname}=${vval};\nif( ${vname} ${op} ${opVal} ){\n    console.log("${w1}");\n}else{\n    console.log("${w2}");\n}`;
+            let cmp_code = answer_code.replace(/[\n ]?/gm, '');
+            //console.log(cmp_code);
+
+            if (t == cmp_code) {
+                elt.setAttribute('class', 'btn btn-success');
+                elt.textContent = ' ✔️ ';
+                elt.disabled = true;
+            } else {
+                elt.setAttribute('class', 'btn btn-danger');
+                elt.textContent = ' ❌ ';
+                alert('==== 參考答案如下 ====\n' + answer_code);
+            }
+        }
+
+
+        function change_content( ori ){
+                    // console.log(ln) ;
+                    let tks = ori.trim().replaceAll(/\W+/g," ").split(" ");
+                    // console.log(tks) ;
+                    
+                    let tw = tks[ranInt(tks.length)];
+                    for(let i=0 ; i<3 ; i++){ // try three times
+                        tw = tks[ranInt(tks.length)];
+                        if(tw.length>=3){
+                            break;
+                        }else{
+                            tw="";
+                        }
+                    }
+                    if( tw==""){
+                        return ori ;
+                    }else{
+                        let sp='________________________________________________________' ;
+                        return ori.replace(tw,sp.substring(0,tw.length)) ;
+                    }            
+        }
+
+        function lit_q_1(did, num , code) {
+
+            let k = generate_norepeat_array(num);
+            //console.log(k);
+            for (let n = 0; n < num; n++) {
+                let item_id = did + '_' + new Date().getTime();
+
+                let vname = ranIntVarName();
+                let vVal = ranInt(20) + 1;
+                let cmpVal = ranInt(20) + 1;
+                let opIdx = k[n] % CMP_OP_WORD.length;
+
+                let ulElt = document.createElement('ul');
+
+                let desElt = document.createElement('li');
+                desElt.setAttribute('class', 'mb-2');
+                let qtitle = document.createElement('span');
+                qtitle.innerHTML = `變數 ${vname} 設為 ${vVal}。如果 ${vname} <span class='bg-warning'>${CMP_OP_WORD[opIdx]}</span> <span style='color:red;'>${cmpVal}</span> 就說「yes」（答案寫下方）`;
+                desElt.appendChild(qtitle);
+                ulElt.appendChild(desElt);
+
+                let codeElt = document.createElement('div');
+                ulElt.appendChild(codeElt);
+                codeElt.setAttribute('id', item_id);
+                let es = codeElt.style;
+                es.fontSize = '24px';
+                es.height = "950px";
+                es.width = '95%';
+                es.padding = '1em';
+
+                let rootElt = document.getElementById(did);
+                rootElt.appendChild(ulElt);
+
+
+
+                var lines = code.split('\n');
+                let newCode = '';
+                for( let ln of lines ){
+                    if( Math.random()<0.3){
+                        newCode = newCode+'\n'+ln;
+                        continue ;
+                    }
+                    let nln = change_content(ln) ;
+                    newCode = newCode+'\n'+nln;
+                }
+
+
+                let editor = ace.edit(item_id);
+                editor.setTheme("ace/theme/twilight");
+                editor.session.setMode("ace/mode/java");
+                editor.setValue(newCode, -1);
+                editor.resize();
+
+                let btnElt = document.createElement('div');
+                btnElt.innerHTML = `<div><div><button class="btn btn-success" type="button" onclick="copy(${item_id});">COPY</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-info" type="button" href="https://www.onlinegdb.com/" target="_blank">OnlineGDB</button></div></div>`
+                ulElt.appendChild(btnElt);
+            }
+
+        }
+
+
+        function q_class(qId, topId) {
+            // basic info
+            block_info(qId, "完成下方程式碼（底線要寫程式）");
+            
+
+
+            let code1 = `
+import java.util.* ;
+
+class Book{
+    private String title_author ;
+    private int price ;
+    public Book( String title_author , int price  ){
+        this.title_author = title_author ;
+        this.price = price ;
+
+    }
+    public int getPrice(){
+        return price ;
+    }   
+    public String getTitle(){
+        int idx = title_author.indexOf( ",") ;
+        return title_author.substring(0,idx) ;
+    }
+    public String getAuthor(){
+        int idx = title_author.indexOf( ",") ;
+        return title_author.substring(idx+1) ;
+    }
+}
+
+public class Main
+{
+	public static void main(String[] args) {
+	    Book b1 = new Book("Java,Jeff" , 580 ) ;
+	    String title = b1.getTitle() ;
+	    System.out.println("title:"+title);
+	    String author = b1.getAuthor() ;
+	    System.out.println("author:"+author);
+	}
+}
+`;
+
+let code2 = `
+import java.util.*;
+class Player{
+    private int hp ;
+    public Player( int hp ){
+        this.hp = hp ;
+    }
+    int getHp(){
+        return hp ;
+    }
+} 
+
+class Game{
+    
+    private ArrayList<Player> plist ;
+    
+    public Game(){
+        plist = new ArrayList<>();    
+    }
+    
+    public void add( Player x ){
+        plist.add(x);
+    }
+    
+    public int getTotalPlayer(){
+        return plist.size();
+    }
+    
+    public int getPlayersHpGreaterThan(int x){
+        int count = 0 ;
+        for(int i=0 ; i<plist.size() ; i++){
+            Player p = plist.get(i) ;
+            if( p.getHp()>x ){
+                count = count +1 ;
+            }
+        }
+        return count ;
+    }
+}
+
+public class Main
+{
+	public static void main(String[] args) {
+		
+		Game g = new Game() ; 
+		Player p1 = new Player(100) ;
+		Player p2 = new Player(30) ;
+		Player p3 = new Player(20) ;
+		Player p4 = new Player(70) ;
+		
+		// Game 裡面需要有 ArrayList 來處理放進去的 Player
+		g.add(p1) ;
+		g.add(p2) ;
+		g.add(p3) ;
+		g.add(p4) ;
+		int n = g.getTotalPlayer() ; // 總共有幾位
+		System.out.println( n ) ; // 4
+		int m = g.getPlayersHpGreaterThan(50) ; // hp > 50 有 2 位
+		System.out.println( m ) ; // 2
+	}
+}
+
+`;
+
+let code3 = `
+public class Main
+{
+	public static void main(String[] args) {
+	    String a = "123x45678" ;
+	    String b = "ABCDExFG" ;
+	    
+		Swapper sp = new Swapper(a,b) ;
+		String s1 = sp.getS1() ;
+		System.out.println(s1); // 123x45678
+		String s2 = sp.getS2() ;
+		System.out.println(s2); // ABCDExFG
+		
+		System.out.println("=====exchange=============");
+		sp.exchange() ;
+		s1 = sp.getS1() ;
+		System.out.println(s1); // 123xFG
+		s2 = sp.getS2() ;
+		System.out.println(s2); // ABCDEx45678
+	}
+}
+class Swapper{
+    String s1;
+    String s2;
+    Swapper(String a,String b){
+        this.s1=a;
+        this.s2=b;
+    }
+    void exchange(){
+        String a=s1;
+        String b=s2;
+        int i=a.indexOf("x");
+        int j=b.indexOf("x");
+        s1= a.substring( 0,i)+"x"+ b.substring( j+1);
+        s2= b.substring( 0,j)+"x"+ a.substring( i+1);
+    }
+    String getS1(){
+       return s1 ;
+    }
+    String getS2(){
+        return s2 ;
+    }
+}
+
+`;
+
+
+
+            // code
+            // block_code(qId, code);
+
+            // 產生回答區段
+            lit_q_1(topId, 1 , code1 );
+            lit_q_1(topId, 1 , code2 );
+            lit_q_1(topId, 1 , code3 );
+        }
+
+//         function q_class(qId, topId) {
+//             // basic info
+//             block_info(qId, "變數 a 設為 5。如果 a 大於 6，就說「yes」 （答案如下）");
+//             let ri = generate_norepeat_array(5);
+
+//             let code =
+//                 `var a = 5 ;
+// if( a > 6 ){
+//     console.log("yes") ;
+// }
+// `;
+
+
+//             // code
+//             block_code(qId, code);
+
+//             // 產生回答區段
+//             lit_q_1(topId, 7);
+//         }
+
+    </script>
+
+    <title>Java 語法複習 - class 寫法</title>
+</head>
+
+<body id="page-top" onload="prettyPrint()">
+    <!-- Navigation -->
+    <a class="menu-toggle rounded" href="#">
+        <i class="fa fa-bars"></i>
+    </a>
+    <nav id="sidebar-wrapper"></nav>
+    <!-- Header -->
+    <header class="masthead d-flex">
+        <div class="container text-center my-auto">
+            <h1 class="mb-1">Java 語法複習</h1>
+            <h3 class="mb-5">class 寫法</h3>
+            <p>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#info">語法提示</a>
+                <a class="btn btn-outline-info btn-sm js-scroll-trigger" href="#l1">Unit 1 -
+                    CLASS</a>
+                
+            </p>
+        </div>
+        <div class="overlay"></div>
+    </header>
+
+    <section style="background-color: slategrey; padding: 25px" id="info">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">
+                        語法提示
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <ul>
+                        <li class="mb-2">
+                            <span class="font-weight-bold text-primary" style="margin-right:15px;">數值比較</span>單一比較
+                        </li>
+                        <pre class="prettyprint lang-js">
+var a = ? ;
+var b = ? ;
+
+// == 等於
+if( a==b ){
+
+}
+
+// != 不等於
+if( a!=b ){
+
+}
+
+// >  大於
+if( a>b ){
+
+}
+
+// >= 大於等於
+if( a>=b ){
+
+}
+
+// <  小於
+if( a< b ){
+
+}
+
+// <=  小於等於
+if( a<=b ){
+
+}
+</pre>
+                        <li class="mb-2">
+                            <span class="font-weight-bold text-primary" style="margin-right:15px;">數值比較</span>組合
+                        </li>
+                        <pre class="prettyprint lang-js">
+var a = ? ;
+var b = ? ;
+
+// ----> && 且
+if( a>5 && a<10 ){ 
+    // 5 < a < 10
+}
+if( a%2==0 && a>20){
+    // a 是大於 20 的偶數
+}
+if( a>0 && b>0 ){
+    // a , b 都要 >0
+}
+
+// ----> || 或
+if( a<5 || a>25 ){
+    // a<5 或 a>25 
+}
+
+</pre>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="background-color: slategrey; padding: 25px" id="l1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h3 style="color: white">
+                        Unit 1 -
+                        Simple Class
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="padding: 16px" class="bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto" id="q_01">
+                    <ul id="答題範例">
+                        <script>
+                            (function () {
+                                q_class("答題範例", "q_01");
+                            })();                           
+                        </script>
+
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+
+    
+    <!-- Footer -->
+    <footer class="footer text-center" id="footer"></footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Bootstrap core JavaScript -->
+    <script src="../_assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Custom scripts for this template -->
+    <script src="../_assets/js/stylish-portfolio.js"></script>
+    <script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+
+
+
+</body>
+
+</html>

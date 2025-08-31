@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="">
+	
+        <link rel="icon" href="../_assets/img/icon.png">
+		<link href="../_assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="../_assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<link href="../_assets/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+		<link href="../_assets/css/stylish-portfolio.css" rel="stylesheet">
+        <link href="../_assets/vendor/google-code-prettify/prettify.css" rel="stylesheet" type="text/css">
+        
+        
+		<title>JS-Array</title>
+	</head>
+	<body id="page-top" onload='prettyPrint()' >
+		<!-- Navigation -->
+		<a class="menu-toggle rounded" href="#">
+		<i class="fa fa-bars"></i>
+		</a>
+		<nav id="sidebar-wrapper"></nav>
+		<!-- Header -->
+		<header class="masthead d-flex">
+			<div class="container text-center my-auto">
+				<h1 class="mb-1">JavaScript</h1>
+				<h3 class="mb-5">                    
+                    超級倉庫（陣列）
+				</h3>
+				<p>
+                    <a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#feature'>使用特性</a>
+					<a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#statement'>基礎語法</a>
+                    <a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app1'>應用方式</a>
+                    <a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#statement2d'>2D Array - 基礎語法</a>
+                    <a class="btn btn-outline-info btn-sm js-scroll-trigger" href='#app2d'>2D Array - 應用方式</a>
+				</p>
+				<a class="btn btn-primary btn-xl js-scroll-trigger" href="#feature">Start</a>
+			</div>
+			<div class="overlay"></div>
+		</header>
+        <!-- About -->
+		<section class="content-section bg-light" id="feature">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5" >使用特性</h3>                       
+                        <p class="lead mb-3">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;不一樣的物品倉庫
+                        </p> 
+                        <p class="mb-5">
+                            忍者學院的學員寫程式紀錄每天練習忍術的次數。每半個月過去，他們會把全部的次數加起來跟師父說。如果次數很多，而且師父很高興，小忍者就有機會得到師父的獎賞！
+                        </p>
+                        <ol>
+                            <li class="mb-3">使用一般倉庫的小忍者</li>
+                            <iframe class="mb-5" width="560" height="315" src="https://www.youtube.com/embed/Ae_MfSkVYcU?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                            <li class="mb-3">使用超級倉庫（陣列）的小忍者</li>
+                            <iframe class="mb-3" width="560" height="315" src="https://www.youtube.com/embed/LNFOAy03RKs?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+                            
+                        </ol>
+                        
+                        <br><br><br>
+                        <a class="btn btn-dark js-scroll-trigger" href="#app">next</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="content-section bg-light2" id="statement">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5" >基礎語法</h3> 
+                                               
+                        <p class="lead mb-3">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;建立『超級倉庫』
+                        </p>
+                        <ul>
+                            <li class="mb-2">建立超級倉庫（陣列），名稱叫 data</li>
+<pre class="prettyprint lang-js">
+    var data = [] ;
+</pre>
+                        </ul>
+                        
+                        <br><br>
+                        <p class="lead mb-3">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;放入資料
+                        </p>
+                        <ol>
+                            <li class="mb-2">依照編號放入，<span class="font-weight-bold text-danger">由 0 開始</span></li>
+<pre class="prettyprint lang-js">
+    // 建立
+    var data = [] ;    
+    
+    // 放入
+    data[0] = 'A' ;
+    data[1] = 'B' ;
+    data[2] = 'C' ;
+</pre>                            
+                            <li class="mb-2">不用管編號，從最後一個開始放 <span class="font-weight-bold text-success">push( ... )</span></li>
+<pre class="prettyprint lang-js">
+    // 建立
+    var data = [] ;    
+    
+    // 放入
+    data.push('A') ;
+    data.push('B') ;
+    data.push('C') ;
+</pre>                                                 
+                        </ol>
+                        
+                        <br><br>
+                        <p class="lead mb-3">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;取出資料
+                        </p>
+                        <ol>
+                            <li class="mb-2">拿出小倉庫的東西：用『名稱』+『小倉庫編號』取。
+                                <span class="font-weight-bold text-danger">第一個編號是 0 </span>
+                            </li>
+                            <li class="mb-2">知道超級倉庫裡面東西有多少個
+                                <span class="font-weight-bold text-success"> xxx.length </span>
+                            </li>
+<pre class="prettyprint lang-js">
+    // 建立
+    var course = [] ;    
+    var score  = [] ;  
+    
+    // 放入
+    course[0] = 'Math'         ;
+    course[1] = 'Scratch'      ;
+    course[2] = 'JavaScript'   ;
+    
+    score[0]  = 89    ;
+    score[1]  = 97    ;
+    score[2]  = 94    ;
+    
+    // 取出
+    var total = score[0] + score[1] + score[2] ;
+    console.log( '科目：' + course[0] + ' , ' + course[1] + ' , ' + course[2] + ' => 總分 = '+total) ;
+    console.log( '共有 '+ course.length +' 科') ;    
+</pre>
+
+                        </ol>
+                    </div>
+				</div>
+			</div>
+		</section>
+		<section class="content-section bg-light" id="app1">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5" >應用方式</h3> 
+                                               
+                        <p class="lead mb-3">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;運用重複迴圈，拿出每一個元素
+                        </p>
+
+                        <br>
+                        <ol>
+                            <li class="mb-2">迴圈編號 <span class="font-weight-bold text-success"> 0,1,...,5（ i &lt;= 5 ）</span> 
+                                取內容</li>
+
+<pre class="prettyprint lang-js">
+    // 建立
+    var members = [] ;    
+    
+    // 放入
+    members[0] = 'John'   ;
+    members[1] = 'Mary'   ;
+    members[2] = 'Eric'   ;
+    members[3] = 'Annie'  ;
+    members[4] = 'Frank'  ;
+    members[5] = 'Tim'    ;
+    
+    // for 取出
+    for(var i=0 ; i&lt;=5 ; i=i+1){
+        console.log('member:'+i+' -->'+members[i]) ;
+    }
+</pre>
+                            
+                            <li class="mb-2">透過 
+                                <span class="font-weight-bold text-success"> xxx.length （ i &lt; xxx.length ）</span> 
+                                自動找到最後面的數字
+                            </li>
+<pre class="prettyprint lang-js">
+    // for 取出
+    for(var i=0 ; i&lt;members.length ; i=i+1){
+        console.log('member:'+i+' -->'+members[i]) ;
+    }
+</pre>
+                            <li class="mb-2">無須在意個數的簡單方法
+                                <span class="font-weight-bold text-success"> m of members </span> 
+                            </li>
+<pre class="prettyprint lang-js">
+    // for 取出    
+    for(var m of members){
+        console.log('member:-->'+m) ;
+    }
+</pre>
+                        </ol>
+                        
+                        
+                        
+                        
+                        
+                        <p class="lead mb-3">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;加總 \ 最大 \ 最小
+                        </p>
+                        <br>
+                        <ol>
+                            <li class="mb-2">加總</li>
+<pre class="prettyprint lang-js">
+    var total = 0 ; 
+    for(var i=0 ; i&lt;data.length ; i=i+1){
+        total = total + data[i] ;
+    }
+    console.log('total ->'+total) ;
+</pre>                  
+<li class="mb-2">找最大</li>
+<pre class="prettyprint lang-js">
+    var max = data[0] ;
+    for(var i=0 ; i&lt;data.length ; i=i+1){
+        if( data[i] > max ){
+            max = data[i] ;
+        }
+    }
+    console.log('max ->'+max) ;
+</pre>                  
+<li class="mb-2">找最小</li>
+<pre class="prettyprint lang-js">
+    var min = data[0] ;
+    for(var i=0 ; i&lt;data.length ; i=i+1){
+        if( data[i] &lt; min ){
+            min = data[i] ;
+        }
+    }
+    console.log('min ->'+min) ;
+</pre>                  
+</ol>          
+                    </div>
+				</div>
+			</div>
+		</section>
+		<section class="content-section bg-light2" id="statement2d">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5" >2D Array 基礎語法</h3> 
+                                               
+                        <p class="lead mb-3">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;建立『2D超級倉庫』
+                        </p>
+                        <ul>
+                            <li class="mb-2">建立超級倉庫（陣列），名稱叫 table ，具備高 rows，寬 cols。共有資料 rows x cols 。</li>
+                            <style>
+                                td{
+                                border: 1px solid #333;
+                                width:25px;
+                                text-align: center;
+                                }
+                                .idx{
+                                background-color: gray;
+                                color: white;
+                                }
+                                </style>
+                                <table> <tbody>
+                                    <tr>
+                                        <td class="idx"></td>
+                                        <td class="idx">0</td>
+                                        <td class="idx">1</td>
+                                        <td class="idx">2</td>
+                                        <td class="idx">3</td>
+                                        <td class="idx">4</td>
+                                        </tr>
+                                    <tr>
+                                    <td class="idx">0</td>                                
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    </tr>
+                                    <tr>
+                                    <td class="idx">1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    </tr>
+                                    <tr>
+                                    <td class="idx">2</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    </tr>
+                                                            
+                                </tbody>
+                                </table>
+                                
+                            <pre class="prettyprint lang-js">
+    var rows = 3 ;
+    var cols = 5 ;
+    var table = [] ; // 第一層
+    for( var i=0 ; i&lt; rows ; i++ ){
+        table[i] = [] ; // 第一層元素上，建立第二層
+        for( var j=0 ; j&lt; cols ; j++ ){
+            table[i].push( 0 ); // 先全部放 0
+        }
+    }
+    console.log(table) ;
+</pre>
+                        </ul>
+                        
+                        <br><br>
+
+                        <p class="lead mb-3">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;放入資料
+                        </p>
+                        <ol>
+                            <li class="mb-2">依照位置編號放入，<span class="font-weight-bold text-danger">上下左右由 0 開始</span></li>
+                            <table>                            
+                                <tbody>
+                                    <tr>
+                                        <td class="idx"></td>
+                                        <td class="idx">0</td>
+                                        <td class="idx">1</td>
+                                        <td class="idx">2</td>
+                                        <td class="idx">3</td>
+                                        <td class="idx">4</td>
+                                      </tr>
+                                  <tr>
+                                    <td class="idx">0</td>                                
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td style="background-color: yellowgreen;">7</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="idx">1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                  <tr>
+                                    <td class="idx">2</td>
+                                    <td>0</td>
+                                    <td style="background-color: yellowgreen;">7</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                  </tr>
+                                                          
+                                </tbody>
+                              </table>
+    
+<pre class="prettyprint lang-js">
+    table[0][3] = 7 ;
+    table[2][1] = 7 ;
+</pre>                            
+                                                       
+                        </ol>
+                        
+                        <br><br>
+                        <p class="lead mb-3">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;取出所有資料
+                        </p>
+                        <ol>
+                            <li class="mb-2">拿出每一格：用『名稱』+『直編號』『橫編號』取。
+                                <span class="font-weight-bold text-danger"> xxx[ ? ][ ? ] </span>
+                            </li>
+                            <li class="mb-2">上下幾排
+                                <span class="font-weight-bold text-success"> xxx.length </span>
+                                左右幾排
+                                <span class="font-weight-bold text-success"> xxx[?].length </span>
+                            </li>
+                            <li>必備的雙迴圈</li>
+<pre class="prettyprint lang-js">
+    for( var i=0 ; i &lt; table.length ; i++ ){
+        for( var j=0 ; j &lt; table[i].length ; j++){
+
+            console.log( table[i][j] ) ;
+
+        }
+    }
+</pre>
+                        </ol>
+                    </div>
+				</div>
+			</div>
+		</section>
+        <section class="content-section bg-light" id="app2d">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-10 mx-auto">
+						<h3 class="mb-5" >2D Array - 應用方式</h3> 
+                                               
+                        <p class="lead mb-3">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;必備的雙迴圈，拿出每一個元素
+                        </p>
+
+                        <br>
+                        <ol>
+                            
+                            
+                            <li class="mb-2">上下幾排
+                                <span class="font-weight-bold text-success"> xxx.length </span>
+                                左右幾排
+                                <span class="font-weight-bold text-success"> xxx[?].length </span>
+                            </li>
+<pre class="prettyprint lang-js">
+    for( var i=0 ; i &lt; table.length ; i++ ){
+        for( var j=0 ; j &lt; table[i].length ; j++){
+
+            console.log( table[i][j] ) ;
+
+        }
+    }
+</pre>
+                            <li class="mb-2">無須在意個數的簡單方法
+                                <span class="font-weight-bold text-success"> listi of table </span> 
+                            </li>
+<pre class="prettyprint lang-js">
+    // for 取出    
+    for(var listi of table ){ // 取第一層
+        for(var v of listi ){ // 取第二層
+            console.log('item:-->' + v ) ;
+        }
+    }
+</pre>
+                        </ol>
+                        
+                        
+                        
+                        
+                        
+                        <p class="lead mb-3">
+                            <i class="fa fa-rocket" aria-hidden="true"></i>
+                            &nbsp;&nbsp;加總 \ 最大 \ 最小
+                        </p>
+                        <br>
+                        <ol>
+                            <li class="mb-2">加總</li>
+<pre class="prettyprint lang-js">
+    var total = 0 ; 
+    for( var i=0 ; i &lt; table.length ; i++ ){
+        for( var j=0 ; j &lt; table[i].length ; j++){
+            total = total + table[i][j] ;
+        }
+    }
+    console.log('total ->'+total) ;
+</pre>                  
+<li class="mb-2">找最大</li>
+<pre class="prettyprint lang-js">
+    var max = table[0][0] ;
+    for( var i=0 ; i &lt; table.length ; i++ ){
+        for( var j=0 ; j &lt; table[i].length ; j++){
+            if( table[i][j] > max ){
+                max = table[i][j] ;
+            }
+        }
+    }
+    console.log('max ->'+max) ;
+</pre>                  
+<li class="mb-2">找最小</li>
+<pre class="prettyprint lang-js">
+    var min = table[0][0] ;
+    for( var i=0 ; i &lt; table.length ; i++ ){
+        for( var j=0 ; j &lt; table[i].length ; j++){
+            if( table[i][j] &lt; min ){
+                min = table[i][j] ;
+            }
+        }
+    }
+    console.log('min ->'+min) ;
+</pre>                  
+</ol>          
+                    </div>
+				</div>
+			</div>
+		</section>
+		<!-- Footer -->
+		<footer class="footer text-center" id="footer">
+			
+		</footer>
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+		<i class="fa fa-angle-up"></i>
+		</a>
+		<!-- Bootstrap core JavaScript -->
+		<script src="../_assets/vendor/jquery/jquery.min.js"></script>
+		<script src="../_assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- Plugin JavaScript -->
+		<script src="../_assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Custom scripts for this template -->
+		<script src="../_assets/js/stylish-portfolio.js"></script>
+        <script src="../_assets/vendor/google-code-prettify/prettify.js"></script>
+
+	</body>
+</html>
