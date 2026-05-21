@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python If/Else 流程圖產生器</title>
+    <!-- Tailwind CSS -->
+    <!-- <script src="jsdelivr.net"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <!-- Monaco Editor Load Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+    <style>
+        html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col h-screen">
+
+    <!-- 頂部導覽列 -->
+    <header class="bg-gray-800 p-4 shadow-md flex justify-between items-center shrink-0">
+        <h1 class="text-xl font-bold text-emerald-400">🐍 Python If/Else 流程圖模擬器</h1>
+        <span class="text-xs text-gray-400">純前端 JavaScript 即時渲染</span>
+    </header>
+
+    <!-- 主畫面區域 -->
+    <main class="flex flex-1 overflow-hidden">
+        <!-- 左側：程式碼編輯器 -->
+        <div class="w-1/2 h-full flex flex-col border-r border-gray-700">
+            <div class="bg-gray-800 px-4 py-2 text-sm text-gray-300 font-mono shrink-0">Python Code Input</div>
+            <div id="editor-container" class="flex-1 w-full h-full"></div>
+        </div>
+
+        <!-- 右側：即時流程圖 -->
+        <div class="w-1/2 h-full flex flex-col bg-gray-950">
+            <div class="bg-gray-800 px-4 py-2 text-sm text-gray-300 font-mono shrink-0 flex justify-between items-center">
+                <span>Flowchart Preview</span>
+                <span id="error-msg" class="text-red-400 text-xs hidden">語法錯誤</span>
+            </div>
+            <div class="flex-1 overflow-auto flex items-center justify-center p-6">
+                <div id="mermaid-output" class="mermaid w-full text-center"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 初始化 Mermaid
+        mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+
+        // 預設程式碼
+        const defaultCode = `a = int(input())
+b = int(input())
+c = int(input())
+if a >= 80:
+    if a > 90:
+        print('a is best')
+    else:
+        print('a is good')
+else:
+    if b >= 80:
+        print('choose b')
+    else:
+        print('choose c')`;
+
+        let editor;
+
+        // 非同步載入 Monaco Editor
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
+        require(['vs/editor/editor.main'], function() {
+            editor = monaco.editor.create(document.getElementById('editor-container'), {
+                value: defaultCode,
+                language: 'python',
+                theme: 'vs-dark',
+                automaticLayout: true,
+                fontSize: 14,
+                minimap: { enabled: false }
+            });
+
+            // 監聽輸入事件，即時更新
+            editor.onDidChangeModelContent(() => {
+                generateFlowchart(editor.getValue());
+            });
+
+            // 首次渲染
+            generateFlowchart(defaultCode);
+        });
+
+        // 核心邏輯：將 Python 程式碼轉為 Mermaid 語法
+        function generateFlowchart(code) {
+            const lines = code.split('\n');
+            let nodeCounter = 0;
+            
+            // 節點工廠，確保 ID 唯一
+            const createNodeId = () => `N${nodeCounter++}`;
+
+            let mermaidText = "flowchart TD\n";
+            
+            // 建立標準的 Start 節點
+            const startId = createNodeId();
+            mermaidText += `    ${startId}[Start]\n`;
+
+            let currentParent = startId;
+            let lastInputs = [];
+            let inputNodeId = null;
+
+            // 簡單的堆疊結構，用來記錄 if/else 的層級與父節點關係
+            // 格式: { indent: 縮排數, ifNodeId: 條件節點ID, yesBranchLastNode: 成功分支的最後節點ID, type: 'if'|'else' }
+            let stack = [];
+
+            for (let line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed) continue; // 跳過空行
+
+                // 計算縮排空格數
+                const indent = line.search(/\S/);
+
+                // 根據當前縮排，彈出已經結束的 block 堆疊
+                while (stack.length > 0 && 
+                    (indent<stack[stack.length - 1].indent ||
+                    trimmed.startsWith('else:')==false && indent==stack[stack.length - 1].indent)
+                ) {
+                    const top = stack.pop();
+                    currentParent = top.yesBranchLastNode || top.ifNodeId;
+                }
+
+                // 1. 處理輸入與指派語句 (e.g., input())
+                if (trimmed.includes('input(') && trimmed.includes('=')) {
+                    // 擷取變數名稱
+                    const varMatch = trimmed.match(/^([a-zA-Z_][a-zA-Z0-9_]*)\s*=/);
+                    const varName = varMatch ? varMatch[1] : trimmed;
+                    lastInputs.push(varName);
+                    continue; 
+                }
+
+                // 如果累積了輸入變數，在此處建立一個統一的 Input 節點
+                if (lastInputs.length > 0) {
+                    if (!inputNodeId) {
+                        inputNodeId = createNodeId();
+                        mermaidText += `    ${inputNodeId}[Input ${lastInputs.join(', ')}]\n`;
+                        mermaidText += `    ${currentParent} --> ${inputNodeId}\n`;
+                    } else {
+                        // 更新已存在的 Input 節點文字
+                        // 簡化處理：新輸入直接連線到新節點
+                        const newInId = createNodeId();
+                        mermaidText += `    ${newInId}[Input ${lastInputs.join(', ')}]\n`;
+                        mermaidText += `    ${currentParent} --> ${newInId}\n`;
+                        inputNodeId = newInId;
+                    }
+                    currentParent = inputNodeId;
+                    lastInputs = []; // 清空快取
+                }
+
+                // 2. 處理 if 條件
+                if (trimmed.startsWith('if ')) {
+                    const condition = trimmed.replace('if ', '').replace(':', '').trim();
+                    const ifNodeId = createNodeId();
+                    
+                    mermaidText += `    ${ifNodeId}{${condition}}\n`;
+                    mermaidText += `    ${currentParent} --> ${ifNodeId}\n`;
+
+                    // 將 if 壓入堆疊
+                    stack.push({
+                        indent: indent,
+                        ifNodeId: ifNodeId,
+                        yesBranchLastNode: null,
+                        type: 'if'
+                    });
+
+                    // 下一個節點的起點是這個 if 條件的 Yes 分支
+                    currentParent = `${ifNodeId} -->|Yes|`;
+                }
+                // 3. 處理 else 條件
+                else if (trimmed.startsWith('else:')) {
+                    // 尋找最近一個同縮排的 if 節點
+                    let partnerIf = null;
+                    for (let i = stack.length - 1; i >= 0; i--) {
+                        if (stack[i].indent === indent && stack[i].type === 'if') {
+                            partnerIf = stack[i];
+                            break;
+                        }
+                    }
+
+                    if (partnerIf) {
+                        partnerIf.type = 'else'; // 標記轉為 else 階段
+                        currentParent = `${partnerIf.ifNodeId} -->|No|`;
+                    }
+                }
+                // 4. 處理 print 或一般敘述句 (葉子節點/執行動作)
+                else if (trimmed.startsWith('print(')) {
+                    const content = trimmed.match(/print\((['"])(.*?)\1\)/);
+                    const text = content ? content[2] : trimmed;
+                    const printId = createNodeId();
+
+                    mermaidText += `    ${printId}[${text}]\n`;
+                    
+                    if (typeof currentParent === 'string' && currentParent.includes('-->')) {
+                        // 如果父節點帶有分支箭頭 (e.g., "N1 -->|Yes|")
+                        mermaidText += `    ${currentParent} ${printId}\n`;
+                    } else {
+                        mermaidText += `    ${currentParent} --> ${printId}\n`;
+                    }
+
+                    // 更新當前堆疊層級的最後輸出節點
+                    if (stack.length > 0) {
+                        const top = stack[stack.length - 1];
+                        if (top.type === 'if') {
+                            top.yesBranchLastNode = printId;
+                        }
+                    }
+                    currentParent = printId;
+                }
+            }
+
+            // 渲染至畫面
+            renderMermaid(mermaidText);
+        }
+
+        // 渲染 Mermaid 圖表並捕捉錯誤
+        function renderMermaid(graphDefinition) {
+            const outputDiv = document.getElementById('mermaid-output');
+            const errorMsg = document.getElementById('error-msg');
+            
+            try {
+                outputDiv.removeAttribute('data-processed');
+                outputDiv.innerHTML = graphDefinition;
+                mermaid.innerHTML = graphDefinition;
+                mermaid.init(undefined, outputDiv);
+                errorMsg.classList.add('hidden');
+            } catch (err) {
+                // 忽略解析中的暫時性語法錯誤
+                errorMsg.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
