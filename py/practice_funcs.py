@@ -13,7 +13,8 @@ def generate_problem():
 
     for i, name in enumerate(used_names):
         params_n = random.randint(0, 2)
-        params = [f"x{j}" for j in range(params_n)]
+        # params = [f"x{j}" for j in range(params_n)]
+        params = ["x","y"]
 
         # Build an expression using params, constants, and possibly earlier functions
         choices = []
@@ -31,15 +32,15 @@ def generate_problem():
         expr = ""
         for t in range(terms):
             term = random.choice(choices)
-            op = random.choice(["+", "*"])
+            op = random.choice(["+", "*", "-"])
             if t == 0:
                 expr = term
             else:
-                expr = f"({expr}) {op} ({term})"
+                expr = f"{expr} {op} {term}"
 
         params_src = ",".join(params)
         src_lines.append(f"def {name}({params_src}):")
-        src_lines.append(f"    return {expr}")
+        src_lines.append(f"    return {expr}\n")
         funcs.append(name)
 
     # Add print calls
@@ -73,7 +74,7 @@ def generate_problem():
 
     src = "\n".join(src_lines) + "\n\n"
     for c in calls:
-        src += f"print({c})\n"
+        src += f"print( {c} )\n"
 
     # Compute expected outputs by executing the source in a clean namespace
     ns = {}
@@ -112,10 +113,10 @@ def ask_problem():
                 ok = True
 
         if ok:
-            print(f"第 {i+1} 行：正確 ✅ (你的答案: {ans}，正確答案: {exp})")
+            print(f"第 {i+1} 行： ✅ (你的答案: {ans}，正確答案: {exp})")
             correct += 1
         else:
-            print(f"第 {i+1} 行：錯誤 ❌ (你的答案: {ans}，正確答案: {exp})")
+            print(f"第 {i+1} 行： ❌ (你的答案: {ans}，正確答案: {exp})")
 
     return correct, len(expected) - correct
 
@@ -123,7 +124,7 @@ def ask_problem():
 def main():
     total_correct = 0
     total_wrong = 0
-    print("簡單的函式輸出練習器。輸入 q 結束。")
+    print("函式輸出練習器。輸入 q 結束。")
     while True:
         cmd = input("按 Enter 出題，或輸入 q 離開：").strip().lower()
         if cmd == "q":
@@ -131,9 +132,9 @@ def main():
         correct, wrong = ask_problem()
         total_correct += correct
         total_wrong += wrong
-        print(f"目前累計：正確 {total_correct}，錯誤 {total_wrong}\n")
+        print(f"\n目前累計：正確 ✅  {total_correct}，錯誤 ❌  {total_wrong}\n")
 
-    print(f"練習結束。總計：正確 {total_correct}，錯誤 {total_wrong}")
+    print(f"練習結束。總計：正確 ✅  {total_correct}，錯誤 ❌  {total_wrong}")
 
 
 if __name__ == "__main__":
