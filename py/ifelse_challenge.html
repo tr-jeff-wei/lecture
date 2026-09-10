@@ -77,7 +77,7 @@
                     if (input) { statements.push({ type: 'input', name: input[1] }); index++; continue; }
                     if (output) { statements.push({ type: 'output', text: output[1] }); index++; continue; }
                     if (!text.startsWith('if ') || !text.endsWith(':') || depth >= 2) return null;
-                    const condition = text.slice(3, -1).trim();
+                    const condition = text.slice(3, -1).replace(/\s+/g, '');
                     index++;
                     if (index >= lines.length || lines[index].indent <= indent) return null;
                     const yesBlock = parseBlock(index, lines[index].indent, depth + 1);
@@ -126,9 +126,20 @@
 
         function createQuestion() {
             const names = ['score', 'age', 'level'];
-            const inputCount = 1 + Math.floor(Math.random() * 3), depth = 1 + Math.floor(Math.random() * 2), variables = names.slice(0, inputCount), inputs = variables.map(name => `${name} = int(input())`);
-            const answer = depth === 1 ? `${inputs.join('\n')}\nif ${variables[0]} >= 60:\n    print('達成條件')\nelse:\n    print('未達成')` : `${inputs.join('\n')}\nif ${variables[0]} >= 60:\n    if ${variables[1]} >= 18:\n        print('雙重通過')\n    else:\n        print('外層通過，內層未通過')\nelse:\n    print('外層未通過')`;
-            return { answer, starter: answer.replace(/print\(['"].*?['"]\)/g, "print('請填入輸出')"), inputCount, depth, solved: false };
+            const operators = ['>', '<', '==', '!=', '>=', '<='];
+            const depth = 1 + Math.floor(Math.random() * 2);
+            const inputCount = depth === 2 ? 2 + Math.floor(Math.random() * 2) : 1 + Math.floor(Math.random() * 3);
+            const variables = names.slice(0, inputCount), inputs = variables.map(name => `${name} = int(input())`);
+            const outerCondition = `${variables[0]} ${operators[Math.floor(Math.random() * operators.length)]} ${Math.floor(Math.random() * 100)}`;
+            const outputCodes = ['A', 'B', 'C'];
+            let answer;
+            if (depth === 1) {
+                answer = `${inputs.join('\n')}\nif ${outerCondition}:\n    print('${outputCodes[0]}')\nelse:\n    print('${outputCodes[1]}')`;
+            } else {
+                const innerCondition = `${variables[1]} ${operators[Math.floor(Math.random() * operators.length)]} ${Math.floor(Math.random() * 100)}`;
+                answer = `${inputs.join('\n')}\nif ${outerCondition}:\n    if ${innerCondition}:\n        print('${outputCodes[0]}')\n    else:\n        print('${outputCodes[1]}')\nelse:\n    print('${outputCodes[2]}')`;
+            }
+            return { answer, starter: inputs.join('\n'), inputCount, depth, solved: false };
         }
 
         function startQuestion() {
@@ -145,6 +156,7 @@
             if (!graph) { errorMsg.classList.remove('hidden'); setStatus('請完成流程', 'error'); renderGraph('user-flowchart', 'flowchart TD\n    error[請輸入符合規則的 Python 程式碼]', 'user'); return; }
             errorMsg.classList.add('hidden'); renderGraph('user-flowchart', graph, 'user');
             if (normalizeGraph(graph) === normalizeGraph(flowchartFromPython(question.answer))) {
+                
                 if (!question.solved) { question.solved = true; document.getElementById('score-count').textContent = Number(document.getElementById('score-count').textContent) + 1; }
                 setStatus('答對了！流程圖完全相同', 'success');
             } else setStatus('流程圖還不相同', 'pending');
