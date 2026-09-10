@@ -20,210 +20,138 @@
                 <p class="text-xs font-semibold uppercase tracking-[0.25em] text-amber-400">Python Practice</p>
                 <h1 class="mt-1 text-2xl font-bold">把流程圖寫成程式碼</h1>
             </div>
-            <div id="match-status" class="rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-2 text-sm text-amber-200">
-                尚未完成
+            <div class="flex flex-wrap items-center justify-end gap-3">
+                <span class="rounded-full border border-slate-700 bg-slate-800 px-4 py-2 text-sm text-slate-200">答對 <strong id="score-count" class="text-amber-300">0</strong> 題</span>
+                <div id="match-status" class="rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-2 text-sm text-amber-200">尚未完成</div>
             </div>
         </div>
     </header>
-
     <main class="mx-auto max-w-7xl space-y-5 p-5">
         <section class="border-l-4 border-amber-400 bg-slate-900 px-5 py-4 shadow-lg shadow-black/20">
             <h2 class="text-lg font-semibold text-amber-300">題目</h2>
-            <p class="mt-2 text-slate-300">請依照左側流程圖，完成右側 Python 程式碼。程式需要先讀入成績，成績達到 60 分時輸出「及格」，否則輸出「不及格」。</p>
+            <div class="mt-2 flex flex-wrap items-center justify-between gap-4">
+                <p id="question-text" class="text-slate-300">請依照左側流程圖，完成程式碼。</p>
+                <button id="new-question" type="button" class="border border-amber-400 bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-amber-300">換一題</button>
+            </div>
         </section>
-
         <section class="grid gap-5 lg:grid-cols-2">
             <article class="overflow-hidden border border-slate-800 bg-slate-900">
-                <div class="flex items-center justify-between border-b border-slate-800 px-4 py-3">
-                    <div>
-                        <h2 class="font-semibold">題目流程圖</h2>
-                        <p class="text-xs text-slate-400">請讓右側流程圖與這張圖完全相同</p>
-                    </div>
-                    <span class="text-2xl text-amber-400">01</span>
-                </div>
-                <div class="flex min-h-[26rem] items-center justify-center overflow-auto bg-slate-950 p-6">
-                    <div id="target-flowchart" class="mermaid w-full text-center"></div>
-                </div>
+                <div class="flex items-center justify-between border-b border-slate-800 px-4 py-3"><div><h2 class="font-semibold">題目流程圖</h2><p id="question-meta" class="text-xs text-slate-400">最多 3 個輸入變數，最多 2 層巢狀判斷</p></div><span class="text-2xl text-amber-400">01</span></div>
+                <div class="flex min-h-[26rem] items-center justify-center overflow-auto bg-slate-950 p-6"><div id="target-flowchart" class="mermaid w-full text-center"></div></div>
             </article>
-
             <article class="overflow-hidden border border-slate-800 bg-slate-900">
-                <div class="border-b border-slate-800 px-4 py-3">
-                    <h2 class="font-semibold">你的流程圖</h2>
-                    <p class="text-xs text-slate-400">輸入程式碼後，這裡會同步更新並即時比對</p>
-                </div>
-                <div class="flex min-h-[26rem] items-center justify-center overflow-auto bg-slate-950 p-6">
-                    <div id="user-flowchart" class="mermaid w-full text-center"></div>
-                </div>
+                <div class="border-b border-slate-800 px-4 py-3"><h2 class="font-semibold">你的流程圖</h2><p class="text-xs text-slate-400">輸入程式碼後，這裡會同步更新並即時比對</p></div>
+                <div class="flex min-h-[26rem] items-center justify-center overflow-auto bg-slate-950 p-6"><div id="user-flowchart" class="mermaid w-full text-center"></div></div>
             </article>
         </section>
-
         <section class="overflow-hidden border border-slate-800 bg-slate-900">
-            <div class="border-b border-slate-800 px-4 py-3">
-                <h2 class="font-semibold">輸入 Python 程式碼</h2>
-                <p class="text-xs text-slate-400">輸入時，右上方的流程圖會同步更新</p>
-            </div>
+            <div class="border-b border-slate-800 px-4 py-3"><h2 class="font-semibold">輸入 Python 程式碼</h2><p class="text-xs text-slate-400">每題最多 3 個輸入變數，最多 2 層巢狀 if-else</p></div>
             <div id="editor-container" class="editor-shell h-72 w-full"></div>
             <p id="error-msg" class="hidden border-t border-slate-800 px-4 py-3 text-sm text-rose-400">目前的程式碼還無法產生完整流程圖。</p>
         </section>
     </main>
-
     <script>
         mermaid.initialize({ startOnLoad: false, theme: 'dark', securityLevel: 'loose' });
-
-        const answerCode = `score = int(input())
-if score >= 60:
-    print('及格')
-else:
-    print('不及格')`;
-
+        let question;
         let editor;
-
         require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
         require(['vs/editor/editor.main'], function() {
-            editor = monaco.editor.create(document.getElementById('editor-container'), {
-                value: `score = int(input())
-if score >= 60:
-    print('')
-else:
-    print('')`,
-                language: 'python',
-                theme: 'vs-dark',
-                automaticLayout: true,
-                fontSize: 14,
-                minimap: { enabled: false },
-                padding: { top: 14, bottom: 14 },
-                scrollBeyondLastLine: false
-            });
-
+            editor = monaco.editor.create(document.getElementById('editor-container'), { value: '', language: 'python', theme: 'vs-dark', automaticLayout: true, fontSize: 14, minimap: { enabled: false }, padding: { top: 14, bottom: 14 }, scrollBeyondLastLine: false });
             editor.onDidChangeModelContent(() => updateUserFlowchart(editor.getValue()));
-            updateUserFlowchart(editor.getValue());
+            startQuestion();
         });
+        document.getElementById('new-question').addEventListener('click', startQuestion);
 
-        function escapeLabel(text) {
-            return text.replace(/([()[\]{}])/g, '\\$1');
+        function escapeLabel(text) { return text.replace(/([()[\]{}])/g, '\\$1'); }
+
+        function parsePython(code) {
+            const lines = code.split('\n').map(line => ({ indent: line.search(/\S/), text: line.trim() })).filter(line => line.text);
+            if (!lines.length || lines[0].indent !== 0) return null;
+            function parseBlock(start, indent, depth) {
+                const statements = [];
+                let index = start;
+                while (index < lines.length && lines[index].indent === indent) {
+                    const text = lines[index].text;
+                    const input = text.match(/^([A-Za-z_]\w*)\s*=\s*int\(input\(\)\)$/);
+                    const output = text.match(/^print\(['"](.*?)['"]\)$/);
+                    if (input) { statements.push({ type: 'input', name: input[1] }); index++; continue; }
+                    if (output) { statements.push({ type: 'output', text: output[1] }); index++; continue; }
+                    if (!text.startsWith('if ') || !text.endsWith(':') || depth >= 2) return null;
+                    const condition = text.slice(3, -1).trim();
+                    index++;
+                    if (index >= lines.length || lines[index].indent <= indent) return null;
+                    const yesBlock = parseBlock(index, lines[index].indent, depth + 1);
+                    if (!yesBlock || !yesBlock.statements.length) return null;
+                    index = yesBlock.index;
+                    if (index >= lines.length || lines[index].indent !== indent || lines[index].text !== 'else:') return null;
+                    index++;
+                    if (index >= lines.length || lines[index].indent <= indent) return null;
+                    const noBlock = parseBlock(index, lines[index].indent, depth + 1);
+                    if (!noBlock || !noBlock.statements.length) return null;
+                    index = noBlock.index;
+                    statements.push({ type: 'if', condition, yes: yesBlock.statements, no: noBlock.statements });
+                }
+                return { statements, index };
+            }
+            const parsed = parseBlock(0, 0, 0);
+            const inputs = code.match(/^[ \t]*[A-Za-z_]\w*\s*=\s*int\(input\(\)\)/gm) || [];
+            return parsed && parsed.index === lines.length && inputs.length <= 3 ? parsed.statements : null;
         }
 
         function flowchartFromPython(code) {
-            const lines = code.split('\n').filter(line => line.trim());
-            const graph = ['flowchart TD'];
-            const nodes = [];
-            const stack = [];
+            const statements = parsePython(code);
+            if (!statements) return null;
+            const nodes = [], edges = [];
             let nodeNumber = 0;
-            let previous = null;
-            let branch = null;
-
-            const start = addNode('start', '開始');
-            previous = start;
-
-            function addNode(shape, label) {
-                const id = `node${nodeNumber++}`;
-                nodes.push({ id, shape, label });
-                return id;
+            const addNode = (shape, label) => { const id = `node${nodeNumber++}`; nodes.push({ id, shape, label }); return id; };
+            const connect = (from, to, label = '') => edges.push(`    ${from} -->${label ? `|${label}|` : ''} ${to}`);
+            function compileBlock(block) {
+                let first = null, exits = [];
+                for (const statement of block) { const compiled = compileStatement(statement); if (!first) first = compiled.entry; exits.forEach(exit => connect(exit, compiled.entry)); exits = compiled.exits; }
+                return { entry: first, exits };
             }
-
-            function connect(from, to, label) {
-                graph.push(`    ${from} -->${label ? `|${label}|` : ''} ${to}`);
+            function compileStatement(statement) {
+                if (statement.type === 'input') { const id = addNode('input', `輸入 ${statement.name}`); return { entry: id, exits: [id] }; }
+                if (statement.type === 'output') { const id = addNode('output', `輸出：${statement.text}`); return { entry: id, exits: [id] }; }
+                const condition = addNode('condition', `${statement.condition}?`), yes = compileBlock(statement.yes), no = compileBlock(statement.no);
+                connect(condition, yes.entry, '是'); connect(condition, no.entry, '否');
+                return { entry: condition, exits: yes.exits.concat(no.exits) };
             }
-
-            for (const line of lines) {
-                const indent = line.search(/\S/);
-                const text = line.trim();
-
-                while (stack.length && indent <= stack[stack.length - 1].indent && !text.startsWith('else:')) {
-                    stack.pop();
-                }
-
-                if (text.match(/^[A-Za-z_]\w*\s*=\s*int\(input\(\)\)/)) {
-                    const name = text.match(/^([A-Za-z_]\w*)/)[1];
-                    const input = addNode('input', `輸入 ${name}`);
-                    if (previous) connect(previous, input);
-                    previous = input;
-                    continue;
-                }
-
-                if (text.startsWith('if ')) {
-                    const conditionText = text.slice(3).replace(/:$/, '').trim();
-                    const condition = addNode('condition', `${conditionText}?`);
-                    if (previous) connect(previous, condition);
-                    stack.push({ indent, condition, parent: previous });
-                    previous = condition;
-                    branch = 'yes';
-                    continue;
-                }
-
-                if (text === 'else:') {
-                    const current = stack[stack.length - 1];
-                    if (!current) return null;
-                    previous = current.condition;
-                    branch = 'no';
-                    continue;
-                }
-
-                if (text.startsWith('print(')) {
-                    const match = text.match(/^print\(['"](.*?)['"]\)$/);
-                    if (!match || !stack.length) return null;
-                    const output = addNode('output', `輸出：${match[1]}`);
-                    connect(previous, output, branch === 'no' ? '否' : '是');
-                    stack[stack.length - 1][branch === 'no' ? 'noOutput' : 'yesOutput'] = output;
-                    previous = output;
-                }
-            }
-
-            const current = stack[0];
-            if (!current || !current.yesOutput || !current.noOutput) return null;
-            const end = addNode('end', '結束');
-            connect(current.yesOutput, end);
-            connect(current.noOutput, end);
-
-            for (const node of nodes) {
-                const shape = node.shape === 'condition' ? `{${escapeLabel(node.label)}}`
-                    : node.shape === 'input' ? `[/"${escapeLabel(node.label)}"/]`
-                    : node.shape === 'output' ? `["${escapeLabel(node.label)}"]`
-                    : `([${escapeLabel(node.label)}])`;
-                graph.splice(1, 0, `    ${node.id}${shape}`);
-            }
-
-            return graph.join('\n');
+            const start = addNode('start', '開始'), body = compileBlock(statements), end = addNode('end', '結束');
+            connect(start, body.entry); body.exits.forEach(exit => connect(exit, end));
+            const graph = ['flowchart TD'];
+            nodes.forEach(node => { const shape = node.shape === 'condition' ? `{${escapeLabel(node.label)}}` : node.shape === 'input' ? `[/${escapeLabel(node.label)}/]` : node.shape === 'output' ? `["${escapeLabel(node.label)}"]` : `([${escapeLabel(node.label)}])`; graph.push(`    ${node.id}${shape}`); });
+            return graph.concat(edges).join('\n');
         }
 
-        const targetGraph = flowchartFromPython(answerCode);
-        renderGraph('target-flowchart', targetGraph, 'target');
+        function createQuestion() {
+            const names = ['score', 'age', 'level'];
+            const inputCount = 1 + Math.floor(Math.random() * 3), depth = 1 + Math.floor(Math.random() * 2), variables = names.slice(0, inputCount), inputs = variables.map(name => `${name} = int(input())`);
+            const answer = depth === 1 ? `${inputs.join('\n')}\nif ${variables[0]} >= 60:\n    print('達成條件')\nelse:\n    print('未達成')` : `${inputs.join('\n')}\nif ${variables[0]} >= 60:\n    if ${variables[1]} >= 18:\n        print('雙重通過')\n    else:\n        print('外層通過，內層未通過')\nelse:\n    print('外層未通過')`;
+            return { answer, starter: answer.replace(/print\(['"].*?['"]\)/g, "print('請填入輸出')"), inputCount, depth, solved: false };
+        }
+
+        function startQuestion() {
+            question = createQuestion();
+            document.getElementById('question-text').textContent = `請依照左側流程圖，完成程式碼：讀入 ${question.inputCount} 個變數，重現相同的判斷流程。`;
+            document.getElementById('question-meta').textContent = `本題使用 ${question.inputCount} 個輸入變數，${question.depth} 層巢狀 if-else`;
+            setStatus('尚未完成', 'pending');
+            renderGraph('target-flowchart', flowchartFromPython(question.answer), 'target');
+            editor.setValue(question.starter);
+        }
 
         function updateUserFlowchart(code) {
-            const graph = flowchartFromPython(code);
-            const errorMsg = document.getElementById('error-msg');
-            const status = document.getElementById('match-status');
-
-            if (!graph) {
-                errorMsg.classList.remove('hidden');
-                status.textContent = '請完成流程';
-                status.className = 'rounded-full border border-rose-400/40 bg-rose-400/10 px-4 py-2 text-sm text-rose-200';
-                renderGraph('user-flowchart', 'flowchart TD\n    error[請輸入完整的 if / else 程式碼]', 'user');
-                return;
-            }
-
-            errorMsg.classList.add('hidden');
-            renderGraph('user-flowchart', graph, 'user');
-            const isMatch = normalizeGraph(graph) === normalizeGraph(flowchartFromPython(answerCode));
-            status.textContent = isMatch ? '流程圖完全相同' : '流程圖還不相同';
-            status.className = isMatch
-                ? 'rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-200'
-                : 'rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-2 text-sm text-amber-200';
+            const graph = flowchartFromPython(code), errorMsg = document.getElementById('error-msg');
+            if (!graph) { errorMsg.classList.remove('hidden'); setStatus('請完成流程', 'error'); renderGraph('user-flowchart', 'flowchart TD\n    error[請輸入符合規則的 Python 程式碼]', 'user'); return; }
+            errorMsg.classList.add('hidden'); renderGraph('user-flowchart', graph, 'user');
+            if (normalizeGraph(graph) === normalizeGraph(flowchartFromPython(question.answer))) {
+                if (!question.solved) { question.solved = true; document.getElementById('score-count').textContent = Number(document.getElementById('score-count').textContent) + 1; }
+                setStatus('答對了！流程圖完全相同', 'success');
+            } else setStatus('流程圖還不相同', 'pending');
         }
-
-        function normalizeGraph(graph) {
-            return graph.replace(/node\d+/g, 'node').replace(/\s+/g, ' ').trim();
-        }
-
-        async function renderGraph(elementId, graph, renderId) {
-            const element = document.getElementById(elementId);
-            try {
-                const result = await mermaid.render(`flowchart-${renderId}-${Date.now()}`, graph);
-                element.innerHTML = result.svg;
-            } catch (error) {
-                element.textContent = '流程圖暫時無法顯示';
-            }
-        }
+        function setStatus(text, type) { const styles = { success: 'rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-200', error: 'rounded-full border border-rose-400/40 bg-rose-400/10 px-4 py-2 text-sm text-rose-200', pending: 'rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-2 text-sm text-amber-200' }; const status = document.getElementById('match-status'); status.textContent = text; status.className = styles[type]; }
+        function normalizeGraph(graph) { return graph.replace(/node\d+/g, 'node').replace(/\s+/g, ' ').trim(); }
+        async function renderGraph(elementId, graph, renderId) { const element = document.getElementById(elementId); try { const result = await mermaid.render(`flowchart-${renderId}-${Date.now()}`, graph); element.innerHTML = result.svg; } catch (error) { element.textContent = '流程圖暫時無法顯示'; } }
     </script>
 </body>
 </html>
