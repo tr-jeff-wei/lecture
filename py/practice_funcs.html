@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python 函式輸出練習器</title>
+  <link rel="stylesheet" href="practice_funcs.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="page-header">
+      <p class="eyebrow">PYTHON PRACTICE</p>
+      <h1>函式輸出練習器</h1>
+      <p class="intro">閱讀每一題的 Python 程式，預測它印出的結果。一次完成 10 題，再送出批改。</p>
+    </header>
+
+    <form id="quiz-form" novalidate>
+      <div id="question-list" class="question-list"></div>
+      <section class="submit-panel" aria-live="polite">
+        <div>
+          <strong id="progress-text">尚未送出</strong>
+          <span>完成全部題目後再送出，錯誤答案會顯示正確結果。</span>
+        </div>
+        <button type="submit" class="primary-button">送出批改</button>
+      </section>
+    </form>
+
+    <section id="result-panel" class="result-panel" hidden aria-live="polite">
+      <div>
+        <p class="eyebrow">RESULT</p>
+        <h2 id="result-title">批改結果</h2>
+        <p id="result-detail"></p>
+      </div>
+      <button id="new-round-button" type="button" class="secondary-button">再出 10 題</button>
+    </section>
+  </main>
+  <script src="practice_funcs.js"></script>
+</body>
+</html>
