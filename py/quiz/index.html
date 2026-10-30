@@ -23,7 +23,7 @@
       <div class="sidebar-bottom">
         <div class="side-label">今日練習</div>
         <div class="daily-card">
-          <div class="daily-top"><span class="daily-icon" aria-hidden="true">✦</span><span id="daily-count">0 / 5 題</span></div>
+          <div class="daily-top"><span class="daily-icon" aria-hidden="true">✦</span><span id="daily-count">0 / 10 題</span></div>
           <div class="progress-track"><span id="daily-progress"></span></div>
           <p>每天一點點，程式思維更清晰。</p>
         </div>
@@ -42,7 +42,7 @@
       <section class="welcome-row" id="welcome-row">
         <div>
           <div class="eyebrow"><span class="eyebrow-line"></span> SMALL STEPS, BIG IDEAS</div>
-          <h1>把程式讀懂，<span>從一題開始。</span></h1>
+          <h1>讀懂程式，<span>從一題開始。</span></h1>
           <p class="welcome-copy">選一個主題，試著追蹤每一步會發生什麼。</p>
         </div>
         <div class="score-card">
@@ -50,6 +50,17 @@
           <div class="score-value"><strong id="correct-total">0</strong><span>題</span></div>
           <div class="score-sub"><span id="accuracy-rate">開始你的第一次練習</span></div>
         </div>
+      </section>
+
+      <section class="activity-card" id="activity-card" aria-labelledby="activity-title">
+        <div class="activity-heading">
+          <div>
+            <h2 id="activity-title">近 30 天練習</h2>
+            <p>完成當日 10 題，點亮一格</p>
+          </div>
+          <span class="activity-total" id="activity-total">0 / 30 天</span>
+        </div>
+        <div class="activity-grid" id="activity-grid" role="list" aria-label="近 30 天每日練習完成狀況"></div>
       </section>
 
       <section class="practice-layout" id="practice-layout" aria-label="答題區">
@@ -99,7 +110,7 @@
         <div class="statistics-heading">
           <div>
             <div class="eyebrow"><span class="eyebrow-line"></span> YOUR LEARNING JOURNEY</div>
-            <h1 id="statistics-title">練習統計<span>與錯題整理。</span></h1>
+            <h1 id="statistics-title">練習統計</h1>
             <p class="welcome-copy">每一題都是進步的軌跡，回顧錯題讓理解更扎實。</p>
           </div>
           <div class="statistics-total"><span>累積練習</span><strong id="statistics-total">0</strong><small>題</small></div>
@@ -107,7 +118,7 @@
 
         <section class="statistics-card" aria-labelledby="category-title">
           <div class="statistics-section-heading">
-            <div><h2 id="category-title">類別練習概況</h2><p>統計每個主題的作答題數與答錯題數</p></div>
+            <div><h2 id="category-title">練習概況</h2><p>統計每個主題的作答題數與答錯題數</p></div>
             <span class="section-mark" aria-hidden="true">▦</span>
           </div>
           <div class="table-wrap">

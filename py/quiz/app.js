@@ -1,6 +1,7 @@
 "use strict";
 
 const STORAGE_KEY = "python-practice-room-v1";
+const DAILY_GOAL = 10;
 
 const topics = [
   { id: "functions", icon: "ƒ", label: "函式輸出", badge: "FUNCTIONS", title: "預測函式執行結果", tipTitle: "先讀定義，再看呼叫", tip: "函式被呼叫時，先把參數代入，再一步一步計算 return 的結果。" },
@@ -12,7 +13,7 @@ const topics = [
   { id: "condition", icon: "◇", label: "List 與 if", badge: "LIST · IF", title: "依條件轉換串列元素", tipTitle: "逐一檢查每個元素", tip: "for 迴圈每次取出一個元素，再依 if 條件決定要放進哪個結果。" }
 ];
 
-const defaults = { correct: 0, wrong: 0, streak: 0, attemptedToday: 0, date: "", mistakes: [] };
+const defaults = { correct: 0, wrong: 0, streak: 0, attemptedToday: 0, date: "", completedDays: [], mistakes: [] };
 let stats = loadStats();
 let activeTopic = "functions";
 let currentQuestion = null;
@@ -28,7 +29,32 @@ function emptyCategoryStats() {
 }
 
 function todayDate() {
-  return new Date().toLocaleDateString("en-CA");
+  return dateKey(new Date());
+}
+
+function dateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function recentDateKeys() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return Array.from({ length: 30 }, (_, index) => {
+    const date = new Date(today);
+    date.setDate(today.getDate() - (29 - index));
+    return dateKey(date);
+  });
+}
+
+function normalizeCompletedDays(days) {
+  return [...new Set((Array.isArray(days) ? days : []).filter((day) => {
+    if (typeof day !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(day)) return false;
+    const parsed = new Date(`${day}T00:00:00`);
+    return !Number.isNaN(parsed.getTime()) && dateKey(parsed) === day;
+  }))];
 }
 
 function loadStats() {
@@ -42,12 +68,16 @@ function loadStats() {
         categoryStats[topic.id] = { attempted: savedCategory.attempted, wrong: savedCategory.wrong };
       }
     }
+    const attemptedToday = saved.date === today ? (saved.attemptedToday || 0) : 0;
+    const completedDays = normalizeCompletedDays(saved.completedDays);
+    if (attemptedToday >= DAILY_GOAL && !completedDays.includes(today)) completedDays.push(today);
     return {
       ...defaults,
       ...saved,
       categoryStats,
+      completedDays,
       mistakes: Array.isArray(saved.mistakes) ? saved.mistakes : [],
-      attemptedToday: saved.date === today ? (saved.attemptedToday || 0) : 0,
+      attemptedToday,
       date: today
     };
   } catch {
@@ -315,10 +345,26 @@ function renderStats() {
   $("#correct-total").textContent = stats.correct;
   $("#accuracy-rate").textContent = total ? `答題正確率 ${Math.round((stats.correct / total) * 100)}%` : "開始你的第一次練習";
   $("#streak-count").textContent = stats.streak;
-  const daily = Math.min(stats.attemptedToday, 5);
-  $("#daily-count").textContent = `${daily} / 5 題`;
-  $("#daily-progress").style.width = `${daily * 20}%`;
+  const daily = Math.min(stats.attemptedToday, DAILY_GOAL);
+  $("#daily-count").textContent = `${daily} / ${DAILY_GOAL} 題`;
+  $("#daily-progress").style.width = `${(daily / DAILY_GOAL) * 100}%`;
+  renderActivity();
   renderStatistics();
+}
+
+function renderActivity() {
+  const completedDays = new Set(stats.completedDays);
+  if (stats.date === todayDate() && stats.attemptedToday >= DAILY_GOAL) {
+    completedDays.add(stats.date);
+  }
+  const dates = recentDateKeys();
+  $("#activity-total").textContent = `${dates.filter((date) => completedDays.has(date)).length} / 30 天`;
+  $("#activity-grid").innerHTML = dates.map((date) => {
+    const completed = completedDays.has(date);
+    const localDate = new Date(`${date}T00:00:00`);
+    const label = `${localDate.toLocaleDateString("zh-TW")}：${completed ? "已完成今日練習" : "尚未完成今日練習"}`;
+    return `<span class="activity-day${completed ? " completed" : ""}" role="listitem" aria-label="${label}" title="${label}"></span>`;
+  }).join("");
 }
 
 function renderStatistics() {
@@ -432,6 +478,9 @@ function checkAnswer() {
   const correct = inputs.every((input, index) => normalizeAnswer(input.value, currentQuestion.answers[index]));
   answered = true;
   stats.attemptedToday += 1;
+  if (stats.attemptedToday >= DAILY_GOAL && !stats.completedDays.includes(stats.date)) {
+    stats.completedDays.push(stats.date);
+  }
   const category = stats.categoryStats[activeTopic];
   category.attempted += 1;
   if (correct) {
@@ -481,6 +530,7 @@ function setView(view) {
   currentView = view;
   const isStatistics = view === "statistics";
   $("#welcome-row").hidden = isStatistics;
+  $("#activity-card").hidden = isStatistics;
   $("#practice-layout").hidden = isStatistics;
   $("#statistics-page").hidden = !isStatistics;
   $("#breadcrumb-current").textContent = isStatistics ? "練習統計" : topics.find((topic) => topic.id === activeTopic).label;
@@ -526,6 +576,10 @@ function validateImportedBackup(backup) {
   if (!data.categoryStats || typeof data.categoryStats !== "object" || !Array.isArray(data.mistakes)) {
     throw new Error("紀錄缺少類別統計或錯題清單。");
   }
+  if (data.completedDays !== undefined &&
+      (!Array.isArray(data.completedDays) || data.completedDays.some((day) => normalizeCompletedDays([day]).length !== 1))) {
+    throw new Error("完成日期紀錄格式不正確。");
+  }
   const categoryStats = emptyCategoryStats();
   for (const topic of topics) {
     const category = data.categoryStats[topic.id];
@@ -566,13 +620,17 @@ function validateImportedBackup(backup) {
   if (mistakes.length > data.wrong || data.attemptedToday > data.correct + data.wrong) {
     throw new Error("錯題數或今日答題數大於整體統計，檔案資料不一致。");
   }
+  const attemptedToday = data.date === todayDate() ? data.attemptedToday : 0;
+  const completedDays = normalizeCompletedDays(data.completedDays);
+  if (attemptedToday >= DAILY_GOAL && !completedDays.includes(todayDate())) completedDays.push(todayDate());
   return {
     ...defaults,
     correct: data.correct,
     wrong: data.wrong,
     streak: data.streak,
-    attemptedToday: data.date === todayDate() ? data.attemptedToday : 0,
+    attemptedToday,
     date: todayDate(),
+    completedDays,
     categoryStats,
     mistakes
   };
