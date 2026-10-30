@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="透過隨機題目練習 Python 函式、串列、條件判斷與 range。">
+  <title>Python 練習室 — 寫程式前先練追蹤</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="練習主選單">
+      <a class="brand" href="#" aria-label="Python 練習室首頁">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span></span>
+        <span class="brand-copy"><strong>練習室</strong><small>PYTHON PLAYGROUND</small></span>
+      </a>
+
+      <div class="side-label">學習路線</div>
+      <nav class="topic-nav" id="topic-nav" aria-label="選擇練習主題"></nav>
+
+      <div class="sidebar-bottom">
+        <div class="side-label">今日練習</div>
+        <div class="daily-card">
+          <div class="daily-top"><span class="daily-icon" aria-hidden="true">✦</span><span id="daily-count">0 / 5 題</span></div>
+          <div class="progress-track"><span id="daily-progress"></span></div>
+          <p>每天一點點，程式思維更清晰。</p>
+        </div>
+        <div class="sidebar-note"><span class="online-dot"></span> 離線也能使用</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumb"><span>學習路線</span><span class="crumb-divider">/</span><strong id="breadcrumb-current">函式輸出</strong></div>
+        <div class="topbar-right">
+          <div class="streak-chip" title="連續答對題數"><span aria-hidden="true">⚡</span><span id="streak-count">0</span><span class="streak-label">連勝</span></div>
+        </div>
+      </header>
+
+      <section class="welcome-row" id="welcome-row">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> SMALL STEPS, BIG IDEAS</div>
+          <h1>把程式讀懂，<span>從一題開始。</span></h1>
+          <p class="welcome-copy">選一個主題，試著追蹤每一步會發生什麼。</p>
+        </div>
+        <div class="score-card">
+          <span class="score-label">累積答對</span>
+          <div class="score-value"><strong id="correct-total">0</strong><span>題</span></div>
+          <div class="score-sub"><span id="accuracy-rate">開始你的第一次練習</span></div>
+        </div>
+      </section>
+
+      <section class="practice-layout" id="practice-layout" aria-label="答題區">
+        <article class="question-card">
+          <div class="question-top">
+            <div class="question-meta">
+              <span class="topic-badge" id="topic-badge">FUNCTIONS</span>
+              <span class="question-number" id="question-number">第 1 題</span>
+            </div>
+            <button class="text-button" id="hint-button" type="button"><span aria-hidden="true">☼</span> 給我提示</button>
+          </div>
+
+          <div class="question-body">
+            <h2 id="question-title">預測函式執行結果</h2>
+            <p class="question-instruction" id="question-instruction">仔細閱讀程式，輸入執行後印出的結果。</p>
+            <div class="code-window">
+              <div class="code-topbar"><div class="window-dots" aria-hidden="true"><i></i><i></i><i></i></div><span>practice.py</span><span class="code-language">PYTHON 3</span></div>
+              <pre class="code-content" id="code-content" aria-label="Python 題目程式碼"></pre>
+            </div>
+
+            <div class="answer-area" id="answer-area"></div>
+            <div class="hint-box" id="hint-box" hidden></div>
+            <div class="feedback" id="feedback" role="status" aria-live="polite" hidden></div>
+
+            <div class="question-actions">
+              <span class="keyboard-hint">按 <kbd>Enter</kbd> 送出答案</span>
+              <div class="action-buttons">
+                <button class="button button-quiet" id="skip-button" type="button">跳過</button>
+                <button class="button button-primary" id="submit-button" type="button">檢查答案 <span aria-hidden="true">→</span></button>
+                <button class="button button-primary" id="next-button" type="button" hidden>下一題 <span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <aside class="learning-card">
+          <div class="learning-icon" aria-hidden="true">⌘</div>
+          <div class="learning-kicker">LEARNING TIP</div>
+          <h3 id="tip-title">先讀定義，再看呼叫</h3>
+          <p id="tip-copy">函式被呼叫時，先把參數代入，再一步一步計算 return 的結果。</p>
+          <div class="tip-divider"></div>
+          <div class="tip-footer"><span class="tip-sparkle" aria-hidden="true">✳</span> 不用急著寫程式，紙筆追蹤也很棒。</div>
+        </aside>
+      </section>
+
+      <section class="statistics-page" id="statistics-page" aria-labelledby="statistics-title" hidden>
+        <div class="statistics-heading">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> YOUR LEARNING JOURNEY</div>
+            <h1 id="statistics-title">練習統計<span>與錯題整理。</span></h1>
+            <p class="welcome-copy">每一題都是進步的軌跡，回顧錯題讓理解更扎實。</p>
+          </div>
+          <div class="statistics-total"><span>累積練習</span><strong id="statistics-total">0</strong><small>題</small></div>
+        </div>
+
+        <section class="statistics-card" aria-labelledby="category-title">
+          <div class="statistics-section-heading">
+            <div><h2 id="category-title">類別練習概況</h2><p>統計每個主題的作答題數與答錯題數</p></div>
+            <span class="section-mark" aria-hidden="true">▦</span>
+          </div>
+          <div class="table-wrap">
+            <table class="category-table">
+              <thead><tr><th scope="col">練習類別</th><th scope="col">練習題數</th><th scope="col">錯誤題數</th><th scope="col">答對題數</th><th scope="col">正確率</th></tr></thead>
+              <tbody id="category-statistics"></tbody>
+              <tfoot id="category-totals"></tfoot>
+            </table>
+          </div>
+        </section>
+
+        <section class="statistics-card mistakes-card" aria-labelledby="mistakes-title">
+          <div class="statistics-section-heading mistakes-heading">
+            <div><h2 id="mistakes-title">錯題整理 <span class="mistakes-count" id="mistakes-count">0</span></h2><p>依答錯時間排序，最近的錯題排在最前面</p></div>
+            <span class="section-mark mistake-mark" aria-hidden="true">↯</span>
+          </div>
+          <div class="mistake-list" id="mistake-list"></div>
+        </section>
+
+        <section class="statistics-card records-card" aria-labelledby="records-title">
+          <div class="statistics-section-heading records-heading">
+            <div><h2 id="records-title">練習紀錄管理</h2><p>匯出備份、匯入既有紀錄，或整理錯題清單</p></div>
+            <span class="section-mark" aria-hidden="true">⇄</span>
+          </div>
+          <div class="record-actions">
+            <button class="button button-primary" type="button" data-action="export">匯出練習紀錄 <span aria-hidden="true">↓</span></button>
+            <button class="button button-quiet" type="button" data-action="import">匯入練習紀錄 <span aria-hidden="true">↑</span></button>
+            <span class="action-divider" aria-hidden="true"></span>
+            <button class="button button-danger-quiet" type="button" data-action="clear-all">清除所有紀錄</button>
+            <button class="button button-quiet" type="button" data-action="clear-mistakes">清除錯誤題目清單</button>
+            <button class="button button-quiet" type="button" data-action="keep-recent">保留最近的 10 題</button>
+            <input id="import-file" type="file" accept=".json,application/json" hidden>
+          </div>
+          <p class="record-status" id="record-status" role="status" aria-live="polite" hidden></p>
+        </section>
+      </section>
+
+      <footer class="page-footer"><span>用好奇心寫程式</span><span class="footer-divider">·</span><span>Python 練習室</span><span class="footer-version">STATIC LEARNING TOOL</span></footer>
+    </main>
+  </div>
+</body>
+</html>
