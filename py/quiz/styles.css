@@ -183,6 +183,7 @@ kbd { color: #7d899a; border: 1px solid #dfe4ec; border-radius: 4px; background:
 .dot-trace { background: #47b894; }
 .dot-list { background: #e6a84b; }
 .dot-list2 { background: #9673d6; }
+.dot-list-calc { background: #4a9cc1; }
 .dot-condition { background: #e47e83; }
 .dot-range { background: #4a9cc1; }
 .dot-legacy { background: #a3acbb; }

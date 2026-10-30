@@ -8,6 +8,7 @@ const topics = [
   { id: "range", icon: "↗", label: "range() 練習", badge: "RANGE", title: "熟悉 range 的不同寫法", tipTitle: "留意參數代表的意義", tip: "range(stop) 從 0 開始；range(start, stop) 的 step 預設為 1。" },
   { id: "list", icon: "▤", label: "List 與 range", badge: "LIST · RANGE", title: "追蹤串列如何建立", tipTitle: "range 的 stop 不會被取到", tip: "range(start, stop, step) 從 start 開始，每次加上 step，直到小於 stop。" },
   { id: "list2", icon: "⌗", label: "List 索引與長度", badge: "LIST · INDEX", title: "讀取串列長度與索引", tipTitle: "索引從 0 開始", tip: "串列第一個元素在 mylist[0]。len(mylist) 則是元素的總數。" },
+  { id: "list-calc", icon: "∑", label: "List 加總與極值", badge: "LIST · LOOP", title: "用 for 計算串列範圍", tipTitle: "先確定走訪的索引", tip: "隨機設定左、右界線，for 迴圈會走訪兩個索引之間的元素，包含左右界線；range 的 stop 要設為右界索引加 1。" },
   { id: "condition", icon: "◇", label: "List 與 if", badge: "LIST · IF", title: "依條件轉換串列元素", tipTitle: "逐一檢查每個元素", tip: "for 迴圈每次取出一個元素，再依 if 條件決定要放進哪個結果。" }
 ];
 
@@ -152,6 +153,53 @@ function makeListQuestion(withExtras) {
   return { source, fields, answers, explanation, hint };
 }
 
+function makeListCalculationQuestion() {
+  const list = Array.from({ length: randomInt(5, 10) }, () => randomInt(1, 20));
+  const operation = pick(["sum", "max", "min"]);
+  const lBoundary = randomInt(0, Math.floor(list.length / 2) );
+  const rBoundary = randomInt(lBoundary + 1, list.length - 1);      
+  const values = list.slice(lBoundary, rBoundary + 1);
+  const answer = operation === "sum"
+    ? values.reduce((total, value) => total + value, 0)
+    : operation === "max"
+      ? Math.max(...values)
+      : Math.min(...values);
+  const operationDetails = {
+    sum: {
+      label: "加總",
+      initialization: "total = 0",
+      update: "        total += mylist[i]",
+      output: "total",
+      explanation: `${values.join(" + ")} = ${answer}`
+    },
+    max: {
+      label: "最大值",
+      initialization: `largest = 0`,
+      update: "        if mylist[i] > largest:\n            largest = mylist[i]",
+      output: "largest",
+      explanation: `走訪的數值為 ${values.join(", ")}，最大值是 ${answer}`
+    },
+    min: {
+      label: "最小值",
+      initialization: `smallest = 99`,
+      update: "        if mylist[i] < smallest:\n            smallest = mylist[i]",
+      output: "smallest",
+      explanation: `走訪的數值為 ${values.join(", ")}，最小值是 ${answer}`
+    }
+  }[operation];
+  const loopStart =  lBoundary;
+  const loopRange = `range(${loopStart}, ${rBoundary + 1})`;
+  const source = `mylist = ${pythonList(list)}\n${operationDetails.initialization}\nfor i in ${loopRange}:\n${operationDetails.update}\nprint(${operationDetails.output})`;
+  const boundaryDescription = `從左界索引 ${lBoundary} 走訪到右界索引 ${rBoundary}`;
+  return {
+    source,
+    fields: [{ label: `走訪計算後的${operationDetails.label}`, placeholder: "輸入整數" }],
+    answers: [String(answer)],
+    explanation: `${boundaryDescription}，包含界線位置；走訪的數值為 ${values.join(", ")}。${operationDetails.explanation}。`,
+    hint: `先確認 for 迴圈會走訪哪些索引，再依序${operationDetails.label}對應的串列元素。`
+  };
+}
+
 function makeConditionQuestion() {
   const condition = pick([
     { operator: "==", description: "等於" },
@@ -247,6 +295,7 @@ function buildQuestion(topicId) {
   if (topicId === "trace") return makeTraceQuestion();
   if (topicId === "list") return makeListQuestion(false);
   if (topicId === "list2") return makeListQuestion(true);
+  if (topicId === "list-calc") return makeListCalculationQuestion();
   if (topicId === "condition") return makeConditionQuestion();
   return makeRangeQuestion();
 }
@@ -325,7 +374,9 @@ function renderQuestion() {
   $("#question-title").textContent = topic.title;
   $("#question-instruction").textContent = activeTopic === "range"
     ? "閱讀題目，依照 range 的規則輸入答案。"
-    : "仔細閱讀程式，輸入正確的結果。";
+    : activeTopic === "list-calc"
+      ? "依照 for 迴圈的走訪範圍，回答加總、最大值或最小值。"
+      : "仔細閱讀程式，輸入正確的結果。";
   $("#question-number").textContent = `第 ${questionCount} 題`;
   $("#code-content").innerHTML = renderCode(currentQuestion.source);
   $("#tip-title").textContent = topic.tipTitle;
@@ -478,6 +529,7 @@ function validateImportedBackup(backup) {
   const categoryStats = emptyCategoryStats();
   for (const topic of topics) {
     const category = data.categoryStats[topic.id];
+    if (!category && topic.id === "list-calc") continue;
     if (!category || !isCount(category.attempted) || !isCount(category.wrong) || category.wrong > category.attempted) {
       throw new Error(`「${topic.label}」的統計資料格式不正確。`);
     }
