@@ -5,12 +5,13 @@ const DAILY_GOAL = 10;
 
 const topics = [
   { id: "functions", icon: "ƒ", label: "函式輸出", badge: "FUNCTIONS", title: "預測函式執行結果", tipTitle: "先讀定義，再看呼叫", tip: "函式被呼叫時，先把參數代入，再一步一步計算 return 的結果。" },
+  { id: "variables", icon: "x=", label: "變數應用", badge: "VARIABLES", title: "追蹤變數賦值與運算", tipTitle: "留意變數目前儲存的值", tip: "賦值會把右側目前的值存入左側；交換可用暫存變數，並留意 /、//、% 的差異。" },
   { id: "trace", icon: "↳", label: "函式追蹤", badge: "TRACE", title: "追蹤函式之間的傳遞", tipTitle: "把每個變數寫下來", tip: "依序計算 d、e、f。每個函式回傳的值，會成為下一步的輸入。" },
   { id: "range", icon: "↗", label: "range() 練習", badge: "RANGE", title: "熟悉 range 的不同寫法", tipTitle: "留意參數代表的意義", tip: "range(stop) 從 0 開始；range(start, stop) 的 step 預設為 1。" },
   { id: "list", icon: "▤", label: "List 與 range", badge: "LIST · RANGE", title: "追蹤串列如何建立", tipTitle: "range 的 stop 不會被取到", tip: "range(start, stop, step) 從 start 開始，每次加上 step，直到小於 stop。" },
   { id: "list2", icon: "⌗", label: "List 索引與長度", badge: "LIST · INDEX", title: "讀取串列長度與索引", tipTitle: "索引從 0 開始", tip: "串列第一個元素在 mylist[0]。len(mylist) 則是元素的總數。" },
-  { id: "list-calc", icon: "∑", label: "List 加總與極值", badge: "LIST · LOOP", title: "用 for 計算串列範圍", tipTitle: "先確定走訪的索引", tip: "隨機設定左、右界線，for 迴圈會走訪兩個索引之間的元素，包含左右界線；range 的 stop 要設為右界索引加 1。" },
-  { id: "condition", icon: "◇", label: "List 與 if", badge: "LIST · IF", title: "依條件轉換串列元素", tipTitle: "逐一檢查每個元素", tip: "for 迴圈每次取出一個元素，再依 if 條件決定要放進哪個結果。" }
+  { id: "condition", icon: "◇", label: "List 與 if", badge: "LIST · IF", title: "依條件轉換串列元素", tipTitle: "逐一檢查每個元素", tip: "for 迴圈每次取出一個元素，再依 if 條件決定要放進哪個結果。" },
+  { id: "list-calc", icon: "∑", label: "List 加總與極值", badge: "LIST · LOOP", title: "用 for 計算串列範圍", tipTitle: "先確定走訪的索引", tip: "隨機設定左、右界線，for 迴圈會走訪兩個索引之間的元素，包含左右界線；range 的 stop 要設為右界索引加 1。" }
 ];
 
 const defaults = { correct: 0, wrong: 0, streak: 0, attemptedToday: 0, date: "", completedDays: [], mistakes: [] };
@@ -140,16 +141,84 @@ function calculate(first, operation, x, nextOperation, last) {
 }
 
 function makeTraceQuestion() {
-  const test = randomInt(1, 10);
-  const d = test > 5 ? test - 5 : 2 * test;
-  const e = d + 3;
-  const f = e > 7 ? e : 7;
+  const test = randomInt(1, 12);
+  const branchPoint = randomInt(4, 8);
+  const subtract = randomInt(1, 5);
+  const multiplier = randomInt(2, 4);
+  const incrementCount = randomInt(2, 4);
+  const increment = randomInt(1, 3);
+  const limit = randomInt(6, 12);
+  const d = test > branchPoint ? test - subtract : multiplier * test;
+  const e = d + incrementCount * increment;
+  const f = e > limit ? limit : e;
   return {
-    source: `def fa(x):\n    if x > 5:\n        return x - 5\n    else:\n        return 2 * x\n\ndef fb(v):\n    for i in range(3):\n        v = v + 1\n    return v\n\ndef fc(a):\n    if a > 7:\n        return a\n    else:\n        return 7\n\ntest = ${test}\nd = fa(test)\ne = fb(d)\nf = fc(e)\nprint(d, e, f)`,
-    fields: [{ label: "輸出 d、e、f（以空格分隔）", placeholder: "例如：6 9 9" }],
+    source: `def fa(x):\n    if x > ${branchPoint}:\n        return x - ${subtract}\n    else:\n        return ${multiplier} * x\n\ndef fb(v):\n    for i in range(${incrementCount}):\n        v = v + ${increment}\n    return v\n\ndef fc(a):\n    if a > ${limit}:\n        return ${limit}\n    else:\n        return a\n\ntest = ${test}\nd = fa(test)\ne = fb(d)\nf = fc(e)\nprint(d, e, f)`,
+    fields: [{ label: "輸出 d、e、f（以空格分隔）", placeholder: "以空格分隔輸入 d、e、f" }],
     answers: [`${d} ${e} ${f}`],
-    explanation: `fa(${test}) 得到 d = ${d}；fb 迴圈加 1 三次，得到 e = ${e}；fc(${e}) 得到 f = ${f}。`,
-    hint: "依序算 fa(test)、fb(d)、fc(e)。fb 會把輸入值加 1 三次。"
+    explanation: `fa(${test}) 得到 d = ${d}；fb 迴圈每次加 ${increment}，共執行 ${incrementCount} 次，得到 e = ${e}；fc(${e}) 得到 f = ${f}。`,
+    hint: `依序算 fa(test)、fb(d)、fc(e)。fb 每次會把輸入值加 ${increment}。`
+  };
+}
+
+function makeVariableQuestion() {
+  const type = pick(["assignment", "swap", "operation"]);
+  if (type === "assignment") {
+    const original = randomInt(1, 20);
+    let updated = randomInt(1, 20);
+    while (updated === original) updated = randomInt(1, 20);
+    return {
+      source: `a = ${original}\nb = a\na = ${updated}\nprint(a, b)`,
+      fields: [{ label: "輸出 a、b（以空格分隔）", placeholder: "以空格分隔輸入 a、b" }],
+      answers: [`${updated} ${original}`],
+      explanation: `b = a 執行時，a 的值是 ${original}，所以 b 取得 ${original}。之後 a 改成 ${updated}，不會改變 b；輸出為 ${updated} ${original}。`,
+      hint: "每次賦值都把右側當下的值存入左側；之後更改 a 不會回頭改變 b。"
+    };
+  }
+  if (type === "swap") {
+    const first = randomInt(1, 20);
+    let second = randomInt(1, 20);
+    while (second === first) second = randomInt(1, 20);
+    return {
+      source: `a = ${first}\nb = ${second}\ntemp = a\na = b\nb = temp\nprint(a, b)`,
+      fields: [{ label: "交換後輸出 a、b（以空格分隔）", placeholder: "以空格分隔輸入 a、b" }],
+      answers: [`${second} ${first}`],
+      explanation: `先用 temp 暫存 a 的值 ${first}，再把 b 的值 ${second} 放入 a，最後將 temp 放入 b；輸出為 ${second} ${first}。`,
+      hint: "依序追蹤 temp、a、b；先暫存 a，才不會在交換時遺失原值。"
+    };
+  }
+
+  const operator = pick(["+", "-", "*", "/", "//", "%"]);
+  let first = randomInt(1, 20);
+  let second = randomInt(1, 10);
+  if (operator === "/") {
+    second = pick([2, 4, 5, 8, 10]);
+    first = randomInt(1, 10) * second + randomInt(1, second - 1);
+  }
+  const result = operator === "+"
+    ? first + second
+    : operator === "-"
+      ? first - second
+      : operator === "*"
+        ? first * second
+        : operator === "/"
+          ? first / second
+          : operator === "//"
+            ? Math.floor(first / second)
+            : first % second;
+  const answer = operator === "/" && Number.isInteger(result) ? `${result}.0` : String(result);
+  const operationNames = { "+": "加法", "-": "減法", "*": "乘法", "/": "除法", "//": "整數除法", "%": "取餘數" };
+  return {
+    source: `a = ${first}\nb = ${second}\nresult = a ${operator} b\nprint(result)`,
+    fields: [{ label: `a ${operator} b 的結果`, placeholder: "輸入計算結果" }],
+    answers: [answer],
+    explanation: `${first} ${operator} ${second} 使用${operationNames[operator]}，結果為 ${answer}。`,
+    hint: operator === "/"
+      ? "單斜線 / 會進行一般除法，結果是浮點數。"
+      : operator === "//"
+        ? "雙斜線 // 會向下取整，得到整數商。"
+        : operator === "%"
+          ? "百分號 % 會得到除法後的餘數。"
+          : `依照${operationNames[operator]}計算 a ${operator} b。`
   };
 }
 
@@ -167,7 +236,7 @@ function makeListQuestion(withExtras) {
   if (withExtras) {
     indexQuestion = { qa: randomInt(0, list.length - 1), qb: randomInt(0, list.length - 1) };
   }
-  const source = `a = ${a}\nb = ${b}\nc = ${c}\nmylist = []\nmylist.append(c)\nfor i in range(${start}, ${stop}, ${step}):\n    mylist.append(i)\nmylist.append(b)\n\nprint(mylist)${withExtras ? `\nprint(len(mylist))\nprint(mylist[${indexQuestion.qa}] + mylist[${indexQuestion.qb}])` : ""}`;
+  const source = `a = ${a}\nb = ${b}\nc = ${c}\nmylist = []\n\nmylist.append(c)\nfor i in range(${start}, ${stop}, ${step}):\n    mylist.append(i)\nmylist.append(b)\n\nprint(mylist)${withExtras ? `\nprint(len(mylist))\nprint(mylist[${indexQuestion.qa}] + mylist[${indexQuestion.qb}])` : ""}`;
   const fields = [{ label: "mylist 的完整內容", placeholder: "例如：[5, 1, 4, 7, 3]", note: "請使用中括號，將串列元素依序列出。" }];
   const answers = [JSON.stringify(list)];
   let explanation = `先放入 c = ${c}，range(${start}, ${stop}, ${step}) 產生 ${list.slice(1, -1).join(", ") || "沒有數字"}，最後放入 b = ${b}。`;
@@ -198,7 +267,7 @@ function makeListCalculationQuestion() {
     sum: {
       label: "加總",
       initialization: "total = 0",
-      update: "        total += mylist[i]",
+      update: "        total = total + mylist[i]",
       output: "total",
       explanation: `${values.join(" + ")} = ${answer}`
     },
@@ -322,6 +391,7 @@ function makeRangeQuestion() {
 
 function buildQuestion(topicId) {
   if (topicId === "functions") return makeFunctionQuestion();
+  if (topicId === "variables") return makeVariableQuestion();
   if (topicId === "trace") return makeTraceQuestion();
   if (topicId === "list") return makeListQuestion(false);
   if (topicId === "list2") return makeListQuestion(true);
@@ -583,7 +653,7 @@ function validateImportedBackup(backup) {
   const categoryStats = emptyCategoryStats();
   for (const topic of topics) {
     const category = data.categoryStats[topic.id];
-    if (!category && topic.id === "list-calc") continue;
+    if (!category && ["list-calc", "variables"].includes(topic.id)) continue;
     if (!category || !isCount(category.attempted) || !isCount(category.wrong) || category.wrong > category.attempted) {
       throw new Error(`「${topic.label}」的統計資料格式不正確。`);
     }

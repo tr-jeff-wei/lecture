@@ -123,7 +123,7 @@ h1 span { color: #5870d4; }
 .window-dots i:nth-child(2) { background: #e9ba62; }
 .window-dots i:nth-child(3) { background: #66c796; }
 .code-language { margin-left: auto; color: #6e7c94; font-size: 8px; letter-spacing: .7px; }
-.code-content { margin: 0; min-height: 118px; max-height: 260px; overflow: auto; padding: 16px 19px 18px; color: #d9e3f3; font: 11px/1.8 var(--mono); tab-size: 4; white-space: pre-wrap; overflow-wrap: anywhere; }
+.code-content { margin: 0; min-height: 118px; padding: 16px 19px 18px; color: #d9e3f3; font: 11px/1.8 var(--mono); tab-size: 4; white-space: pre-wrap; overflow-wrap: anywhere; }
 .code-content .kw { color: #c6a5ff; }
 .code-content .fn { color: #75c4e7; }
 .code-content .num { color: #edbd78; }
@@ -192,6 +192,7 @@ kbd { color: #7d899a; border: 1px solid #dfe4ec; border-radius: 4px; background:
 .dot-trace { background: #47b894; }
 .dot-list { background: #e6a84b; }
 .dot-list2 { background: #9673d6; }
+.dot-variables { background: #54a987; }
 .dot-list-calc { background: #4a9cc1; }
 .dot-condition { background: #e47e83; }
 .dot-range { background: #4a9cc1; }
