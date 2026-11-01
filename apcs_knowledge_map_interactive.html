@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APCS 程式設計知識地圖｜互動版</title>
+<style>
+:root{
+  --bg:#f5f7fb;--panel:#fff;--ink:#17233b;--muted:#63718a;--line:#aab7ca;
+  --blue:#dbeafe;--blue-stroke:#3980d8;--green:#dcfce7;--green-stroke:#46a65c;
+  --purple:#f0e3ff;--purple-stroke:#8b5bd1;--orange:#ffedcc;--orange-stroke:#e78a20;
+  --pink:#ffe0ec;--pink-stroke:#cf648d;--shadow:0 8px 24px rgba(25,45,80,.08)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif}
+header{padding:22px 24px 16px;background:linear-gradient(125deg,#173d75,#2868a8);color:white}
+header h1{margin:0 0 7px;font-size:clamp(22px,3vw,32px)}
+header p{margin:0;color:#e1edff}
+main{padding:16px;max-width:1600px;margin:auto}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--panel);padding:12px;border-radius:14px;box-shadow:var(--shadow);margin-bottom:12px}
+input[type=search]{flex:1;min-width:190px;padding:10px 12px;border:1px solid #c9d3e2;border-radius:9px;font-size:15px}
+button,.toggle{border:1px solid #cbd5e1;background:#fff;color:#26354f;padding:9px 12px;border-radius:9px;cursor:pointer;font-size:14px}
+button:hover{background:#eef5ff;border-color:#7ca9e5}
+button.primary{background:#1d5e9f;color:white;border-color:#1d5e9f}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.toggle.active{background:#e7f1ff;border-color:#4d8bd5;color:#164e8a;font-weight:700}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:12px;align-items:start}
+.graph-card,.side-card{background:white;border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.graph-head{padding:12px 15px;border-bottom:1px solid #e6ebf2;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.graph-head small{color:var(--muted)}
+#viewport{height:min(72vh,800px);min-height:500px;overflow:hidden;position:relative;touch-action:none;background-color:#fbfdff;background-image:radial-gradient(#dce5f1 1px,transparent 1px);background-size:20px 20px}
+svg{width:100%;height:100%;display:block;cursor:grab}
+svg.dragging{cursor:grabbing}
+.edge{fill:none;stroke:#9aa9bd;stroke-width:1.7;opacity:.75;marker-end:url(#arrow)}
+.edge.optional{stroke-dasharray:6 5;opacity:.55}
+.edge.highlight{stroke:#e0781d;stroke-width:3;opacity:1}
+.node{cursor:pointer;outline:none}
+.node rect{stroke-width:1.8;rx:12;filter:drop-shadow(0 2px 2px rgba(35,50,80,.08))}
+.node text{font-size:12px;fill:#1c2b43;text-anchor:middle;pointer-events:none}
+.node .nid{font-size:10px;fill:#52627a}
+.node.selected rect{stroke:#e0781d;stroke-width:3.5}
+.node.dim{opacity:.18}
+.node.searchmatch rect{stroke:#e0781d;stroke-width:3}
+.node:focus rect{stroke:#111827;stroke-width:3}
+.side-card{padding:16px;position:sticky;top:12px}
+.side-card h2{font-size:19px;margin:0 0 6px}
+.side-card h3{font-size:13px;text-transform:none;color:#52627a;margin:18px 0 7px}
+.pill{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:#edf2f8;color:#35445e;margin:2px}
+.detail-id{color:var(--muted);font-size:13px}
+.detail-desc{line-height:1.65}
+.link-list{display:flex;flex-wrap:wrap;gap:6px}
+.link-chip{border:1px solid #d4deea;background:#f8fafc;padding:6px 8px;border-radius:8px;cursor:pointer;font-size:13px}
+.link-chip:hover{border-color:#6d9cdb;background:#edf5ff}
+.legend{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{padding:7px 10px;background:#f1f5f9;border-radius:9px;font-size:12px;color:#475569}
+.hint{font-size:12px;color:var(--muted);line-height:1.55}
+.empty{color:var(--muted);font-size:14px}
+footer{padding:12px 4px;color:var(--muted);font-size:12px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.side-card{position:static}.graph-head{align-items:flex-start}#viewport{height:62vh;min-height:430px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>APCS 程式設計知識地圖</h1>
+  <p>互動式概念依賴圖｜點選節點查看先備知識與後續學習方向</p>
+</header>
+<main>
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="搜尋概念或 ID，例如：BFS、陣列、A11…" aria-label="搜尋概念">
+    <div class="filters" id="filters"></div>
+    <button id="prereqBtn">顯示先備路徑</button>
+    <button id="resetView">重設視圖</button>
+    <button id="resetFilter">清除篩選</button>
+  </div>
+  <div class="layout">
+    <section class="graph-card">
+      <div class="graph-head">
+        <div><strong>概念關係圖</strong><br><small>拖曳移動畫布；滑鼠滾輪／觸控板縮放；點節點查看細節</small></div>
+        <div class="legend">
+          <span><i class="dot" style="background:#8dc6ff"></i>基礎</span>
+          <span><i class="dot" style="background:#a7e5b2"></i>數學／資料</span>
+          <span><i class="dot" style="background:#d8b8ff"></i>程式結構</span>
+          <span><i class="dot" style="background:#ffc978"></i>演算法</span>
+          <span><i class="dot" style="background:#f3a9c6"></i>圖論／應用</span>
+        </div>
+      </div>
+      <div id="viewport"><svg id="graph" viewBox="0 0 1250 850" role="img" aria-label="可互動的程式設計知識地圖"></svg></div>
+    </section>
+    <aside class="side-card" id="details" aria-live="polite">
+      <h2>如何使用</h2>
+      <p class="detail-desc">點選任一節點，就能查看概念說明、必要先備知識，以及可繼續學習的概念。</p>
+      <h3>互動方式</h3>
+      <ul class="hint">
+        <li>搜尋概念名稱或節點 ID。</li>
+        <li>使用分類按鈕只看特定領域。</li>
+        <li>點選節點後，橘色箭頭會標示相關先備／後續路徑。</li>
+        <li>「顯示先備路徑」會反白目前選取節點的上游概念。</li>
+      </ul>
+      <h3>目前圖譜</h3>
+      <div class="stats" id="stats"></div>
+      <p class="hint">這是教學規劃用的概念圖譜初稿。箭頭表示建議的學習依賴，不代表唯一學習順序或官方考試保證範圍。</p>
+    </aside>
+  </div>
+  <footer>建議：可依學生實際表現調整先備關係，並將題庫題目連結到對應節點，形成個人化學習路徑。</footer>
+</main>
+<script>
+const categories = {
+  foundation:{label:"程式基礎",fill:"#dbeafe",stroke:"#3980d8"},
+  math:{label:"數學與數值",fill:"#dcfce7",stroke:"#46a65c"},
+  data:{label:"陣列與字串",fill:"#e1f5df",stroke:"#53a34d"},
+  structure:{label:"函式與資料結構",fill:"#f0e3ff",stroke:"#8b5bd1"},
+  algo:{label:"搜尋、排序與效率",fill:"#ffedcc",stroke:"#e78a20"},
+  graph:{label:"圖論與綜合應用",fill:"#ffe0ec",stroke:"#cf648d"}
+};
+const nodes = [
+["A01","程式執行與指令順序","foundation","理解程式由上而下執行，除非遇到控制流程改變。",[],["A02","A03"]],
+["A02","輸入與輸出","foundation","讀取資料並依規格輸出結果。",["A01"],["B07","C19"]],
+["A03","變數與賦值","foundation","以名稱保存與更新資料。",["A01"],["A04","A05","A13","C01"]],
+["A04","基本資料型態","foundation","整數、浮點數、字元、布林值等資料表示。",["A03"],["A05","A08","B14"]],
+["A05","算術運算子","foundation","加減乘除、餘數及數值運算。",["A03","A04"],["A06","A07","B12"]],
+["A06","運算優先順序","foundation","理解運算子優先級與括號的作用。",["A05"],["A18"]],
+["A07","整數除法與餘數","foundation","用商與餘數處理整除、拆位等問題。",["A05"],["B02","B03","B04","B08","B10"]],
+["A08","比較運算子","foundation","比較大小與相等關係，產生布林結果。",["A04"],["A09","A11"]],
+["A09","布林值與邏輯運算","foundation","使用 AND、OR、NOT 組合條件。",["A08"],["A10","A11"]],
+["A10","複合邏輯條件","foundation","組合多個條件，判斷複雜規則。",["A09"],["A12","C04"]],
+["A11","條件判斷 if／else","foundation","依條件選擇執行路徑。",["A08","A09"],["A12","A18","B06","C04"]],
+["A12","多重與巢狀判斷","foundation","處理多種分支與複合規則。",["A11","A10"],["A19","D11"]],
+["A13","迴圈與重複執行","foundation","重複執行一段程式。",["A03"],["A14","A16","A17"]],
+["A14","for／while 與終止條件","foundation","設定迴圈範圍、更新條件並避免無窮迴圈。",["A13"],["A15","A18","B04","B08","C03"]],
+["A15","巢狀迴圈","foundation","在迴圈內再執行迴圈，常用於配對與矩陣。",["A14"],["C11","E04","D12"]],
+["A16","計數器","foundation","計算符合條件的項目數量。",["A13"],["B07","C04"]],
+["A17","累加器","foundation","逐步累積總和或其他聚合值。",["A05","A13"],["B07","B12"]],
+["A18","程式碼追蹤與變數狀態","foundation","逐步追蹤變數、分支、迴圈及函式的變化。",["A03","A11","A13"],["E01","D08","G10"]],
+["A19","邊界條件與特殊輸入","foundation","檢查空資料、零、負數、上下界及特殊情況。",["A11","A14"],["E01","D14","G13"]],
+["B01","正負數與零","math","正負數、零與比較規則。",["A04","A05"],["B02","B06"]],
+["B02","奇偶數判斷","math","利用餘數判斷奇數與偶數。",["A07"],["B04","D11"]],
+["B03","倍數與整除判斷","math","判斷一個整數是否為另一數的倍數。",["A07"],["B08","D11"]],
+["B04","數字拆位與位數統計","math","透過除以 10 與取餘數逐位處理數字。",["A07","A14"],["B05"]],
+["B05","數字反轉與各位總和","math","將數字拆位後重新組合或累加。",["B04"],["D11"]],
+["B06","最大值與最小值更新","math","遍歷資料時持續維護目前最佳值。",["A11","A14"],["B07","C05"]],
+["B07","平均數與統計量","math","計算總和、平均、數量等基本統計。",["A17","A16"],["C04"]],
+["B08","因數與倍數","math","檢查整除關係與因數集合。",["A07","A14"],["B09","B10","B11"]],
+["B09","質數判斷","math","檢查大於 1 的整數是否只有兩個正因數。",["B08","A14"],["D11"]],
+["B10","最大公因數 GCD","math","使用因數概念或輾轉相除法求最大公因數。",["A07","A14","B08"],["B11"]],
+["B11","最小公倍數 LCM","math","常使用 GCD 與乘除關係求最小公倍數。",["B10"],["D11"]],
+["B12","等差與簡單數列","math","觀察項目規律並使用迴圈產生或求和。",["A05","A14"],["B13","D11"]],
+["B13","數學規律與公式化簡","math","從例子歸納規律，減少不必要的計算。",["B12","A18"],["E14"]],
+["B14","位元表示與二進位","math","理解整數的二進位表示。",["A04"],["B15"]],
+["B15","位元 AND／OR／XOR","math","對整數的二進位位元逐位操作。",["B14"],["B16"]],
+["B16","位移與遮罩","math","透過位移與遮罩檢查或設定特定位元。",["B15"],["D11"]],
+["C01","陣列／列表","data","使用索引存取一串同類或相關資料。",["A03","A13"],["C02","F01"]],
+["C02","索引與長度","data","理解索引起點、有效範圍與序列長度。",["C01"],["C03","C07","C08","C09","C14"]],
+["C03","陣列遍歷","data","逐一處理陣列元素。",["C02","A14"],["C04","C05","C06","C10","C16"]],
+["C04","陣列統計與篩選","data","依條件計數、加總或保留元素。",["C03","A11"],["C20","E06"]],
+["C05","陣列最大值與最小值","data","遍歷序列並找出極值及位置。",["C03","B06"],["E09","E12"]],
+["C06","線性搜尋","data","逐一檢查元素以尋找目標。",["C03","A11"],["E06","E07"]],
+["C07","元素交換","data","用暫存值或語言特性交換兩個元素。",["C02","A03"],["C08","C09","E10","E11"]],
+["C08","陣列反轉","data","從兩端交換元素或建立反向序列。",["C02","C07"],["C17"]],
+["C09","陣列移動與循環位移","data","依指定方向移動或輪轉元素。",["C02","C07"],["G10"]],
+["C10","相鄰元素比較","data","比較相鄰項目以找出區段、差值或局部規律。",["C03"],["E10","E11"]],
+["C11","二維陣列與矩陣","data","用列與欄表示表格或網格資料。",["C01","A15"],["C12","F16"]],
+["C12","網格座標與方向移動","data","以座標、方向向量與邊界檢查表示移動。",["C11","A11"],["G06","G07"]],
+["C13","字元與字元編碼","data","理解字元、字元比較及基本編碼概念。",["A04"],["C14","C16"]],
+["C14","字串長度與索引","data","將字串視為可索引的字元序列。",["C13","C02"],["C15","C17","C18","C19"]],
+["C15","字串切片、拼接與反轉","data","擷取子字串、連接字串或建立反向字串。",["C14"],["C17","C18"]],
+["C16","字元頻率統計","data","統計各字元出現次數。",["C13","C03"],["C20"]],
+["C17","回文判斷","data","判斷字串或序列正讀、反讀是否相同。",["C14","C08"],["D11"]],
+["C18","字串比對與規則驗證","data","依規則檢查字串格式、相等或模式。",["C14","A11"],["D11"]],
+["C19","字串分割與解析","data","將輸入文字切分成欄位或數值。",["C14","A02"],["G10"]],
+["C20","頻率陣列與計數表","data","用索引或映射結構快速記錄各項頻率。",["C04","C16"],["D11","E12"]],
+["D01","函式與模組化","structure","將可重用的程式片段封裝成函式。",["A03","A13"],["D02","D03","D04","D05","D06"]],
+["D02","參數與引數","structure","透過參數傳入函式需要的資料。",["D01"],["D05","D06"]],
+["D03","回傳值","structure","讓函式產生並交回計算結果。",["D01"],["D05","D06"]],
+["D04","區域與全域變數","structure","理解變數可見範圍與生命週期。",["D01","A03"],["D05","D08"]],
+["D05","函式分解與重複程式碼整理","structure","將問題拆成較小、可測試的子任務。",["D01","D02","D03"],["G13"]],
+["D06","遞迴呼叫","structure","函式呼叫自己處理規模更小的同類問題。",["D01","D02","D03"],["D07","D08","D10"]],
+["D07","遞迴終止條件","structure","定義遞迴何時停止，避免無限呼叫。",["D06","A11"],["D09","D13"]],
+["D08","遞迴呼叫堆疊與回傳順序","structure","追蹤遞迴進入、暫停與返回的過程。",["D06","A18"],["D10","G03"]],
+["D09","階乘與遞迴數列","structure","用基礎情況與遞迴關係描述計算。",["D07"],["D10"]],
+["D10","遞迴與迭代比較","structure","比較遞迴和迴圈的可讀性、資源與適用情境。",["D06","A14"],["E14"]],
+["D11","枚舉與暴力搜尋","structure","列舉候選解並檢查是否符合條件。",["A11","A14"],["D12","D13","E14"]],
+["D12","多重枚舉與組合檢查","structure","列舉多個變數或候選組合。",["D11","A15"],["D13","E04"]],
+["D13","回溯法","structure","逐步建立候選解，遇到不可能的分支便退回。",["D06","D11","D07"],["D14","G11"]],
+["D14","搜尋空間與剪枝","structure","利用限制提早排除不可能產生答案的分支。",["D13","A19"],["G11","G13"]],
+["E01","演算法步驟與正確性","algo","清楚描述步驟並檢查是否涵蓋所有情況。",["A18"],["E02","E09","E14"]],
+["E02","時間複雜度概念","algo","描述輸入規模增加時，運算量如何成長。",["E01","A14"],["E03","E04","E05","E13"]],
+["E03","O(1) 與 O(n)","algo","理解常數時間與線性成長的基本例子。",["E02"],["E06","E14"]],
+["E04","O(n²) 與巢狀迴圈","algo","分析雙重遍歷或成對比較的成長速度。",["E02","A15"],["E10","E14"]],
+["E05","O(log n) 與規模縮減","algo","理解每一步把搜尋範圍按比例縮小的成長速度。",["E02"],["E07","E14"]],
+["E06","線性搜尋分析","algo","分析逐一檢查資料的最佳、平均或最差情況。",["C06","E03"],["E14"]],
+["E07","二分搜尋","algo","在有序資料上反覆縮小可能範圍。",["E05","C06"],["E08","E12"]],
+["E08","排序與單調性條件","algo","確認資料有序，或答案判斷具備單調性。",["E07"],["E12"]],
+["E09","排序目的與結果驗證","algo","理解排序規則及排序後的資料性質。",["C01","E01"],["E10","E11","E12"]],
+["E10","氣泡排序與選擇排序","algo","以反覆比較、交換或選取極值完成排序。",["C07","A15","E09"],["E04"]],
+["E11","插入排序","algo","逐步把新元素插入已排序區段。",["C07","A14","E09"],["E04"]],
+["E12","排序後的資料處理","algo","利用排序結果做搜尋、去重或相鄰比較。",["E09","E07"],["G13"]],
+["E13","空間複雜度","algo","分析演算法額外使用的記憶體。",["E02","C01"],["E14"]],
+["E14","輸入規模與效能取捨","algo","依限制選擇可行演算法，平衡時間與空間。",["E02","E13"],["G13"]],
+["F01","抽象資料型態與操作介面","structure","從資料操作行為理解結構，而不只看內部實作。",["C01","D01"],["F02","F06","F09","F13"]],
+["F02","堆疊 Stack","structure","只允許從頂端加入或移除資料的結構。",["F01"],["F03","F04","G04"]],
+["F03","後進先出 LIFO","structure","最後加入的元素最先被移除。",["F02"],["F04","F05"]],
+["F04","Push／Pop／Top","structure","堆疊的加入、移除與查看頂端操作。",["F02","F03"],["F05","G04"]],
+["F05","括號配對與堆疊應用","structure","用堆疊檢查括號巢狀及配對順序。",["F04","C14"],["G13"]],
+["F06","佇列 Queue","structure","從尾端加入、從前端移除資料。",["F01"],["F07","F08","G05"]],
+["F07","先進先出 FIFO","structure","最早加入的元素最先被處理。",["F06"],["F08","G05"]],
+["F08","Enqueue／Dequeue","structure","佇列的加入與移除操作。",["F06","F07"],["G05"]],
+["F09","樹的節點與邊","structure","以階層關係表示節點之間的連結。",["F01"],["F10","F11"]],
+["F10","根、父子與葉節點","structure","理解樹中常見節點關係。",["F09"],["F11","F12"]],
+["F11","二元樹","structure","每個節點最多有兩個子節點的樹。",["F09","F10"],["F12"]],
+["F12","前序、中序、後序遍歷","structure","依不同拜訪順序走訪樹的節點。",["F11","D06"],["G09"]],
+["F13","圖的頂點與邊","structure","用節點與連線描述一般關係網路。",["F01"],["F14","F15","F16","F17","F18","G01"]],
+["F14","有向圖與無向圖","structure","區分連線是否具有方向。",["F13"],["F18","G02","G05"]],
+["F15","加權與非加權圖","structure","區分邊是否帶有成本、距離或權重。",["F13"],["G13"]],
+["F16","鄰接矩陣","structure","用矩陣記錄節點間是否存在邊或邊權重。",["C11","F13"],["G02","G05"]],
+["F17","鄰接串列","structure","為每個節點儲存相鄰節點清單。",["C01","F13"],["G02","G05"]],
+["F18","可達性與連通性","structure","判斷節點之間是否存在路徑或區域是否連通。",["F13","F14"],["G02","G05","G08"]],
+["G01","節點標記與拜訪紀錄","graph","記錄哪些節點已被探索，避免重複或無限循環。",["C01","F13"],["G02","G05"]],
+["G02","深度優先搜尋 DFS","graph","沿著一條路徑深入探索，無路可走時回退。",["F13","F14","G01"],["G03","G04","G06","G08"]],
+["G03","DFS 的遞迴實作","graph","使用函式遞迴探索相鄰節點。",["G02","D06"],["G06","G08"]],
+["G04","DFS 的堆疊實作","graph","用堆疊明確管理待探索節點。",["G02","F02"],["G06","G08"]],
+["G05","廣度優先搜尋 BFS","graph","按距離層次探索節點，常用於無權圖最短步數。",["F13","G01","F06"],["G07","G08"]],
+["G06","網格迷宮可達性","graph","將網格轉成狀態與移動關係，判斷能否到達終點。",["C12","G02"],["G07"]],
+["G07","網格最短步數","graph","用 BFS 在每步成本相同的網格中求最少移動次數。",["C12","G05"],["G13"]],
+["G08","連通區域數量","graph","反覆從尚未拜訪的節點搜尋，統計連通區域。",["F18","G02"],["G13"]],
+["G09","樹的遍歷與遞迴","graph","結合樹結構與遞迴走訪子樹。",["F12","D06"],["G13"]],
+["G10","模擬與狀態更新","graph","依照題目規則逐步更新系統狀態。",["A18","C01"],["G11","G13"]],
+["G11","狀態空間與搜尋","graph","把可能狀態視為節點，搜尋可行解或目標狀態。",["D13","D14","G10"],["G13"]],
+["G12","綜合資料結構選擇","graph","依操作需求選用陣列、堆疊、佇列或圖等結構。",["F02","F06","F13"],["G13"]],
+["G13","綜合演算法與解題","graph","整合建模、資料結構、演算法、邊界處理與效率分析。",["E14","G10","G11","G12"],[]]
+].map(([id,name,cat,desc,pre,next])=>({id,name,cat,desc,pre,next}));
+
+const svg = document.getElementById('graph');
+const NS='http://www.w3.org/2000/svg';
+const W=1250,H=850;
+const layerY={foundation:80,math:225,data:365,structure:505,algo:650,graph:780};
+const catOrder=['foundation','math','data','structure','algo','graph'];
+const positions={};
+function el(tag,attrs={},parent=svg){const e=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));parent.appendChild(e);return e;}
+function textEl(parent,x,y,txt,attrs={}){const t=el('text',{x,y,...attrs},parent);t.textContent=txt;return t;}
+function layoutNodes(){
+  const grouped={};catOrder.forEach(c=>grouped[c]=nodes.filter(n=>n.cat===c));
+  catOrder.forEach(cat=>{
+    const arr=grouped[cat], cols=cat==='foundation'?8:cat==='math'?7:cat==='data'?7:cat==='structure'?7:cat==='algo'?7:7;
+    const gap=cat==='foundation'?151:cat==='structure'?166:166;
+    const total=(Math.min(cols,arr.length)-1)*gap;
+    arr.forEach((n,i)=>{
+      const row=Math.floor(i/cols), col=i%cols;
+      const rowCount=Math.min(cols,arr.length-row*cols);
+      const rowWidth=(rowCount-1)*gap;
+      positions[n.id]={x:W/2-rowWidth/2+col*gap,y:layerY[cat]+row*53};
+    });
+  });
+  // Spread nodes that have many items in one row; add small alternating vertical offsets to reduce overlap.
+  Object.values(positions).forEach((p,i)=>{p.y+= (i%2)*3;});
+}
+let selected=null, showPrereq=false, activeCats=new Set(catOrder), query='';
+let transform={x:0,y:0,s:1};
+let gEdges,gNodes;
+function draw(){
+  svg.innerHTML='';
+  const defs=el('defs');
+  const marker=el('marker',{id:'arrow',markerWidth:8,markerHeight:8,refX:6,refY:3,orient:'auto',markerUnits:'strokeWidth'},defs);
+  el('path',{d:'M0,0 L0,6 L6,3 z',fill:'#9aa9bd'},marker);
+  const bg=el('rect',{x:0,y:0,width:W,height:H,fill:'transparent'});
+  const world=el('g',{id:'world'});
+  const edgeLayer=el('g',{},world);gEdges=edgeLayer;
+  const nodeLayer=el('g',{},world);gNodes=nodeLayer;
+  const nodeById=Object.fromEntries(nodes.map(n=>[n.id,n]));
+  const edges=[];
+  nodes.forEach(n=>n.next.forEach(to=>{if(nodeById[to])edges.push({from:n.id,to});}));
+  edges.forEach(e=>{
+    const a=positions[e.from],b=positions[e.to];if(!a||!b)return;
+    let x1=a.x,y1=a.y+15,x2=b.x,y2=b.y-15;
+    let d;
+    if(Math.abs(y2-y1)<28){d=`M ${x1+55} ${y1} C ${x1+85} ${y1-20}, ${x2-85} ${y2-20}, ${x2-55} ${y2}`;}
+    else {const mid=(y1+y2)/2;d=`M ${x1} ${y1} C ${x1} ${mid}, ${x2} ${mid}, ${x2} ${y2}`;}
+    const path=el('path',{d,class:'edge','data-from':e.from,'data-to':e.to},edgeLayer);
+  });
+  // node rectangles
+  nodes.forEach(n=>{
+    const p=positions[n.id],c=categories[n.cat];
+    const group=el('g',{class:'node',tabindex:0,role:'button','aria-label':n.name,'data-id':n.id},nodeLayer);
+    el('rect',{x:p.x-58,y:p.y-18,width:116,height:36,fill:c.fill,stroke:c.stroke},group);
+    textEl(group,p.x,p.y-2,n.name.length>10?n.name.slice(0,10)+'…':n.name);
+    textEl(group,p.x,p.y+11,n.id,{class:'nid'});
+    group.addEventListener('click',()=>selectNode(n.id));
+    group.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectNode(n.id);}});
+  });
+  applyTransform();applyHighlights();
+}
+function applyTransform(){const world=svg.querySelector('#world');if(world)world.setAttribute('transform',`translate(${transform.x} ${transform.y}) scale(${transform.s})`);}
+function ancestors(id){const seen=new Set();function walk(x){const n=nodes.find(n=>n.id===x);if(!n)return;n.pre.forEach(p=>{if(!seen.has(p)){seen.add(p);walk(p);}});}walk(id);return seen;}
+function descendants(id){const seen=new Set();function walk(x){const n=nodes.find(n=>n.id===x);if(!n)return;n.next.forEach(p=>{if(!seen.has(p)){seen.add(p);walk(p);}});}walk(id);return seen;}
+function applyHighlights(){
+  const pre=selected?ancestors(selected):new Set(),post=selected?descendants(selected):new Set();
+  const related=new Set([...pre,...post, ...(selected?[selected]:[])]);
+  svg.querySelectorAll('.node').forEach(g=>{
+    const id=g.dataset.id,n=nodes.find(n=>n.id===id);
+    const match=(n.name.toLowerCase().includes(query)||id.toLowerCase().includes(query));
+    const visible=activeCats.has(n.cat)&&(!query||match);
+    g.classList.toggle('dim',!visible || (!!selected&&!related.has(id)));
+    g.classList.toggle('selected',id===selected);
+    g.classList.toggle('searchmatch',!!query&&match&&activeCats.has(n.cat));
+  });
+  svg.querySelectorAll('.edge').forEach(e=>{
+    const from=e.dataset.from,to=e.dataset.to;
+    const on=selected&&(from===selected||to===selected||(showPrereq&&pre.has(from)&&pre.has(to)));
+    e.classList.toggle('highlight',!!on);
+    e.style.opacity=(!activeCats.has(nodes.find(n=>n.id===from).cat)||!activeCats.has(nodes.find(n=>n.id===to).cat))?'.06':'';
+    if(query){
+      const matchFrom=nodes.find(n=>n.id===from).name.toLowerCase().includes(query)||from.toLowerCase().includes(query);
+      const matchTo=nodes.find(n=>n.id===to).name.toLowerCase().includes(query)||to.toLowerCase().includes(query);
+      if(!matchFrom&&!matchTo)e.style.opacity='.08';
+    }
+  });
+}
+function selectNode(id){
+  selected=id;const n=nodes.find(n=>n.id===id);if(!n)return;
+  const pre=ancestors(id),post=descendants(id);
+  const detail=document.getElementById('details');
+  detail.innerHTML=`<h2>${n.name}</h2><div class="detail-id">${n.id} · ${categories[n.cat].label}</div><p class="detail-desc">${n.desc}</p>
+  <h3>先備概念（${n.pre.length}）</h3><div class="link-list">${n.pre.length?n.pre.map(id=>`<button class="link-chip" data-jump="${id}">${id} · ${nodes.find(x=>x.id===id)?.name||id}</button>`).join(''):'<span class="empty">無指定先備概念</span>'}</div>
+  <h3>可繼續學習（${n.next.length}）</h3><div class="link-list">${n.next.length?n.next.map(id=>`<button class="link-chip" data-jump="${id}">${id} · ${nodes.find(x=>x.id===id)?.name||id}</button>`).join(''):'<span class="empty">此節點為目前圖譜的終點</span>'}</div>
+  <h3>路徑摘要</h3><div class="stats"><span class="stat">上游先備：${pre.size} 個節點</span><span class="stat">下游概念：${post.size} 個節點</span></div>
+  <h3>學習建議</h3><p class="hint">先確認先備概念已掌握，再透過小題目驗證本節點；若能解釋概念、手動追蹤範例並完成變化題，可視為初步掌握。</p>`;
+  detail.querySelectorAll('[data-jump]').forEach(b=>b.addEventListener('click',()=>selectNode(b.dataset.jump)));
+  applyHighlights();
+}
+function makeFilters(){
+ const box=document.getElementById('filters');
+ catOrder.forEach(cat=>{const b=document.createElement('button');b.className='toggle active';b.textContent=categories[cat].label;b.onclick=()=>{if(activeCats.has(cat)){activeCats.delete(cat);b.classList.remove('active')}else{activeCats.add(cat);b.classList.add('active')}applyHighlights();};box.appendChild(b);});
+ document.getElementById('stats').innerHTML=`<span class="stat">${nodes.length} 個概念節點</span><span class="stat">${nodes.reduce((s,n)=>s+n.next.length,0)} 條依賴邊</span>`;
+}
+document.getElementById('search').addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();applyHighlights();});
+document.getElementById('prereqBtn').addEventListener('click',()=>{showPrereq=!showPrereq;document.getElementById('prereqBtn').classList.toggle('primary',showPrereq);if(selected)applyHighlights();});
+document.getElementById('resetFilter').addEventListener('click',()=>{activeCats=new Set(catOrder);document.querySelectorAll('.toggle').forEach(b=>b.classList.add('active'));query='';document.getElementById('search').value='';applyHighlights();});
+document.getElementById('resetView').addEventListener('click',()=>{transform={x:0,y:0,s:1};applyTransform();});
+let pointer=null;
+svg.addEventListener('pointerdown',e=>{if(e.target.closest('.node'))return;pointer={x:e.clientX,y:e.clientY,tx:transform.x,ty:transform.y};svg.classList.add('dragging');svg.setPointerCapture(e.pointerId);});
+svg.addEventListener('pointermove',e=>{if(!pointer)return;const r=svg.getBoundingClientRect();transform.x=pointer.tx+(e.clientX-pointer.x)*W/r.width;transform.y=pointer.ty+(e.clientY-pointer.y)*H/r.height;applyTransform();});
+svg.addEventListener('pointerup',()=>{pointer=null;svg.classList.remove('dragging');});
+svg.addEventListener('pointercancel',()=>{pointer=null;svg.classList.remove('dragging');});
+svg.addEventListener('wheel',e=>{e.preventDefault();const factor=e.deltaY<0?1.1:.9;transform.s=Math.max(.45,Math.min(2.5,transform.s*factor));applyTransform();},{passive:false});
+layoutNodes();makeFilters();draw();
+</script>
+</body>
+</html>
